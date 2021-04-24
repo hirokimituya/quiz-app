@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('vuetifyjs-mix-extension');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,13 +12,11 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue()
-    .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-    ])
+mix.browserSync('localhost')
+    .js('resources/js/app.js', 'public/js')
+    .vue()
+    .sass('resources/sass/app.scss', 'public/css')
+    .vuetify('vuetify-loader')
+    .version()
     .webpackConfig(require('./webpack.config'));
 
-if (mix.inProduction()) {
-    mix.version();
-}
