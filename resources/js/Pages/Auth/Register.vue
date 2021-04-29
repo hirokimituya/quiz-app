@@ -1,95 +1,92 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+  <app-layout>
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+			<v-card-title
+				class="blue--text text-h5 d-block text-center"
+			>
+				クイズメーカーにログイン
+			</v-card-title>
 
-        <jet-validation-errors class="mb-4" />
+			<v-card-text>
+				<!-- バリデーションエラー -->
+				<alert-validation></alert-validation>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
-            </div>
+				<v-form>
+          <v-text-field
+						label="ユーザ名"
+						type="text"
+						required
+						autofocus
+            autocomplete="name"
+						v-model="form.name"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
-            </div>
+					<v-text-field
+						label="メールアドレス"
+						type="email"
+						required
+						autocomplete="email"
+						v-model="form.email"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
-            </div>
+					<v-text-field
+						label="パスワード"
+						type="password"
+						required 
+						autocomplete="new-password"
+						v-model="form.password"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
-                <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
-            </div>
+          <v-text-field
+						label="パスワード（確認用）"
+						type="password"
+						required 
+						autocomplete="new-password"
+						v-model="form.password_confirmation"
+					></v-text-field>
 
-            <div class="mt-4" v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature">
-                <jet-label for="terms">
-                    <div class="flex items-center">
-                        <jet-checkbox name="terms" id="terms" v-model:checked="form.terms" />
+					<v-btn 
+						type="submit"
+						block
+						color="blue darken-3"
+						class="white--text mb-5 mt-5"
+						@click.prevent="submit()"
+					>
+						登録
+					</v-btn>
 
-                        <div class="ml-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
-                        </div>
-                    </div>
-                </jet-label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </inertia-link>
-
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+				</v-form>
+			</v-card-text>
+		</v-card>
+	</app-layout>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from "@/Jetstream/Checkbox";
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import AppLayout from '@/Layouts/AppLayout'
+import AlertValidation from '@/Components/AlertValidation'
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
-            JetLabel,
-            JetValidationErrors
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    name: '',
-                    email: '',
-                    password: '',
-                    password_confirmation: '',
-                    terms: false,
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.route('register'), {
-                    onFinish: () => this.form.reset('password', 'password_confirmation'),
-                })
-            }
-        }
-    }
+export default {
+	components: {
+		AppLayout,
+    AlertValidation,
+	},
+	data() {
+		return {
+			form: this.$inertia.form({
+				name: '',
+				email: '',
+				password: '',
+				password_confirmation: '',
+				terms: false,
+			})
+		}
+	},
+	methods: {
+		submit() {
+			this.form.post(this.route('register'), {
+				onFinish: () => this.form.reset('password', 'password_confirmation'),
+			})
+		}
+	}
+}
 </script>

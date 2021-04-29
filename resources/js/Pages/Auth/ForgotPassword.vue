@@ -1,68 +1,78 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+	<app-layout>
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+			<v-card-text class="">
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
-        </div>
+				<v-alert
+    		  v-model="sendSuccess"
+    		  dismissible
+					type="success"
+    		  border="left"
+					transition="slide-x-transition"
+					dense
+    		>
+    		  メールを送信しました。
+    		</v-alert>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+				<div class="my-5">
+					パスワードを忘れた場合は、いかに登録メールアドレスを入力して送信してください。パスワード再発行リンクを送信します。
+				</div>
 
-        <jet-validation-errors class="mb-4" />
+				<!-- バリデーションエラー -->
+				<alert-validation></alert-validation>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
-            </div>
+				<v-form>
+					<v-text-field
+						label="メールアドレス"
+						type="email"
+						required
+						autofocus
+						autocomplete="email"
+						v-model="form.email"
+					></v-text-field>
 
-            <div class="flex items-center justify-end mt-4">
-                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+					<v-btn 
+						type="submit"
+						block
+						color="blue darken-3"
+						class="white--text mb-5"
+						@click.prevent="submit()"
+					>
+						パスワード再発行リンクを送信する
+					</v-btn>
+
+				</v-form>
+			</v-card-text>
+		</v-card>
+	</app-layout>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import AppLayout from '@/Layouts/AppLayout'
+import AlertValidation from '@/Components/AlertValidation'
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetLabel,
-            JetValidationErrors
-        },
-
-        props: {
-            status: String
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: ''
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.route('password.email'))
-            }
-        }
-    }
+export default {
+	components: {
+		AppLayout,
+		AlertValidation,
+	},
+	props: {
+		status: String
+	},
+	data() {
+		return {
+			form: this.$inertia.form({
+				email: ''
+			}),
+			sendSuccess: false,
+		}
+	},
+	methods: {
+		submit() {
+			this.form.post(this.route('password.email'), {
+				onSuccess: (page) => this.sendSuccess = true,
+			})
+		}
+	}
+}
 </script>

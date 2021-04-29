@@ -1,92 +1,101 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+	<app-layout>
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+			<v-card-title
+				class="blue--text text-h5 d-block text-center"
+			>
+				クイズメーカーにログイン
+			</v-card-title>
 
-        <jet-validation-errors class="mb-4" />
+			<v-card-text>
+				<!-- バリデーションエラー -->
+				<alert-validation></alert-validation>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+				<v-form>
+					<v-text-field
+						label="メールアドレス"
+						type="email"
+						required
+						autofocus
+						autocomplete="email"
+						v-model="form.email"
+					></v-text-field>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
-            </div>
+					<v-text-field
+						label="パスワード"
+						type="password"
+						required 
+						autocomplete="current-password"
+						v-model="form.password"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
-            </div>
+					<v-checkbox
+						class="mt-n2"
+						v-model="form.remember"
+						label="次回から自動ログイン"
+					></v-checkbox>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <jet-checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+					<v-btn 
+						type="submit"
+						block
+						color="blue darken-3"
+						class="white--text mb-5"
+						@click.prevent="submit()"
+					>
+						ログイン
+					</v-btn>
 
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
-                </inertia-link>
+					<v-btn
+						block
+						outlined
+						color="blue darken-3"
+						@click.prevent="pwForget()"
+					>
+						パスワードを忘れた場合
+					</v-btn>
 
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+				</v-form>
+			</v-card-text>
+		</v-card>
+	</app-layout>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from '@/Jetstream/Checkbox'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import AppLayout from '@/Layouts/AppLayout'
+import AlertValidation from '@/Components/AlertValidation'
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
-            JetLabel,
-            JetValidationErrors
-        },
-
-        props: {
-            canResetPassword: Boolean,
-            status: String
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: '',
-                    password: '',
-                    remember: false
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form
-                    .transform(data => ({
-                        ... data,
-                        remember: this.form.remember ? 'on' : ''
-                    }))
-                    .post(this.route('login'), {
-                        onFinish: () => this.form.reset('password'),
-                    })
-            }
-        }
-    }
+export default {
+	components: {
+		AppLayout,
+		AlertValidation,
+	},
+	props: {
+		canResetPass: Boolean,
+		status: String,
+	},
+	data() {
+		return {
+			form: this.$inertia.form({
+				email: '',
+				password: '',
+				remember: false
+			})
+		}
+	},
+	methods: {
+		submit() {
+			this.form
+				.transform(data => ({
+						... data,
+						remember: this.form.remember ? 'on' : ''
+				}))
+				.post(this.route('login'), {
+						onFinish: () => this.form.reset('password'),
+				})
+		},
+		pwForget() {
+			this.$inertia.get(route('password.request'))
+		}
+	}
+}
 </script>

@@ -1,76 +1,87 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+  <app-layout>
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+			<v-card-title
+				class="blue--text text-h5 d-block text-center"
+			>
+				パスワードリセット
+			</v-card-title>
 
-        <jet-validation-errors class="mb-4" />
+			<v-card-text>
+				<!-- バリデーションエラー -->
+				<alert-validation></alert-validation>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
-            </div>
+				<v-form>
+					<v-text-field
+						label="メールアドレス"
+						type="email"
+						required
+						autofocus
+						autocomplete="email"
+						v-model="form.email"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
-            </div>
+					<v-text-field
+						label="パスワード"
+						type="password"
+						required 
+						autocomplete="new-password"
+						v-model="form.password"
+					></v-text-field>
 
-            <div class="mt-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
-                <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
-            </div>
+      		<v-text-field
+						label="パスワード（確認用）"
+						type="password"
+						required 
+						autocomplete="new-password"
+						v-model="form.password_confirmation"
+					></v-text-field>
 
-            <div class="flex items-center justify-end mt-4">
-                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Reset Password
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+					<v-btn 
+						type="submit"
+						block
+						color="blue darken-3"
+						class="white--text mb-5 mt-5"
+						@click.prevent="submit()"
+					>
+						パスワードをリセット
+					</v-btn>
+
+				</v-form>
+			</v-card-text>
+		</v-card>
+	</app-layout>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import AppLayout from '@/Layouts/AppLayout'
+import AlertValidation from '@/Components/AlertValidation'
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetLabel,
-            JetValidationErrors
-        },
-
-        props: {
-            email: String,
-            token: String,
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    token: this.token,
-                    email: this.email,
-                    password: '',
-                    password_confirmation: '',
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.route('password.update'), {
-                    onFinish: () => this.form.reset('password', 'password_confirmation'),
-                })
-            }
-        }
+export default {
+  components: {
+    AppLayout,
+		AlertValidation,
+  },
+  props: {
+    email: String,
+    token: String,
+  },
+  data() {
+    return {
+      form: this.$inertia.form({
+        token: this.token,
+        email: this.email,
+        password: '',
+        password_confirmation: '',
+      })
     }
+  },
+  methods: {
+    submit() {
+      this.form.post(this.route('password.update'), {
+        onFinish: () => this.form.reset('password', 'password_confirmation'),
+      })
+    }
+  }
+}
 </script>
