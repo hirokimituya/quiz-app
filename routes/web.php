@@ -18,8 +18,6 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

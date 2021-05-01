@@ -45,24 +45,71 @@
 				</v-form>
 			</portal>
 
-     <v-spacer></v-spacer>
-     
-     <v-btn 
-       class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
-       color="primary darken-2" 
-       elevation="0" 
-       @click.prevent="onRegister()"
-     >
-       ユーザ登録
-     </v-btn>
-     <v-btn 
-       class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
-       color="primary" 
-       elevation="0" 
-       @click.prevent="onLogin()"
-     >
-       ログイン
-     </v-btn>
+     	<v-spacer></v-spacer>
+
+			<div v-if="user" class="mr-lg-16">
+				<v-menu
+					offset-y
+					left
+					origin="top right"
+					transition="scale-transition"
+				>
+					<template #activator="{ on, attrs }">
+     				<v-btn 
+							icon 
+							class="mr-md-16"
+							v-bind="attrs"
+							v-on="on"
+						>
+							<v-avatar>
+								<img :src="user.profile_photo_url" :alt="user.name">
+							</v-avatar>
+						</v-btn>
+					</template>
+					<v-list min-width="150">
+							<v-list-item @click="onDashboard">
+								<v-list-item-content>
+									<v-list-item-subtitle>
+										マイページ
+									</v-list-item-subtitle>
+								</v-list-item-content>
+							</v-list-item>
+							<v-list-item @click="onProfile">
+								<v-list-item-content>
+									<v-list-item-subtitle>
+										プロフィール
+									</v-list-item-subtitle>
+								</v-list-item-content>
+							</v-list-item>
+							<v-list-item @click="onLogout">
+								<v-list-item-content>
+									<v-list-item-subtitle>
+										ログアウト
+									</v-list-item-subtitle>
+								</v-list-item-content>
+							</v-list-item>
+					</v-list>
+				</v-menu>
+			</div>
+
+			<div v-else>
+				<v-btn 
+     		  class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
+     		  color="primary darken-2" 
+     		  elevation="0" 
+     		  @click.prevent="onRegister()"
+     		>
+     		  ユーザ登録
+     		</v-btn>
+     		<v-btn 
+     		  class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
+     		  color="primary" 
+     		  elevation="0" 
+     		  @click.prevent="onLogin()"
+     		>
+     		  ログイン
+     		</v-btn>
+			</div>
     </v-app-bar>
 
 		<v-main>
@@ -116,6 +163,7 @@ export default {
 			search: '',
 			DispSearchPC: false,
 			scrollBtnFlg: false,
+			user: this.$page.props.user,
     }
   },
   methods: {
@@ -131,6 +179,15 @@ export default {
 		onSearch() {
 			console.log(this.search)
 		},
+		onDashboard() {
+      this.$inertia.get(route('dashboard'))
+    },
+		onProfile() {
+      this.$inertia.get(route('profile.show'))
+    },
+		onLogout() {
+      this.$inertia.post(route('logout'))
+    },
 		onScroll() {
       if (window.scrollY > 500) {
         this.scrollBtnFlg = true

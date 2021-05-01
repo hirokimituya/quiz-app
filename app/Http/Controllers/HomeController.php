@@ -38,4 +38,33 @@ class HomeController extends Controller
             'sortItem' => $sort_item,
         ]);
     }
+
+    public function dashboard(Request $request) 
+    {
+        $user_id = $request->user()->id;
+        $quizes = Quiz::where('user_id', $user_id)->paginate()->toArray();
+
+        $sort_item = $request->sort ?? 'quiz';
+        $item_list_id = $request->item ?? 'make';
+
+        $items = collect([
+            ['name' => '作成クイズ', 'value' => 'make'],
+            ['name' => 'いいねクイズ', 'value' => 'like'],
+            ['name' => 'コメントクイズ', 'value' => 'comment'],
+            ['name' => 'クイズ成績', 'value' => 'grade'],
+        ]);
+        $item_list_id = $items->search(function($item) use ($item_list_id) {
+            return $item['value'] == $item_list_id;
+        });
+
+        return Inertia::render('Dashboard', [
+            'quizes' => $quizes['data'],
+            'quizCount' => $quizes['total'],
+            'currentPage' => $quizes['current_page'],
+            'perPage' => $quizes['per_page'],
+            'items' => $items,
+            'itemListId' => $item_list_id,
+            'sortItem' => $sort_item,
+        ]);
+    }
 }

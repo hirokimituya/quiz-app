@@ -1,29 +1,175 @@
 <template>
-    <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
-        </template>
+	<app-layout>
+		<v-row>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <welcome />
-                </div>
-            </div>
-        </div>
-    </app-layout>
+			<v-col class="mt-md-5">
+				<v-card style="position: sticky; top: 100px;">
+					<v-card-text>
+						<v-avatar class="mr-3" size="60">
+							<img :src="user.profile_photo_url" :alt="user.name">
+						</v-avatar>
+						{{ user.name }}
+						<v-btn
+							class="mt-4"
+							block
+							color="primary"
+							@click.prevent="onCreate"
+						>
+							クイズ作成
+						</v-btn>
+						<table class="mt-4 mx-auto mx-sm-0">
+							<tr>
+								<th class="text-left pa-2">クイズ作成数：</th>
+								<td class="text-center pa-2">5</td>
+							</tr>
+							<tr>
+								<th class="text-left pa-2">総いいね数：</th>
+								<td class="text-center pa-2">123</td>
+							</tr>
+							<tr>
+								<th class="text-left pa-2">総クイズ回答数:</th>
+								<td class="text-center pa-2">100</td>
+							</tr>
+						</table>
+					
+						<v-divider class="my-4"></v-divider>
+
+						<v-list>
+    				  <v-list-item-group
+    				    v-model="selectedItem"
+    				    color="primary"
+    				    mandatory
+    				  >
+    				    <v-list-item
+    				      v-for="item in items"
+    				      :key="item.name"
+    				    >
+    				    <v-list-item-content>
+    				      <v-list-item-title>
+    				        {{ item.name }}
+    				      </v-list-item-title>
+    				    </v-list-item-content>
+    				    </v-list-item>
+    				  </v-list-item-group>
+    				</v-list>
+					</v-card-text>
+				</v-card>
+			</v-col>
+
+			<v-col cols="12" md="9" order="2" order-md="1">
+
+				<v-row>
+					<v-col cols="12" sm="5" offset-sm="7">
+						<!-- ソートのセレクトボックス -->
+						<sort-item
+							class="mt-5"
+							:actionPath="actionPath"
+							:sortItem="sortItem"
+							:attachedUrlParams="['item']"
+						></sort-item>
+					</v-col>
+				</v-row>
+
+				<v-alert 
+					v-if="!quizes.length"
+  				border="left"
+      		colored-border
+					color="primary"
+					elevation="2"
+				>
+					<div class="ml-3">クイズは存在しません。</div>
+				</v-alert>
+
+				<quiz-info
+					v-for="quiz in quizes"
+					:quiz="quiz"
+					:key="quiz.id"
+				></quiz-info>
+			</v-col>
+		</v-row>
+
+		<!-- ページネーションを表示 -->
+		<pagination
+			v-if="quizes.length"
+			:quizCount="quizCount"
+			:currentPage="currentPage"
+			:perPage="perPage"
+			:actionPath="actionPath"
+			:attachedUrlParams="['sort', 'item']"
+		></pagination>
+
+	</app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
+import AppLayout from '@/Layouts/AppLayout'
+import QuizInfo from '@/Components/QuizInfo'
+import SortItem from '@/Components/SortItem'
+import Pagination from '@/Components/Pagination'
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-        },
+import { getUrlParam } from '@/util'
+
+export default {
+	components: {
+		AppLayout,
+		QuizInfo,
+		SortItem,
+		Pagination,
+	},
+	props: {
+		quizes: {
+			type: Array,
+			required: true,
+		},
+		quizCount: {
+			type: Number,
+			default: 0,
+		},
+		currentPage: {
+			type: Number,
+			default: 1,
+		},
+		perPage: {
+			type:Number,
+			required: true,
+		},
+		items: {
+			type: Array,
+			required: true,
+		},
+		itemListId: {
+      type: Number,
+      required: true,
+    },
+		sortItem: {
+			type: String,
+			required: true,
+		},
+	},
+	data() {
+		return {
+			user: this.$page.props.user,
+			actionPath: 'dashboard',
+			selectedItem: this.itemListId,
+		}
+	},
+	watch: {
+		selectedItem() {
+      let data = {}
+      data.item = this.items[this.selectedItem].value
+
+      let sort = getUrlParam('sort')
+      if (sort !== '') {
+        data.sort = sort
+      }
+
+      this.$inertia.get(route(this.actionPath), data)
     }
+	},
+	methods: {
+		onCreate() {
+			this.$inertia.get(route('quiz.create'))
+		}
+	}
+}
 </script>

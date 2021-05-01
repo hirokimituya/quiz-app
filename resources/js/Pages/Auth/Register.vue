@@ -13,6 +13,7 @@
 
 				<v-form>
           <v-text-field
+						id="name"
 						label="ユーザ名"
 						type="text"
 						required
@@ -22,10 +23,10 @@
 					></v-text-field>
 
 					<v-text-field
+						id="email"
 						label="メールアドレス"
 						type="email"
 						required
-						autocomplete="email"
 						v-model="form.email"
 					></v-text-field>
 

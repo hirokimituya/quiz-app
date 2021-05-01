@@ -5,20 +5,29 @@
 				<div>ジャンル：{{ genreName }}</div>
 			</v-col>
 
+			<!-- ソートのセレクトボックス -->
 			<v-col cols="6" md="4" offset-md="2">
-				<v-select
-					:items="sortItems"
-					v-model="selectSortItem"
-					label="ソート"
-					outlined
-					dense
-				></v-select>
+				<sort-item
+					:actionPath="actionPath"
+					:sortItem="sortItem"
+					:attachedUrlParams="['genre']"
+				></sort-item>
 			</v-col>
 		</v-row>
 		
 		<v-row>
 
 			<v-col cols="12" md="9" order="2" order-md="1">
+				<v-alert 
+					v-if="!quizes.length"
+  				border="left"
+      		colored-border
+					color="primary"
+					elevation="2"
+				>
+					<div class="ml-3">クイズは存在しません。</div>
+				</v-alert>
+				
 				<quiz-info
 					v-for="quiz in quizes"
 					:quiz="quiz"
@@ -63,12 +72,14 @@
 		</v-row>
 
 		<!-- ページネーションを表示 -->
-		<v-pagination
-			v-model="page"
-      class="mb-8"
-      :length="pageCount"
-      :total-visible="10"
-		></v-pagination>
+		<pagination
+			v-if="quizes.length"
+			:quizCount="quizCount"
+			:currentPage="currentPage"
+			:perPage="perPage"
+			:actionPath="actionPath"
+			:attachedUrlParams="['genre', 'sort']"
+		></pagination>
 
 	</app-layout>
 </template>
@@ -77,14 +88,16 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizInfo from '@/Components/QuizInfo'
 import GenreNav from '@/Components/GenreNav'
-
-import { getUrlParam } from '@/util'
+import SortItem from '@/Components/SortItem'
+import Pagination from '@/Components/Pagination'
 
 export default {
 	components: {
 		AppLayout,
 		QuizInfo,
 		GenreNav,
+		SortItem,
+		Pagination,
 	},
 	props: {
 		quizes: {
@@ -119,22 +132,13 @@ export default {
 	data() {
 		return {
 			DispGenreListPC: false,
-			sortItems: [
-				{ value: 'quiz', text: 'クイズ回答回数順' },
-				{ value: 'like', text: 'いいね数順' },
-				{ value: 'comment', text: 'コメント数順'},
-			],
-			selectSortItem: this.sortItem,
-			page: this.currentPage,
+			actionPath: 'home',
 		}
 	},
 	computed: {
 		genreName() {
 			return this.genres[this.genreListId].name
 		},
-		pageCount() {
-			return Math.ceil(this.quizCount / this.perPage)
-		}
 	},
 	methods: {
 		onResize() {
@@ -146,36 +150,5 @@ export default {
 			}
 		}
 	},
-	watch: {
-		selectSortItem() {
-			let data = {}
-
-			let genre = getUrlParam('genre')
-			if (genre !== '') {
-				data.genre = genre
-			}
-
-			data.sort = this.selectSortItem
-
-			this.$inertia.get(route('home'), data);
-		},
-		page() {
-			let data = {}
-
-			let genre = getUrlParam('genre')
-			if (genre !== '') {
-				data.genre = genre
-			}
-
-			let sort = getUrlParam('sort')
-      if (sort !== '') {
-        data.sort = sort
-      }
-
-			data.page = this.page
-
-			this.$inertia.get(route('home'), data);
-		}
-	}
 }
 </script>

@@ -14,10 +14,10 @@
 				<v-form>
 					<v-text-field
 						label="メールアドレス"
+						id="email"
 						type="email"
 						required
 						autofocus
-						autocomplete="email"
 						v-model="form.email"
 					></v-text-field>
 
