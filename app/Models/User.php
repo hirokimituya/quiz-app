@@ -40,6 +40,11 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        // 追加
+        'current_team_id',
+        'profile_photo_path',
+        'created_at',
+        'updated_at',
     ];
 
     /**

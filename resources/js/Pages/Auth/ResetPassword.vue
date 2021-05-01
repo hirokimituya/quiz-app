@@ -1,8 +1,8 @@
 <template>
   <app-layout>
-		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-md-10 pb-6">
 			<v-card-title
-				class="blue--text text-h5 d-block text-center"
+				class="primary--text text-h5 d-block text-center"
 			>
 				パスワードリセット
 			</v-card-title>
@@ -40,8 +40,9 @@
 					<v-btn 
 						type="submit"
 						block
-						color="blue darken-3"
+						color="primary darken-2"
 						class="white--text mb-5 mt-5"
+						:disabled="form.processing"
 						@click.prevent="submit()"
 					>
 						パスワードをリセット

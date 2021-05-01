@@ -2,57 +2,54 @@
   <v-app>
     <v-app-bar 
       app 
-      color="blue"  
+      color="primary"  
       elevate-on-scroll
     >
-      <v-toolbar-title class="white--text font-black">
+      <v-toolbar-title class="white--text text-h5 text-sm-h4">
        <button @click.prevent="onHome()">
          QuizMaker
         </button>
       </v-toolbar-title>
-			
-			<v-spacer class="d-block d-md-none"></v-spacer>
 
-      <v-form 
-				class="mt-6 ml-7 d-none d-md-block"
+			<!-- ブレークポイントmd以上なら検索フォームをヘッダーに表示 -->
+			<portal 
+				class="mt-6 ml-7"
+				to="searchPlace"
+				v-resize="onResize" 
+				:disabled="DispSearchPC"
 			>
-				<v-row no-gutters>
-					<v-col cols="11">
-        		<v-text-field
-							class="inline rounded-0"
-        		  label="キーワードを入力"
-        		 	single-line
-							dense
-							solo
-							type="search"
-							v-model="search"
-        		></v-text-field>
-					</v-col>
-					<v-col cols="1">
-        		<v-btn
-							class="orange rounded-0"
-							height='38px'
-							@click.prevent="onSearch()"
-						>
-							<v-icon>{{ mdiMagnify }}</v-icon>
-						</v-btn>
-					</v-col>
-				</v-row>
-      </v-form>
+				<v-form>
+					<v-row no-gutters>
+						<v-col cols="10" md="11">
+        			<v-text-field
+								class="inline rounded-0"
+        			  label="キーワードを入力"
+        			 	single-line
+								dense
+								solo
+								type="search"
+								v-model="search"
+        			></v-text-field>
+						</v-col>
+						<v-col cols="1">
+        			<v-btn
+								type="submit"
+								class="orange rounded-0"
+								height='38px'
+								@click.prevent="onSearch()"
+							>
+								<v-icon>{{ mdiMagnify }}</v-icon>
+							</v-btn>
+						</v-col>
+					</v-row>
+				</v-form>
+			</portal>
 
-			<v-btn 
-				icon 
-				class="d-block d-md-none"
-				@click="dispSearch = !dispSearch"
-			>
-				<v-icon>{{ mdiMagnify }}</v-icon>
-			</v-btn>
-
-     <v-spacer class="d-none d-md-block"></v-spacer>
+     <v-spacer></v-spacer>
      
      <v-btn 
        class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
-       color="blue darken-3" 
+       color="primary darken-2" 
        elevation="0" 
        @click.prevent="onRegister()"
      >
@@ -60,7 +57,7 @@
      </v-btn>
      <v-btn 
        class="white--text px-1 px-md-6 py-7 py-md-8 rounded-0" 
-       color="blue" 
+       color="primary" 
        elevation="0" 
        @click.prevent="onLogin()"
      >
@@ -68,41 +65,37 @@
      </v-btn>
     </v-app-bar>
 
-		<v-form 
-				class="mt-16 mx-2 mb-n16"
-				v-show="dispSearch"
-		>
-			<v-row no-gutters>
-				<v-col cols="10">
-      		<v-text-field
-						class="inline rounded-0"
-      		  label="キーワードを入力"
-      		 	single-line
-						dense
-						solo
-						type="search"
-						v-model="search"
-      		></v-text-field>
-				</v-col>
-				<v-col cols="1">
-      		<v-btn
-						class="orange rounded-0"
-						height='38px'
-						@click.prevent="onSearch()"
-					>
-						<v-icon>{{ mdiMagnify }}</v-icon>
-					</v-btn>
-				</v-col>
-			</v-row>
-    </v-form>
+		<v-main>
+			<v-container style="max-width: 1100px;" class="mx-auto">
+				<!-- ブレークポイントmd未満なら検索フォームをヘッダーの下に表示 -->
+				<portal-target 
+					class="mx-2"
+					name="searchPlace"
+				></portal-target>
 
-    <v-main>
-      <v-container>
         <slot></slot>
+
+				<!-- 上に戻るボタン -->
+        <v-fab-transition>
+          <v-btn
+						v-scroll="onScroll"
+            v-show="scrollBtnFlg"
+            fab
+            large
+            fixed
+            right
+            bottom
+            color="primary"
+            @click="$vuetify.goTo(0)"
+          >
+            <v-icon>{{ mdiChevronUp }}</v-icon>
+          </v-btn>
+        </v-fab-transition>
+
       </v-container>
     </v-main>
 
-		<v-footer padless color="grey darken-1">
+		<v-footer padless color="secondary">
   	  <v-col
   	    class="text-center white--text"
   	    cols="12"
@@ -114,14 +107,15 @@
 </template>
 
 <script>
-import {mdiMagnify} from '@mdi/js'
+import { mdiMagnify, mdiChevronUp } from '@mdi/js'
 
 export default {
   data() {
     return {
-      mdiMagnify,
+      mdiMagnify, mdiChevronUp,
 			search: '',
-			dispSearch: false,
+			DispSearchPC: false,
+			scrollBtnFlg: false,
     }
   },
   methods: {
@@ -136,6 +130,22 @@ export default {
     },
 		onSearch() {
 			console.log(this.search)
+		},
+		onScroll() {
+      if (window.scrollY > 500) {
+        this.scrollBtnFlg = true
+      }
+      else {
+        this.scrollBtnFlg = false
+      }
+    },
+		onResize() {
+			if (window.innerWidth < this.$vuetify.breakpoint.thresholds.sm){
+				this.DispSearchPC = false
+			}
+			else {
+				this.DispSearchPC = true
+			}
 		}
   }
 }

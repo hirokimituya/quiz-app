@@ -6,9 +6,11 @@ import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-v
 import vuetify from '@/vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import { InertiaProgress } from '@inertiajs/progress';
+import PortalVue from 'portal-vue';
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaPlugin);
+Vue.use(PortalVue);
 
 const el = document.getElementById('app');
 

@@ -1,6 +1,6 @@
 <template>
 	<app-layout>
-		<v-card max-width="550" class="mx-auto px-sm-16 mt-10 pb-6">
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-md-10 pb-6">
 			<v-card-text class="">
 
 				<v-alert
@@ -34,8 +34,9 @@
 					<v-btn 
 						type="submit"
 						block
-						color="blue darken-3"
+						color="primary darken-2"
 						class="white--text mb-5"
+						:disabled="form.processing"
 						@click.prevent="submit()"
 					>
 						パスワード再発行リンクを送信する
