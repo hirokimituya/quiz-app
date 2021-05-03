@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +19,10 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    
+    Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
+});
 
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

@@ -4,7 +4,7 @@
 			<v-card-title
 				class="primary--text text-h5 d-block text-center"
 			>
-				クイズメーカーにログイン
+				新規ユーザ登録
 			</v-card-title>
 
 			<v-card-text>
@@ -32,7 +32,9 @@
 
 					<v-text-field
 						label="パスワード"
-						type="password"
+						:append-icon="showPassword1 ? mdiEye : mdiEyeOff"
+						:type="showPassword1 ? 'text' : 'password'"
+						@click:append="showPassword1 = !showPassword1"
 						required 
 						autocomplete="new-password"
 						v-model="form.password"
@@ -40,7 +42,9 @@
 
           <v-text-field
 						label="パスワード（確認用）"
-						type="password"
+						:append-icon="showPassword2 ? mdiEye : mdiEyeOff"
+						:type="showPassword2 ? 'text' : 'password'"
+						@click:append="showPassword2 = !showPassword2"
 						required 
 						autocomplete="new-password"
 						v-model="form.password_confirmation"
@@ -67,6 +71,8 @@
 import AppLayout from '@/Layouts/AppLayout'
 import AlertValidation from '@/Components/AlertValidation'
 
+import { mdiEye, mdiEyeOff } from '@mdi/js'
+
 export default {
 	components: {
 		AppLayout,
@@ -74,13 +80,16 @@ export default {
 	},
 	data() {
 		return {
+			mdiEye, mdiEyeOff,
 			form: this.$inertia.form({
 				name: '',
 				email: '',
 				password: '',
 				password_confirmation: '',
 				terms: false,
-			})
+			}),
+			showPassword1: false,
+			showPassword2: false,
 		}
 	},
 	methods: {

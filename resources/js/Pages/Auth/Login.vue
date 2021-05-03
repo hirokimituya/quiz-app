@@ -23,7 +23,9 @@
 
 					<v-text-field
 						label="パスワード"
-						type="password"
+						:append-icon="showPassword ? mdiEye : mdiEyeOff"
+						:type="showPassword ? 'text' : 'password'"
+						@click:append="showPassword = !showPassword"
 						required 
 						autocomplete="current-password"
 						v-model="form.password"
@@ -65,6 +67,8 @@
 import AppLayout from '@/Layouts/AppLayout'
 import AlertValidation from '@/Components/AlertValidation'
 
+import { mdiEye, mdiEyeOff } from '@mdi/js'
+
 export default {
 	components: {
 		AppLayout,
@@ -76,11 +80,13 @@ export default {
 	},
 	data() {
 		return {
+			mdiEye, mdiEyeOff,
 			form: this.$inertia.form({
 				email: '',
 				password: '',
 				remember: false
-			})
+			}),
+			showPassword: false,
 		}
 	},
 	methods: {
