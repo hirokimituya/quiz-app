@@ -16,6 +16,8 @@
 								<v-textarea
 									solo
 									dense
+									:counter="255"
+									:rules="[v => !!v && v.length <= 255]"
 									required
 									rows="3"
 									v-model="emitData.question"
@@ -25,16 +27,16 @@
 						</v-col>
 					</v-row>
 					<!-- バリデーションエラー表示 -->
-					<v-row v-if="errors.question" no-gutters>
+					<v-row v-if="getError('question')" no-gutters>
 						<v-col offset-md="2">
 							<v-alert 
 								color="error"
 								border="left"
 								dense
-								class="mt-n2 white--text mx-3"
+								class="mt-1 white--text mx-3"
 								elevation="2"
 							>
-								{{ errors.question }}
+								{{ getError('question') }}
 							</v-alert>
 						</v-col>
 					</v-row>
@@ -57,7 +59,7 @@
 						</v-col>
 					</v-row>
 					<!-- バリデーションエラー表示 -->
-					<v-row v-if="errors.answerFormmat" no-gutters>
+					<v-row v-if="getError('answerFormmat')" no-gutters>
 						<v-col offset-md="2">
 							<v-alert 
 								color="error"
@@ -66,7 +68,7 @@
 								class="mt-n2 white--text mx-3"
 								elevation="2"
 							>
-								{{ errors.answerFormmat }}
+								{{ getError('answerFormmat') }}
 							</v-alert>
 						</v-col>
 					</v-row>
@@ -83,12 +85,12 @@
 										solo
 										dense
 										required
-										rows="2"
+										rows="1"
 										v-model="emitData.answerText"
 										@change="onChange"
 									></v-textarea>
 									<!-- バリデーションエラー表示 -->
-									<div v-if="errors.answerText" class="ml-n16 ml-md-0">
+									<div v-if="getError('answerText')" class="ml-n16 ml-md-0">
 										<v-alert 
 											color="error"
 											border="left"
@@ -96,7 +98,7 @@
 											class="white--text mt-n5 ml-n5 ml-md-0"
 											elevation="2"
 										>
-											{{ errors.answerText }}
+											{{ getError('answerText') }}
 										</v-alert>
 									</div>
 								</div>
@@ -110,9 +112,10 @@
 												outlined
 												dense
 												v-model="emitData.selectItemsNum"
+												type="number"
 											></v-select>
 											<!-- バリデーションエラー表示 -->
-											<div v-if="errors.selectItemsNum" class="ml-n16 ml-md-0 mr-md-n16">
+											<div v-if="getError('selectItemsNum')" class="ml-n16 ml-md-0 mr-md-n16">
 												<v-alert 
 													color="error"
 													border="left"
@@ -120,7 +123,7 @@
 													class="white--text mt-n5 ml-n5 ml-md-0 mr-md-n16"
 													elevation="2"
 												>
-													{{ errors.selectItemsNum }}
+													{{ getError('selectItemsNum') }}
 												</v-alert>
 											</div>
 										</v-col>
@@ -142,17 +145,18 @@
 																></v-radio>
 															</v-col>
 															<v-col sm="8">
-																<v-text-field
+																<v-textarea
 																	solo
 																	dense
 																	required
-																	v-model="emitData.selectItemText[n]"
-																></v-text-field>
+																	rows="1"
+																	v-model="emitData.selectItemText[num2eng(n)]"
+																></v-textarea>
 															</v-col>
 														</v-row>
 														<!-- バリデーションエラー表示 -->
 														<v-row 
-															v-if="selectItemTextErrors(n)" 
+															v-if="getSelectItemTextErrors(num2eng(n))" 
 															no-gutters 
 															align-content="center" 
 															class="mt-n5 ml-n14 ml-md-0"
@@ -165,7 +169,7 @@
 																	class="white--text"
 																	elevation="2"
 																>
-																	{{ selectItemTextErrors(n) }}
+																	{{ getSelectItemTextErrors(num2eng(n)) }}
 																</v-alert>
 															</v-col>
 														</v-row>
@@ -173,7 +177,7 @@
 												</v-radio-group>
 												<!-- バリデーションエラー表示 -->
 												<v-row 
-													v-if="errors.answerRadio" 
+													v-if="getError('answerRadio')" 
 													no-gutters 
 													align-content="center" 
 													class="mt-n5 ml-n16">
@@ -185,7 +189,7 @@
 															class="white--text ml-n5"
 															elevation="2"
 														>
-															{{ errors.answerRadio }}
+															{{ getError('answerRadio') }}
 														</v-alert>
 													</v-col>
 												</v-row>
@@ -204,18 +208,19 @@
 															></v-checkbox>
 														</v-col>
 														<v-col sm="8">
-															<v-text-field
+															<v-textarea
 																class=""
 																solo
 																dense
 																required
-																v-model="emitData.selectItemText[n]"
-															></v-text-field>
+																rows="1"
+																v-model="emitData.selectItemText[num2eng(n)]"
+															></v-textarea>
 														</v-col>
 													</v-row>
 													<!-- バリデーションエラー表示 -->
 													<v-row 
-														v-if="selectItemTextErrors(n)" 
+														v-if="getSelectItemTextErrors(num2eng(n))" 
 														no-gutters 
 														align-content="center" 
 														class="mt-n5 ml-n14 ml-md-0"
@@ -228,14 +233,14 @@
 																class="white--text"
 																elevation="2"
 															>
-																{{ selectItemTextErrors(n) }}
+																{{ getSelectItemTextErrors(num2eng(n)) }}
 															</v-alert>
 														</v-col>
 													</v-row>
 												</div>
 												<!-- バリデーションエラー表示 -->
 												<v-row 
-													v-if="errors.answerCheck" 
+													v-if="getError('answerCheck')" 
 													no-gutters 
 													align-content="center" 
 													class="mt-1 ml-n16">
@@ -247,7 +252,7 @@
 															class="white--text ml-n5"
 															elevation="2"
 														>
-															{{ errors.answerCheck }}
+															{{ getError('answerCheck') }}
 														</v-alert>
 													</v-col>
 												</v-row>
@@ -267,6 +272,8 @@
 </template>
 
 <script>
+import { num2eng } from '@/util'
+
 export default {
 	props: {
 		value: {
@@ -277,37 +284,28 @@ export default {
 			type: Number,
 			required: true,
 		},
-		errors: {
-			type: Object,
-			default() {
-				return {
-					question: null,
-					answerFormmat: null,
-					answerText: null,
-					answerRadio: null,
-					answerCheck: null,
-					selectItemsNum: null,
-					selectItemText: null,
-				}
-			},
-		}
 	},
 	data() {
 		return {
 			emitData: {
-				question: this.value.question,
+				question: this.value.question || null,
 				answerFormmat: this.value.answerFormmat || 1,
-				answerText: this.value.answerText,
+				answerText: this.value.answerText || null,
 				answerRadio: this.value.answerRadio || 1,
 				answerCheck: this.value.answerCheck || [1],
 				selectItemsNum: this.value.selectItemsNum || 2,
-				selectItemText: this.value.selectItemText || {1:'',2:'',3:'',4:''},
+				selectItemText: this.value.selectItemText || {one:'', two:'', three:'', four:''},
 			},
 			answerFormmatItems: [
 				{ text: '記述式', value: 1 },
 				{ text: '単一選択', value: 2 },
 				{ text: '複数選択', value: 3 },
 			],
+		}
+	},
+	computed: {
+		errors() {
+			return this.$page.props.errors
 		}
 	},
 	methods: {
@@ -317,15 +315,33 @@ export default {
 		selectItemsCount(i) {
 			return [...Array(i - 1)].map((_, i) => i + 2)
 		},
-		selectItemTextErrors(num) {
-      let ret;
-      try {
-        ret = this.errors.selectItemText[num]
-      } catch (err) {
-        ret = null
-      }
-      return ret;
-    }
+    num2eng(num) {
+      return num2eng(num)
+    },
+		getError(str) {
+			return this.errors['question.' + num2eng(this.num) + '.' + str]
+		},
+		getSelectItemTextErrors(num) {
+      return this.errors['question.' + num2eng(this.num) + '.selectItemText.' + num]
+    },
+	},
+	watch: {
+		'emitData.selectItemsNum': {
+      handler() {
+				// 選択肢テキストが存在しなければ復元
+        for (let i = 1; i <= this.emitData.selectItemsNum; i++) {
+					if (!this.emitData.selectItemText[num2eng(i)]) {
+						this.emitData.selectItemText[num2eng(i)] = ''
+					}
+				}
+
+				// 非表示のチェックボックスのチェックを外す
+				this.emitData.answerCheck = this.emitData.answerCheck.filter(i => {
+					return i <= this.emitData.selectItemsNum
+				});
+      },
+      immediate: true,
+    },
 	},
 }
 </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use App\Http\Requests\QuizCreateRequest;
 
 class QuizController extends Controller
 {
@@ -14,6 +15,13 @@ class QuizController extends Controller
 
         return Inertia::render('Quiz/CreateForm', [
             'genres' => $genres,
+        ]);
+    }
+
+    public function showCreateConfirm(QuizCreateRequest $request)
+    {
+        return Inertia::render('Quiz/CreateConfirm', [
+            'formData' => $request->all(),
         ]);
     }
 }

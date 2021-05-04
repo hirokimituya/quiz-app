@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
+
+    Route::post('/quiz/confirm', [QuizController::class, 'showCreateConfirm'])->name('quiz.create.conf');
 });
 
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

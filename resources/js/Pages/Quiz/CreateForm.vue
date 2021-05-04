@@ -64,15 +64,19 @@
           <tr>
             <th width="80px"><div class="mt-n6">ジャンル</div></th>
             <td>
-              <v-select
-                :items="genres"
-		            v-model="form.genre"
-		            outlined
-		            dense
-                item-text="name"
-                item-value="id"
-              >
-              </v-select>
+              <v-row>
+                <v-col md="6">
+                  <v-select
+                    :items="genres"
+		                v-model="form.genre"
+		                outlined
+		                dense
+                    item-text="name"
+                    item-value="id"
+                  >
+                  </v-select>
+                </v-col>
+              </v-row>
             </td>
           </tr>
           <!-- バリデーションエラー表示 -->
@@ -126,6 +130,7 @@
               dense
               v-model="questionNum"
               label="問題数"
+              type="number"
             ></v-select>
           </v-col>
         </v-row>
@@ -133,8 +138,7 @@
         <quiz-item
           v-for="num in questionNum"
           :key="num"
-          v-model="form.question[num]"
-          :errors="questionErrors(num)"
+          v-model="form.question[num2eng(num)]"
           :num="num"
         ></quiz-item>
 
@@ -161,6 +165,8 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizItem from '@/Components/QuizItem'
 
+import { num2eng, eng2num } from '@/util'
+
 export default {
   components: { 
     AppLayout,
@@ -179,7 +185,7 @@ export default {
         description: '',
         genre: '',
         image: [],
-        question: {1:{},2:{},3:{},4:{},5:{},6:{},7:{},8:{},9:{},10:{}},
+        question: {one:{},two:{},three:{},four:{},five:{},six:{},seven:{},eight:{},nine:{},ten:{}},
       }),
       questionNum: 1,
     }
@@ -189,24 +195,55 @@ export default {
       return [...Array(i)].map((_, i) => i + 1)
     },
     onSubmit() {
+      const questionData = {};
+      Object.keys(this.form.question).forEach(key => {
+        if (eng2num(key) <= this.questionNum) {
+          questionData[key] = this.form.question[key]
+
+          switch(questionData[key].selectItemsNum) {
+            case 2:
+              delete questionData[key].selectItemText['three']
+            case 3:
+              delete questionData[key].selectItemText['four']
+              break;
+          }
+        }
+      })
+
+      console.log(questionData)
+
       this.form
         .transform(data => ({
           ...data,
-          question: data.question.slice(0, this.questionNum),
+          question: questionData,
         }))
         .post(route('quiz.create.conf'), {
           forceFormData: true,
         })
     },
-    questionErrors(num) {
-      let ret;
-      try {
-        ret = this.form.errors.question[num]
-      } catch (err) {
-        ret = {}
-      }
-      return ret;
-    }
+    num2eng(num) {
+      return num2eng(num)
+    },
+  },
+  watch: {
+    questionNum: {
+      handler() {
+        for (let i = 1; i <= this.questionNum; i++) {
+          if (!Object.keys(this.form.question[num2eng(i)]).length) {
+            this.form.question[num2eng(i)] = {
+              question: null,
+				      answerFormmat: 1,
+				      answerText: null,
+				      answerRadio: 1,
+				      answerCheck: [1],
+				      selectItemsNum: 2,
+				      selectItemText: {one:'', two:'', three:'', four:''},
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
   }
 }
 </script>
