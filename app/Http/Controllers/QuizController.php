@@ -20,8 +20,18 @@ class QuizController extends Controller
 
     public function showCreateConfirm(QuizCreateRequest $request)
     {
+        $genres = Genre::all();
+
+        $request_data = $request->all();
+
+        if ($request->image) {
+            $img_path = $request->file('image')->store('images/tmp', 'public');
+            $request_data['image'] = '/storage/' . $img_path;
+        }
+
         return Inertia::render('Quiz/CreateConfirm', [
-            'formData' => $request->all(),
+            'formData' => $request_data,
+            'genres' => $genres,
         ]);
     }
 }

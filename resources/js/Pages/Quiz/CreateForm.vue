@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title class="text-h4 d-block text-center secondary--text">クイズ作成</v-card-title>
+      <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ作成</v-card-title>
 
       <v-form @submit.prevent="onSubmit">
         <table class="mx-auto mt-3" width="100%">
@@ -135,12 +135,12 @@
           </v-col>
         </v-row>
 
-        <quiz-item
+        <quiz-item-form
           v-for="num in questionNum"
           :key="num"
           v-model="form.question[num2eng(num)]"
           :num="num"
-        ></quiz-item>
+        ></quiz-item-form>
 
         <v-row no-gutters>
           <v-col md="6" offset-md="3">
@@ -163,21 +163,25 @@
 
 <script>
 import AppLayout from '@/Layouts/AppLayout'
-import QuizItem from '@/Components/QuizItem'
+import QuizItemForm from '@/Components/QuizItemForm'
 
 import { num2eng, eng2num } from '@/util'
 
 export default {
   components: { 
     AppLayout,
-    QuizItem,
+    QuizItemForm
   },
   props: {
     genres: {
       type: Array,
       required: true,
-    }
+    },
   },
+  remember: [
+    'form',
+    'questionNum',
+  ],
   data() {
     return {
       form: this.$inertia.form({
@@ -209,8 +213,6 @@ export default {
           }
         }
       })
-
-      console.log(questionData)
 
       this.form
         .transform(data => ({

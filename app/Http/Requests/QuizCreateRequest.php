@@ -35,7 +35,7 @@ class QuizCreateRequest extends FormRequest
             'question.*.answerFormmat' => 'required|between:1,3',
             'question.*.answerText' => 'required_if:question.*.answerFormmat,1|max:255',
             'question.*.answerRadio' => ['required_if:question.*.answerFormmat,2', new AnswerRadioRange],
-            'question.*.answerCheck' => ['required_if:question.*.answerFormmat,3','array', new AnswerCheckCount],
+            'question.*.answerCheck' => ['nullable', 'bail', 'required_if:question.*.answerFormmat,3','array', new AnswerCheckCount],
             'question.*.selectItemsNum' => ['required_if:question.*.answerFormmat,2,3', new selectItemsNumRnage],
             'question.*.selectItemText.*' => 'required_if:question.*.answerFormmat,2,3|max:255',
         ];
