@@ -4,7 +4,7 @@
       <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ作成確認</v-card-title>
 
       <v-form @submit.prevent="onSubmit">
-        <table class="mx-auto mt-3" width="90%">
+        <table class="mx-auto mb-3" width="90%">
           <tr>
             <th width="120px" class="text-left pb-4">タイトル</th>
             <td class="text-h6 pb-4">
@@ -29,7 +29,7 @@
           <tr v-if="form.image">
             <th class="text-left pb-4">画像</th>
             <td>
-              <img :src="form.image" alt='クイズ用画像' width="100px">
+              <img :src="form.image" alt='クイズ用画像' width="200px">
             </td>
           </tr>
         </table>
@@ -123,6 +123,10 @@ export default {
     }
   },
   methods: {
+    onSubmit() {
+      console.log(this.form)
+      this.form.post(route('quiz.create'))
+    },
     back() {
       history.back()
     },
