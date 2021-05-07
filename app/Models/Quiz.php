@@ -10,6 +10,19 @@ class Quiz extends Model
 {
     use HasFactory;
 
+    /**
+     * 複数代入可能な属性
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'genre_id',
+        'title',
+        'description',
+        'filename',
+    ];
+
     /** JSONに含めるアクセサ */
     protected $appends = [
         'url',
@@ -45,6 +58,14 @@ class Quiz extends Model
      */
     public function genre() {
         return $this->belongsTo(Genre::class);
+    }
+
+    /**
+     * リレーションシップ - itemsテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function items() {
+        return $this->hasMany(Item::class);
     }
 
     /**
