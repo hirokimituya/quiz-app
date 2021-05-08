@@ -1,12 +1,18 @@
 <template>
-  <v-card max-width="800" class="mb-5">
+  <v-card 
+    :max-width="maxWidth"
+    class="mb-5 user-select-text"
+    :elevation="elevation"
+    @click.prevent="onClick"
+    :disabled="detail"
+  >
     <v-card-text>
       <v-row no-gutters>
-        <v-col cols="8" sm="7">
-          <v-avatar size="35">
+        <v-col cols="8" sm="7" class="mb-5">
+          <v-avatar :size="avatarSize">
             <img :src="quiz.user.profile_photo_url" :alt="quiz.user.name">
           </v-avatar>
-          {{ quiz.user.name }}
+          <span :class="{ 'text-h6': detail }">{{ quiz.user.name }}</span>
         </v-col>
 
         <v-col cols="8" sm="5" class="text-sm-right">
@@ -25,11 +31,11 @@
         </v-col>
 
         <v-col cols="4" class="mt-n10 mt-sm-0">
-          <v-img :src="quiz.url" width="200"></v-img>
+          <v-img :src="quiz.url" :width="imgWidth"></v-img>
         </v-col>
 
-        <v-col cols="12" sm="8" class="mt-sm-5">
-          <table>
+        <v-col cols="12" sm="8" class="ml-sm-5 mr-sm-n5" align-self="center">
+          <table :class="{ 'text-subtitle-1' : detail }">
             <tr>
               <th width="80px" class="text-left">タイトル</th>
               <td class="pa-1">{{ quiz.title }}</td>
@@ -61,12 +67,41 @@ export default {
     quiz: {
       type: Object,
       required: true,
+    },
+    detail: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {
     return {
       mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart,
+      elevation: undefined,
+      maxWidth: 800,
+      avatarSize: 35,
+      imgWidth: 200,
     }
-  }
+  },
+  mounted() {
+    if (this.detail) {
+      this.elevation = 0
+      this.maxWidth = undefined
+      this.avatarSize = 55
+      this.imgWidth = 300
+    }
+  },
+  methods: {
+    onClick() {
+      this.$inertia.get(route('quiz.detail', {
+        quiz: this.quiz.id,
+      }))
+    }
+  },
 }
 </script>
+
+<style scoped>
+.user-select-text {
+  user-select: text;
+}
+</style>

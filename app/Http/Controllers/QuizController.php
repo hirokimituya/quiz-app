@@ -113,6 +113,8 @@ class QuizController extends Controller
 
     public function detail(Quiz $quiz)
     {
-        return redirect()->route('home');
+        return Inertia::render('Quiz/Detail', [
+            'quiz' => $quiz,
+        ]);
     }
 }

@@ -29,6 +29,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/quiz/create', [QuizController::class, 'create']);
 });
 
-Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->name('quiz.detail');
+Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');
 
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');
