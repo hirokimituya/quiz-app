@@ -32,12 +32,12 @@ class QuizCreateRequest extends FormRequest
             'genre' => 'required|exists:genres,id',
             'image' => 'nullable|file|image|max:1024',
             'question.*.question' => 'required|max:255',
-            'question.*.answerFormmat' => 'required|between:1,3',
-            'question.*.answerText' => 'required_if:question.*.answerFormmat,1|max:255',
-            'question.*.answerRadio' => ['required_if:question.*.answerFormmat,2', new AnswerRadioRange],
-            'question.*.answerCheck' => ['nullable', 'bail', 'required_if:question.*.answerFormmat,3','array', new AnswerCheckCount],
-            'question.*.selectItemsNum' => ['required_if:question.*.answerFormmat,2,3', new selectItemsNumRnage],
-            'question.*.selectItemText.*' => 'required_if:question.*.answerFormmat,2,3|max:255',
+            'question.*.answerFormat' => 'required|between:1,3',
+            'question.*.answerText' => 'required_if:question.*.answerFormat,1|max:255',
+            'question.*.answerRadio' => ['required_if:question.*.answerFormat,2', new AnswerRadioRange],
+            'question.*.answerCheck' => ['nullable', 'bail', 'required_if:question.*.answerFormat,3','array', new AnswerCheckCount],
+            'question.*.selectItemsNum' => ['required_if:question.*.answerFormat,2,3', new selectItemsNumRnage],
+            'question.*.selectItemText.*' => 'required_if:question.*.answerFormat,2,3|max:255',
         ];
     }
 
@@ -54,7 +54,7 @@ class QuizCreateRequest extends FormRequest
             'genre' => 'ジャンル',
             'image' => '画像',
             'question.*.question' => '問題文',
-            'question.*.answerFormmat' => '回答形式',
+            'question.*.answerFormat' => '回答形式',
             'question.*.answerRadio' => '回答',
         ];
     }

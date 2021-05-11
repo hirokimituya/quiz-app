@@ -62,24 +62,24 @@ class QuizController extends Controller
             foreach ($request->question as $key => $question) {
                 $data = [
                     'question_number' => Item::STR_NUM[$key],
-                    'format' => intval($question['answerFormmat']),
+                    'format' => intval($question['answerFormat']),
                     'question' => $question['question'],
                 ];
 
                 switch($data['format']) {
-                    case 1:
+                    case Item::FORMAT_DESCRIPTION:
                         $data['answer'] = $question['answerText'];
                         break;
-                    case 2:
-                        $data['answer'] = Item::NUM_STR[$question['answerRadio']];
+                    case Item::FORMAT_RADIO:
+                        $data['answer'] = Item::NUM_STR[intval($question['answerRadio'])];
 
                         foreach($question['selectItemText'] as $num => $text) {
                             $data['choice' . Item::STR_NUM[$num]] = $text;
                         }
                         break;
-                    case 3:
+                    case Item::FORMAT_CHECK:
                         $answer_chech = array_map(function($item) {
-                            return Item::NUM_STR[$item];
+                            return Item::NUM_STR[intval($item)];
                         }, $question['answerCheck']);
 
                         $data['answer'] = implode(',', $answer_chech);
@@ -115,6 +115,39 @@ class QuizController extends Controller
     {
         return Inertia::render('Quiz/Detail', [
             'quiz' => $quiz,
+        ]);
+    }
+
+    public function answerForm(Quiz $quiz)
+    {
+        $items = Item::where('quiz_id', $quiz->id)->get();
+
+        $items_data = [];
+        foreach ($items as $item) {
+            $key = Item::NUM_STR[$item->question_number];
+            $items_data[$key] = [
+                'question' => $item->question,
+                'answerFormat' => $item->format,
+            ];
+
+            if ($item->format == Item::FORMAT_RADIO || $item->format == Item::FORMAT_CHECK) {
+                $num = 0;
+                $text_ary = [];
+                for ($i = 1; $i <= 4; $i++) {
+                    if (!empty($item['choice' . $i])) {
+                        $num++;
+                        $text_ary[Item::NUM_STR[$i]] = $item['choice' . $i];
+                    }
+                }
+
+                $items_data[$key]['selectItemsNum'] = $num;
+                $items_data[$key]['selectItemText'] = $text_ary;
+            }
+        }
+
+        return Inertia::render('Quiz/AnswerForm', [
+            'quiz' => $quiz,
+            'items' => $items_data,
         ]);
     }
 }

@@ -234,7 +234,7 @@ export default {
           if (!Object.keys(this.form.question[num2eng(i)]).length) {
             this.form.question[num2eng(i)] = {
               question: null,
-				      answerFormmat: 1,
+				      answerFormat: 1,
 				      answerText: null,
 				      answerRadio: 1,
 				      answerCheck: [1],

@@ -25,7 +25,7 @@
 						<v-col>
 							<v-card-text>
 
-								<div v-if="value.answerFormmat == 1">
+								<div v-if="value.answerFormat == 1">
 									<v-textarea
 										solo
 										dense
@@ -37,10 +37,10 @@
 									></v-textarea>
 								</div>
 
-								<div v-if="value.answerFormmat == 2 || value.answerFormmat == 3">
+								<div v-if="value.answerFormat == 2 || value.answerFormat == 3">
 									<v-row no-gutters>
 										<v-col cols="12" class="mt-n5">
-											<div v-if="value.answerFormmat == 2">
+											<div v-if="value.answerFormat == 2">
 												<v-radio-group 
 													required 
 													v-model="emitData.answerRadio"
@@ -48,43 +48,36 @@
 													@change="onChange"
 												>
 													<div v-for="n in Number(value.selectItemsNum)" :key="n">
-														<v-row no-gutters align-content="center">
-															<v-col cols="2" sm="1">
-																<v-radio
-																	class="mt-2"
-																	:value="n"
-																	mandatory
-																></v-radio>
-															</v-col>
-															<v-col sm="8">
-																<v-card-text class="text-subtitle-1 mt-n3 ml-n3">
+														<v-radio
+															:value="n"
+															mandatory
+														>
+															<template #label>
+																<v-card-text class="text-subtitle-1">
 																	{{ value.selectItemText[num2eng(n)] }}
 																</v-card-text>
-															</v-col>
-														</v-row>
+															</template>
+														</v-radio>
 													</div>
 												</v-radio-group>
 											</div>
 
-											<div v-if="value.answerFormmat == 3" class="mt-5">
-												<div v-for="n in Number(value.selectItemsNum)" :key="n">
-													<v-row no-gutters align-content="center">
-														<v-col cols="2" sm="1">
-															<v-checkbox
-																v-model="answerCheckPerseInte"
-																hide-details
-																multiple
-																:value='n'
-																:disabled="disabled"
-																class="shrink mr-4 mt-1"
-															></v-checkbox>
-														</v-col>
-														<v-col sm="8">
-															<v-card-text class="text-subtitle-1 mt-n3 ml-n3">
+											<div v-if="value.answerFormat == 3" class="mt-5">
+												<div v-for="n in Number(value.selectItemsNum)" :key="n" class="mt-n4">
+													<v-checkbox
+														v-model="emitData.answerCheck"
+														hide-details
+														multiple
+														:value='n'
+														:disabled="disabled"
+														@change="onChange"
+													>
+														<template #label>
+															<v-card-text class="text-subtitle-1">
 																{{ value.selectItemText[num2eng(n)] }}
 															</v-card-text>
-														</v-col>
-													</v-row>
+														</template>
+													</v-checkbox>
 												</div>
 											</div>
 										</v-col>
@@ -122,20 +115,26 @@ export default {
 	data() {
 		return {
 			emitData: {
+				question: this.value.question || null,
+				answerFormat: this.value.answerFormat || null,
 				answerText: this.value.answerText || null,
 				answerRadio: Number(this.value.answerRadio) || null,
 				answerCheck: this.value.answerCheck || null,
+				selectItemText: this.value.selectItemText || null,
+				selectItemsNum: this.value.selectItemsNum || null,
 			},
-		}
-	},
-	computed: {
-		answerCheckPerseInte() {
-			return this.emitData.answerCheck.map(str => parseInt(str, 10))
 		}
 	},
 	methods: {
 		onChange() {
-			this.$emit('input', this.emitData)
+			let datas = this.emitData
+			for (let key in datas) {
+				if (datas[key] === null) {
+					delete datas[key]
+				}
+			}
+
+			this.$emit('input', datas)
 		},
     num2eng(num) {
       return num2eng(num)

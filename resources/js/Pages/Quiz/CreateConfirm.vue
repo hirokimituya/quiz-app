@@ -124,7 +124,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.form)
       this.form.post(route('quiz.create'))
     },
     back() {

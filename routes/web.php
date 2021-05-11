@@ -31,4 +31,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');
 
+Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where('quiz', '[0-9]*')->name('quiz.answer');
+
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

@@ -49,17 +49,17 @@
 							<v-card-text>
 								<v-select
 									solo
-									:items="answerFormmatItems"
+									:items="answerFormatItems"
 									dense
 									required
-									v-model="emitData.answerFormmat"
+									v-model="emitData.answerFormat"
 									@change="onChange"
 								></v-select>
 							</v-card-text>
 						</v-col>
 					</v-row>
 					<!-- バリデーションエラー表示 -->
-					<v-row v-if="getError('answerFormmat')" no-gutters>
+					<v-row v-if="getError('answerFormat')" no-gutters>
 						<v-col offset-md="2">
 							<v-alert 
 								color="error"
@@ -68,7 +68,7 @@
 								class="mt-n2 white--text mx-3"
 								elevation="2"
 							>
-								{{ getError('answerFormmat') }}
+								{{ getError('answerFormat') }}
 							</v-alert>
 						</v-col>
 					</v-row>
@@ -80,7 +80,7 @@
 						<v-col>
 							<v-card-text>
 
-								<div v-if="emitData.answerFormmat == 1">
+								<div v-if="emitData.answerFormat == 1">
 									<v-textarea
 										solo
 										dense
@@ -103,7 +103,7 @@
 									</div>
 								</div>
 
-								<div v-if="emitData.answerFormmat == 2 || emitData.answerFormmat == 3">
+								<div v-if="emitData.answerFormat == 2 || emitData.answerFormat == 3">
 									<v-row no-gutters>
 										<v-col cols="12" sm="4">
 											<v-select
@@ -129,7 +129,7 @@
 										</v-col>
 
 										<v-col cols="12" class="mt-n5">
-											<div v-if="emitData.answerFormmat == 2">
+											<div v-if="emitData.answerFormat == 2">
 												<v-radio-group 
 													required 
 													v-model="emitData.answerRadio"
@@ -195,7 +195,7 @@
 												</v-row>
 											</div>
 
-											<div v-if="emitData.answerFormmat == 3" class="mt-5">
+											<div v-if="emitData.answerFormat == 3" class="mt-5">
 												<div v-for="n in emitData.selectItemsNum" :key="n">
 													<v-row no-gutters align-content="center">
 														<v-col cols="2" sm="1">
@@ -205,6 +205,7 @@
 																multiple
 																:value='n'
 																class="shrink mr-4 mt-1"
+																@change="onChange"
 															></v-checkbox>
 														</v-col>
 														<v-col sm="8">
@@ -289,14 +290,14 @@ export default {
 		return {
 			emitData: {
 				question: this.value.question || null,
-				answerFormmat: this.value.answerFormmat || 1,
+				answerFormat: this.value.answerFormat || 1,
 				answerText: this.value.answerText || null,
 				answerRadio: this.value.answerRadio || 1,
 				answerCheck: this.value.answerCheck || [1],
 				selectItemsNum: this.value.selectItemsNum || 2,
 				selectItemText: this.value.selectItemText || {one:'', two:'', three:'', four:''},
 			},
-			answerFormmatItems: [
+			answerFormatItems: [
 				{ text: '記述式', value: 1 },
 				{ text: '単一選択', value: 2 },
 				{ text: '複数選択', value: 3 },
