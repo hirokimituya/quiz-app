@@ -9,6 +9,7 @@ use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\QuizAnswerRequest;
 use App\Http\Requests\QuizCreateRequest;
 
 class QuizController extends Controller
@@ -148,6 +149,16 @@ class QuizController extends Controller
         return Inertia::render('Quiz/AnswerForm', [
             'quiz' => $quiz,
             'items' => $items_data,
+        ]);
+    }
+
+    public function answerConfirm(Quiz $quiz, QuizAnswerRequest $request) 
+    {
+        $request_data = $request->all();
+
+        return Inertia::render('Quiz/AnswerConfirm', [
+            'quiz' => $quiz,
+            'formData' => $request_data,
         ]);
     }
 }

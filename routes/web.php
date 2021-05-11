@@ -33,4 +33,6 @@ Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0
 
 Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where('quiz', '[0-9]*')->name('quiz.answer');
 
+Route::post('/quiz/{quiz}/answer/confirm', [QuizController::class, 'answerConfirm'])->where('quiz', '[0-9]*')->name('quiz.answer.conf');
+
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

@@ -6,43 +6,43 @@
         :detail="true"
 			></quiz-info>
 
-    <v-form @submit.prevent="onSubmit">
-      <quiz-item
-        v-for="num in questionNum"
-        :key="num"
-        v-model="form.question[num2eng(num)]"
-        :num="num"
-      ></quiz-item>
+      <v-form @submit.prevent="onSubmit">
+        <quiz-item
+          v-for="num in questionNum"
+          :key="num"
+          v-model="form.question[num2eng(num)]"
+          :num="num"
+        ></quiz-item>
 
-      <v-row no-gutters>
-        <v-col md="6" offset-md="3">
-          <v-btn
-            block
-            type="submit"
-            color="primary"
-            class="mt-8"
-            :disabled="form.processing"
-          >
-            回答確認
-          </v-btn>
-        </v-col>
-      </v-row>
+        <v-row no-gutters>
+          <v-col md="6" offset-md="3">
+            <v-btn
+              block
+              type="submit"
+              color="primary"
+              class="mt-8"
+              :disabled="form.processing"
+            >
+              回答確認
+            </v-btn>
+          </v-col>
+        </v-row>
 
-      <v-row no-gutters>
-        <v-col md="6" offset-md="3">
-          <v-btn
-            block
-            type="submit"
-            color="secondary"
-            class="mt-8 mb-12"
-            @click.prevent="back"
-          >
-            クイズ詳細ページに戻る
-          </v-btn>
-        </v-col>
-      </v-row>
+        <v-row no-gutters>
+          <v-col md="6" offset-md="3">
+            <v-btn
+              block
+              type="submit"
+              color="secondary"
+              class="mt-8 mb-12"
+              @click.prevent="back"
+            >
+              クイズ詳細ページに戻る
+            </v-btn>
+          </v-col>
+        </v-row>
 
-    </v-form>
+      </v-form>
 
     </v-card>
   </app-layout>
@@ -71,6 +71,9 @@ export default {
       required: true,
     }
   },
+  remember: [
+    'form',
+  ],
   data() {
     return {
       form: this.$inertia.form({
@@ -85,7 +88,9 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.post(route('quiz.answer.conf'))
+      this.form.post(route('quiz.answer.conf', {
+        quiz: this.quiz.id,
+      }))
     },
     back() {
       history.back()
@@ -94,5 +99,8 @@ export default {
       return num2eng(num)
     }
   },
+  mounted() {
+    this.$vuetify.goTo(0, {duration: 0});
+  }
 }
 </script>
