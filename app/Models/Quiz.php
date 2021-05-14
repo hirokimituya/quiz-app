@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Grade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -66,6 +67,14 @@ class Quiz extends Model
      */
     public function items() {
         return $this->hasMany(Item::class);
+    }
+
+    /**
+     * リレーションシップ - gradesテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function grades() {
+        return $this->hasMany(Grade::class);
     }
 
     /**

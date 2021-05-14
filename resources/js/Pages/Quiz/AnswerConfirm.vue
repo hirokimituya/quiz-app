@@ -85,7 +85,9 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.post(route('quiz.answer'))
+      this.form.post(route('quiz.answer.result', {
+        quiz: this.quiz.id
+      }))
     },
     back() {
       history.back()

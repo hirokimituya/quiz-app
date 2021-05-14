@@ -40,7 +40,7 @@
 								<div v-if="value.answerFormat == 2 || value.answerFormat == 3">
 									<v-row no-gutters>
 										<v-col cols="12" class="mt-n5">
-											<div v-if="value.answerFormat == 2">
+											<div v-if="value.answerFormat == 2" class="mb-n3">
 												<v-radio-group 
 													required 
 													v-model="emitData.answerRadio"

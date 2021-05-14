@@ -6,6 +6,8 @@ use App\Models\Item;
 use App\Models\Quiz;
 use Inertia\Inertia;
 use App\Models\Genre;
+use App\Models\Grade;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -160,5 +162,109 @@ class QuizController extends Controller
             'quiz' => $quiz,
             'formData' => $request_data,
         ]);
+    }
+
+    public function answerResult(Quiz $quiz, Request $request)
+    {
+        $answers = $request->question;
+
+        $corrects = $quiz->items()->get();
+
+        $correct_count_ary = [];
+        
+        // 回答が正解かどうかを判定して$answersに結果を追加していく。
+        foreach ($answers as $key => $answer) {
+            $correct = $corrects->firstWhere('question_number', Item::STR_NUM[$key]);
+
+            switch ($correct->format) {
+                case Item::FORMAT_DESCRIPTION:
+                    $answers[$key]['correct'] = $correct->answer;
+
+                    if (empty($answer['answerText'])) {
+                        $answers[$key]['pass']  = false;
+                        break;
+                    }
+
+                    if($answer['answerText'] == $correct->answer) {
+                        $answers[$key]['pass'] = true;
+                        $correct_count_ary[] = Item::STR_NUM[$key];
+                    }
+                    else {
+                        $answers[$key]['pass']  = false;
+                    }
+                    break;
+                case Item::FORMAT_RADIO:
+                    $correct_num = Item::STR_NUM[$correct->answer];
+                    $answers[$key]['correct'] = $correct['choice' . $correct_num];
+
+                    if (empty($answer['answerRadio'])) {
+                        $answers[$key]['pass']  = false;
+                        break;
+                    }
+
+                    if($answer['answerRadio'] == $correct_num) {
+                        $answers[$key]['pass'] = true;
+                        $correct_count_ary[] = Item::STR_NUM[$key];
+                    }
+                    else {
+                        $answers[$key]['pass']  = false;
+                    }
+                    break;
+                case Item::FORMAT_CHECK:
+                    $correct_num_ary = array_map(function($el) {
+                        return Item::STR_NUM[$el];
+                    }, explode(',', $correct->answer));
+
+                    $correct_ary = [];
+                    foreach ($correct_num_ary as $correct_num) {
+                        $correct_ary[] = $correct['choice' . $correct_num];
+                    }
+
+                    $answers[$key]['correct'] = $correct_ary;
+
+                    if (empty($answer['answerCheck'])) {
+                        $answers[$key]['pass']  = false;
+                        break;
+                    }
+
+                    if($this->array_equal_set($answer['answerCheck'], $correct_num_ary)) {
+                        $answers[$key]['pass'] = true;
+                        $correct_count_ary[] = Item::STR_NUM[$key];
+                    }
+                    else {
+                        $answers[$key]['pass']  = false;
+                    }
+                    break;
+            }
+        }
+
+        // gradesテーブルに回答を登録
+        if (!empty($correct_count_ary)) {
+            $correct_count = implode(',', $correct_count_ary);
+        }
+        else {
+            $correct_count = 0;
+        }
+        
+
+        $grade = new Grade([
+            'user_id' => $request->user()->id,
+            'correct_count' => $correct_count,
+        ]);
+
+        $quiz->grades()->save($grade);
+
+        return Inertia::render('Quiz/AnswerResult', [
+            'quiz' => $quiz,
+            'answers' => $answers,
+            'correct_count' => count($correct_count_ary),
+        ]);
+    }
+
+    private function array_equal_set($a, $b)
+    {
+        $diff_a_to_b = array_diff($a, $b);
+        $diff_b_to_a = array_diff($b, $a);
+        return empty($diff_a_to_b) && empty($diff_b_to_a);
     }
 }

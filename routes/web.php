@@ -35,4 +35,6 @@ Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where(
 
 Route::post('/quiz/{quiz}/answer/confirm', [QuizController::class, 'answerConfirm'])->where('quiz', '[0-9]*')->name('quiz.answer.conf');
 
+Route::post('/quiz/{quiz}/answer/result', [QuizController::class, 'answerResult'])->where('quiz', '[0-9]*')->name('quiz.answer.result');
+
 Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');
