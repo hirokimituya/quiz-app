@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/quiz/confirm', [QuizController::class, 'showCreateConfirm'])->name('quiz.create.conf');
 
     Route::post('/quiz/create', [QuizController::class, 'create']);
+
+    Route::post('/quiz/{quiz}/comments', [QuizController::class, 'addComment'])->name('quiz.comment');
 });
 
 Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');

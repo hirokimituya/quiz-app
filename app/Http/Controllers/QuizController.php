@@ -7,9 +7,11 @@ use App\Models\Quiz;
 use Inertia\Inertia;
 use App\Models\Genre;
 use App\Models\Grade;
+use App\Models\Comment;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreComment;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuizAnswerRequest;
 use App\Http\Requests\QuizCreateRequest;
@@ -116,8 +118,11 @@ class QuizController extends Controller
 
     public function detail(Quiz $quiz)
     {
+        $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();
+
         return Inertia::render('Quiz/Detail', [
             'quiz' => $quiz,
+            'comments' => $comments,
         ]);
     }
 
@@ -266,5 +271,16 @@ class QuizController extends Controller
         $diff_a_to_b = array_diff($a, $b);
         $diff_b_to_a = array_diff($b, $a);
         return empty($diff_a_to_b) && empty($diff_b_to_a);
+    }
+
+    public function addComment(Quiz $quiz, StoreComment $request) {
+        $comment = new Comment();
+        $comment->content = $request->comment;
+        $comment->user_id = $request->user()->id;
+        $quiz->comments()->save($comment);
+
+        return redirect()->route('quiz.detail', [
+            'quiz' => $quiz->id,
+        ]);
     }
 }

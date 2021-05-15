@@ -27,7 +27,9 @@ class Quiz extends Model
     /** JSONに含めるアクセサ */
     protected $appends = [
         'url',
-        'formattedCreatedAt'
+        'formattedCreatedAt',
+        'gradesCount',
+        'commentsCount',
     ];
 
     /** JSONに含めない属性 */
@@ -78,6 +80,14 @@ class Quiz extends Model
     }
 
     /**
+     * リレーションシップ - commentsテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
      * アクセサ - url
      * @return string
      */
@@ -96,5 +106,21 @@ class Quiz extends Model
      */
     public function getFormattedCreatedAtAttribute() {
         return Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['created_at'])->format('Y/m/d');
+    }
+
+    /**
+     * 回答回数
+     * @return int
+     */
+    public function getGradesCountAttribute() {
+        return $this->grades()->count();
+    }
+
+    /**
+     * コメント数
+     * @return int
+     */
+    public function getCommentsCountAttribute() {
+        return $this->comments()->count();
     }
 }

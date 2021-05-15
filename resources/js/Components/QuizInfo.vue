@@ -18,11 +18,11 @@
         <v-col cols="8" sm="5" class="text-sm-right">
           <span class="mr-4">
             <v-icon color="blue">{{ mdiClipboardPlay }}</v-icon>
-            5
+            {{ quiz.gradesCount }}
           </span>
           <span class="mr-1">
             <v-icon color="green">{{ mdiCommentTextMultiple }}</v-icon>
-            5
+            {{ quiz.commentsCount }}
           </span>
           <v-btn class="mr-1 pa-0" text>
             <v-icon color="red">{{ mdiHeart }}</v-icon>
