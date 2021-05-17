@@ -7,7 +7,7 @@
         </v-avatar>
       </v-col>
 
-      <v-col>
+      <v-col  cols="10" sm="11">
         <v-row no-gutters>
           <v-col>
             <span>{{ comment.author.name }}</span>

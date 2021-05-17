@@ -32,17 +32,30 @@
             <v-textarea
               placeholder="コメント入力..."
               v-model="form.comment"
-              count="255"
+              counter="255"
               rows="1"
               @focus.prevent="commentFoucus"
             ></v-textarea>
 
-            <div v-show="commentBtnFlg">
+            <!-- バリデーションエラー表示 -->
+						<div v-if="form.errors.comment" class="ml-n10 ml-md-0">
+							<v-alert 
+								color="error"
+								border="left"
+								dense
+								class="white--text ml-n5 ml-md-0"
+								elevation="2"
+							>
+								{{ form.errors.comment }}
+							</v-alert>
+						</div>
+
+            <div v-show="commentBtnFlg" class="mt-2">
               <div class="text-right">
                 <v-btn
                   color="secondary"
                   :disabled="form.processing"
-                  @click.prevent="form.comment = ''; commentBtnFlg = false;"
+                  @click.prevent="form.comment = ''; commentBtnFlg = false; form.errors.comment = null;"
                 >
                   キャンセル
                 </v-btn>
@@ -117,7 +130,11 @@ export default {
       this.form.post(route('quiz.comment', {
         quiz: this.quiz.id,
       }), {
-				onFinish: () => this.form.reset('comment'),
+				onSuccess: () => {
+          this.form.reset('comment')
+          this.commentBtnFlg = false
+        },
+        preserveScroll: true,
 			})
     },
     commentFoucus() {
