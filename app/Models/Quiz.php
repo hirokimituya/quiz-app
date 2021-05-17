@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Grade;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,6 +31,8 @@ class Quiz extends Model
         'formattedCreatedAt',
         'gradesCount',
         'commentsCount',
+        'likesCount',
+        'likedByUser'
     ];
 
     /** JSONに含めない属性 */
@@ -48,7 +51,7 @@ class Quiz extends Model
     protected $with = ['user', 'genre'];
 
     /**
-     * リレーションシップ - genreテーブル
+     * リレーションシップ - usersテーブル
      * @ return \Illuminate\Database\Eloguent\Relations\BellngsTo
      */
     public function user() {
@@ -56,7 +59,7 @@ class Quiz extends Model
     }
 
     /**
-     * リレーションシップ - genreテーブル
+     * リレーションシップ - genresテーブル
      * @ return \Illuminate\Database\Eloguent\Relations\BellngsTo
      */
     public function genre() {
@@ -81,10 +84,19 @@ class Quiz extends Model
 
     /**
      * リレーションシップ - commentsテーブル
-     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     * @ return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * リレーションシップ - usersテーブル
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
     /**
@@ -122,5 +134,28 @@ class Quiz extends Model
      */
     public function getCommentsCountAttribute() {
         return $this->comments()->count();
+    }
+
+    /**
+     * いいね数
+     */
+    public function getLikesCountAttribute()
+    {
+        return $this->likes()->count();
+    }
+
+    /**
+     * アクセサ -liked_by_user
+     * @return boolean
+     */
+    public function getLikedByUserAttribute()
+    {
+        if (Auth::guest()) {
+            return false;
+        }
+
+        return $this->likes->contains(function($user) {
+            return $user->id === Auth::user()->id;
+        });
     }
 }

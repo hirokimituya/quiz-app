@@ -29,6 +29,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/quiz/create', [QuizController::class, 'create']);
 
     Route::post('/quiz/{quiz}/comments', [QuizController::class, 'addComment'])->name('quiz.comment');
+
+    Route::put('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');
+
+    Route::delete('/quiz/{quiz}/like', [QuizController::class, 'unlike']);
 });
 
 Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');

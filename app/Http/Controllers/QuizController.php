@@ -283,4 +283,19 @@ class QuizController extends Controller
             'quiz' => $quiz->id,
         ]);
     }
+
+    public function like(Quiz $quiz, Request $request)
+    {
+        $quiz->likes()->detach($request->user()->id);
+        $quiz->likes()->attach($request->user()->id);
+
+        return response('');
+    }
+
+    public function unlike(Quiz $quiz, Request $request)
+    {
+        $quiz->likes()->detach($request->user()->id);
+
+        return response('');
+    }
 }

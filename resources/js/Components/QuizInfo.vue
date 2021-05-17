@@ -1,10 +1,9 @@
 <template>
   <v-card 
     :max-width="maxWidth"
-    class="mb-5 user-select-text"
+    class="mb-5"
     :elevation="elevation"
-    @click.prevent="onClick"
-    :disabled="detail"
+    v-on:[eventName]="onClick"
   >
     <v-card-text>
       <v-row no-gutters>
@@ -24,9 +23,13 @@
             <v-icon color="green">{{ mdiCommentTextMultiple }}</v-icon>
             {{ quiz.commentsCount }}
           </span>
-          <v-btn class="mr-1 pa-0" text>
-            <v-icon color="red">{{ mdiHeart }}</v-icon>
-            2
+          <v-btn 
+            class="mr-1 pa-0"
+            text
+            @click.stop.prevent="like"
+          >
+            <v-icon :color="likedByUser ? 'red' : 'grey'">{{ likedByUser ? mdiHeart : mdiHeartOutline }}</v-icon>
+            {{ likesCount }}
           </v-btn>
         </v-col>
 
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import { mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart } from '@mdi/js';
+import { mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline } from '@mdi/js';
 
 export default {
   props: {
@@ -75,11 +78,13 @@ export default {
   },
   data() {
     return {
-      mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart,
+      mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline,
       elevation: undefined,
       maxWidth: 800,
       avatarSize: 35,
       imgWidth: 200,
+      likesCount: this.quiz.likesCount,
+      likedByUser: this.quiz.likedByUser,
     }
   },
   mounted() {
@@ -90,18 +95,38 @@ export default {
       this.imgWidth = 300
     }
   },
+  computed: {
+    eventName() {
+      return this.detail ? null : 'click'
+    }
+  },
   methods: {
     onClick() {
       this.$inertia.get(route('quiz.detail', {
         quiz: this.quiz.id,
       }))
-    }
+    },
+    async like() {
+      if (this.$page.props.user === null) {
+        this.$inertia.get(route('login'))
+      }
+      else if (!this.likedByUser) {
+        const response = await axios.put(route('quiz.like', {
+          quiz: this.quiz.id,
+        }))
+
+        this.likesCount++
+        this.likedByUser = true
+      }
+      else {
+        const response = await axios.delete(route('quiz.like', {
+          quiz: this.quiz.id,
+        }))
+
+        this.likesCount--
+        this.likedByUser = false
+      }
+    },
   },
 }
 </script>
-
-<style scoped>
-.user-select-text {
-  user-select: text;
-}
-</style>

@@ -186,6 +186,7 @@ export default {
       this.$inertia.get(route('profile.show'))
     },
 		onLogout() {
+			this.user = false
       this.$inertia.post(route('logout'))
     },
 		onScroll() {
