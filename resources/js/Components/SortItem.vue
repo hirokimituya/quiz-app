@@ -29,6 +29,7 @@ export default {
   data() {
 		return {
 			sortItems: [
+        { value: 'new', text: '新着順' },
 				{ value: 'quiz', text: 'クイズ回答回数順' },
 				{ value: 'like', text: 'いいね数順' },
 				{ value: 'comment', text: 'コメント数順'},

@@ -42,6 +42,7 @@ class Quiz extends Model
         'filename',
         'created_at',
         'updated_at',
+        'likes',
     ];
 
     /** 1ページあたりのアイテム数 */
@@ -157,5 +158,40 @@ class Quiz extends Model
         return $this->likes->contains(function($user) {
             return $user->id === Auth::user()->id;
         });
+    }
+
+    /**
+     * 引数のソートタイプをもとにソートする
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query, $type)
+    {
+        switch ($type) {
+            case 'quiz':
+                return $this->sortCount($query, 'grades');
+            case 'like':
+                return $this->sortCount($query, 'likes');
+            case 'comment':
+                return $this->sortCount($query, 'comments');
+            default:    /* case 'new': */
+                return $query->latest();
+        }
+    }
+
+    private function sortCount($query, $table)
+    {
+        $count_table = self::selectRaw("quizzes.id, COUNT({$table}.quiz_id) AS count")
+                            ->leftJoin($table, 'quizzes.id', '=', "{$table}.quiz_id")
+                            ->groupBy('quizzes.id');
+
+        return $query
+                    ->leftJoinSub($count_table, 'count_table', function ($join) {
+                        $join->on('quizzes.id', '=', 'count_table.id');
+                    })
+                    ->orderByDesc('count_table.count')
+                    ->orderByDesc('quizzes.created_at');
     }
 }

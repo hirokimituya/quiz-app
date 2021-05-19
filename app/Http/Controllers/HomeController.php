@@ -12,17 +12,17 @@ class HomeController extends Controller
     public function home(Request $request) 
     {
         $genre_id = $request->genre;
-        $sort_item = $request->sort ?? 'quiz';
+        $sort_item = $request->sort ?? 'new';
 
         $genres = Genre::all();
         $genres->prepend(['id' => 0, 'name' => 'すべて']);
 
         if (empty(Genre::find($genre_id))) {
-            $quizes = Quiz::paginate()->toArray();
+            $quizes = Quiz::sort($sort_item)->paginate()->toArray();
             $genre_list_id = 0;
         }
         else {
-            $quizes = Quiz::where('genre_id', $request->genre)->paginate()->toArray();
+            $quizes = Quiz::where('genre_id', $request->genre)->sort($sort_item)->paginate()->toArray();
             $genre_list_id = $genres->search(function($genre) use ($genre_id) {
                 return $genre['id'] == $genre_id;
             });
@@ -42,10 +42,10 @@ class HomeController extends Controller
     public function dashboard(Request $request) 
     {
         $user_id = $request->user()->id;
-        $quizes = Quiz::where('user_id', $user_id)->paginate()->toArray();
-
-        $sort_item = $request->sort ?? 'quiz';
+        $sort_item = $request->sort ?? 'new';
         $item_list_id = $request->item ?? 'make';
+        
+        $quizes = Quiz::where('user_id', $user_id)->sort($sort_item)->paginate()->toArray();
 
         $items = collect([
             ['name' => '作成クイズ', 'value' => 'make'],
