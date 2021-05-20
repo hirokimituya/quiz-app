@@ -43,18 +43,23 @@ class HomeController extends Controller
     {
         $user_id = $request->user()->id;
         $sort_item = $request->sort ?? 'new';
-        $item_list_id = $request->item ?? 'make';
+        $item_list_name = $request->item ?? 'make';
         
-        $quizes = Quiz::where('user_id', $user_id)->sort($sort_item)->paginate()->toArray();
+        $quizes = Quiz::ofType($item_list_name, $sort_item)->sort($sort_item)->paginate()->toArray();
+
+        // ダッシュボードの左側に記載する数を算出
+        $quiz_create_count = Quiz::where('user_id', $user_id)->count();
+        $likes_total_count = Quiz::rightJoin('likes', 'quizzes.id', '=', 'likes.quiz_id')->where('quizzes.user_id', $user_id)->count();
+        $quiz_grades_count = $request->user()->grades()->count();
 
         $items = collect([
             ['name' => '作成クイズ', 'value' => 'make'],
             ['name' => 'いいねクイズ', 'value' => 'like'],
             ['name' => 'コメントクイズ', 'value' => 'comment'],
-            ['name' => 'クイズ成績', 'value' => 'grade'],
+            ['name' => '実施クイズ', 'value' => 'grade'],
         ]);
-        $item_list_id = $items->search(function($item) use ($item_list_id) {
-            return $item['value'] == $item_list_id;
+        $item_list_id = $items->search(function($item) use ($item_list_name) {
+            return $item['value'] == $item_list_name;
         });
 
         return Inertia::render('Dashboard', [
@@ -65,6 +70,9 @@ class HomeController extends Controller
             'items' => $items,
             'itemListId' => $item_list_id,
             'sortItem' => $sort_item,
+            'quiz_create_count' => $quiz_create_count,
+            'likes_total_count' => $likes_total_count,
+            'quiz_grades_count' => $quiz_grades_count,
         ]);
     }
 }

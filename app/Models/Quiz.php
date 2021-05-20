@@ -188,10 +188,58 @@ class Quiz extends Model
                             ->groupBy('quizzes.id');
 
         return $query
+                    ->select('quizzes.*')
                     ->leftJoinSub($count_table, 'count_table', function ($join) {
                         $join->on('quizzes.id', '=', 'count_table.id');
                     })
                     ->orderByDesc('count_table.count')
                     ->orderByDesc('quizzes.created_at');
+    }
+
+    /**
+     * 引数のタイプをもとに表示するクイズを選択する
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfType($query, $type, $sort_item)
+    {
+        switch ($type) {
+            case 'like':
+                return $this->whereOfType($query, 'likes', $sort_item);
+            case 'comment':
+                return $this->whereOfType($query, 'comments', $sort_item);
+            case 'grade':
+                return $this->whereOfType($query, 'grades', $sort_item);
+            default:    /* case 'make': */
+                return $query->where('user_id', Auth::id());
+        }
+    }
+
+    private function whereOfType($query, $table, $sort_item)
+    {
+        if (in_array($sort_item, ['quiz', 'like', 'comment'])) {
+            return $query
+                    ->whereExists(function ($query) use ($table) {
+                        $query
+                            ->selectRaw(1)
+                            ->from($table)
+                            ->whereColumn("{$table}.quiz_id", 'count_table.id')
+                            ->where("{$table}.user_id", Auth::id());
+                    });
+        }
+        else {
+            return $query
+                    ->whereExists(function ($query) use ($table) {
+                        $query
+                            ->selectRaw(1)
+                            ->from($table)
+                            ->whereColumn("{$table}.quiz_id", 'quizzes.id')
+                            ->where("{$table}.user_id", Auth::id());
+                    });
+        }
+
+        
     }
 }

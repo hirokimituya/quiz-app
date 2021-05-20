@@ -20,15 +20,15 @@
 						<table class="mt-4 mx-auto mx-sm-0">
 							<tr>
 								<th class="text-left pa-2">クイズ作成数：</th>
-								<td class="text-center pa-2">5</td>
+								<td class="text-center pa-2">{{ quiz_create_count }}</td>
 							</tr>
 							<tr>
 								<th class="text-left pa-2">総いいね数：</th>
-								<td class="text-center pa-2">123</td>
+								<td class="text-center pa-2">{{ likes_total_count }}</td>
 							</tr>
 							<tr>
 								<th class="text-left pa-2">総クイズ回答数:</th>
-								<td class="text-center pa-2">100</td>
+								<td class="text-center pa-2">{{ quiz_grades_count }}</td>
 							</tr>
 						</table>
 					
@@ -143,6 +143,18 @@ export default {
     },
 		sortItem: {
 			type: String,
+			required: true,
+		},
+		quiz_create_count: {
+			type: Number,
+			required: true,
+		},
+		likes_total_count: {
+			type: Number,
+			required: true,
+		},
+		quiz_grades_count: {
+			type: Number,
 			required: true,
 		},
 	},

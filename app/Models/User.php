@@ -75,4 +75,12 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    /**
+     * リレーションシップ - gradesテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function grades() {
+        return $this->hasMany(Grade::class);
+    }
 }
