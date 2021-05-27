@@ -15,8 +15,8 @@ class CreateGradesTable extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id')->constrained();
-            $table->foreignId('user_id')->constrained()->nullable();
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('correct_count', 100);
             $table->timestamps();
         });

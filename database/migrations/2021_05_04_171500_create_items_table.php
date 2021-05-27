@@ -15,7 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id')->constrained();
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
             $table->smallInteger('question_number');
             $table->smallInteger('format');
             $table->string('question');

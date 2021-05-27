@@ -1,92 +1,162 @@
 <template>
-    <jet-form-section @submitted="updatePassword">
-        <template #title>
-            Update Password
-        </template>
+	<profile-form @submitted="updatePassword">
+		<template #title>
+			パスワード更新
+		</template>
 
-        <template #description>
-            Ensure your account is using a long, random password to stay secure.
-        </template>
+		<template #description>
+			安全を確保するために、アカウントで長いランダムなパスワードを使用していることを確認してください。
+		</template>
 
-        <template #form>
-            <div class="col-span-6 sm:col-span-4">
-                <jet-label for="current_password" value="Current Password" />
-                <jet-input id="current_password" type="password" class="mt-1 block w-full" v-model="form.current_password" ref="current_password" autocomplete="current-password" />
-                <jet-input-error :message="form.errors.current_password" class="mt-2" />
-            </div>
+		<template #form>
+			<!-- Current Password -->
+      <div class="mb-2">
+				<v-row no-gutters>
+					<v-col cols="12" sm="9" md="7">
+          	<v-text-field 
+							id="current_password" 
+							type="password"
+							v-model="form.current_password" 
+							autocomplete="current-password"
+							ref="current_password"
+							label="現在のパスワード"
+							outlined
+							dense
+						></v-text-field>
+					</v-col>
+				
+					<v-col cols="12" sm="9" md="7" class="mt-n4">
+          	<!-- バリデーションエラー表示 -->
+						<div v-if="form.errors.current_password">
+							<v-alert 
+								color="error"
+								border="left"
+								dense
+								class="white--text"
+								elevation="2"
+							>
+								{{ form.errors.current_password }}
+							</v-alert>
+						</div>
+					</v-col>
+				</v-row>
+      </div>
 
-            <div class="col-span-6 sm:col-span-4">
-                <jet-label for="password" value="New Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" ref="password" autocomplete="new-password" />
-                <jet-input-error :message="form.errors.password" class="mt-2" />
-            </div>
+			<!-- New Password -->
+      <div class="mb-2">
+				<v-row no-gutters>
+					<v-col cols="12" sm="9" md="7">
+          	<v-text-field 
+							id="password" 
+							type="password"
+							v-model="form.password" 
+							autocomplete="new-password"
+							ref="password"
+							label="新しいパスワード"
+							outlined
+							dense
+						></v-text-field>
+					</v-col>
+				
+					<v-col cols="12" sm="9" md="7" class="mt-n4">
+          	<!-- バリデーションエラー表示 -->
+						<div v-if="form.errors.password">
+							<v-alert 
+								color="error"
+								border="left"
+								dense
+								class="white--text"
+								elevation="2"
+							>
+								{{ form.errors.password }}
+							</v-alert>
+						</div>
+					</v-col>
+				</v-row>
+      </div>
 
-            <div class="col-span-6 sm:col-span-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
-                <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" autocomplete="new-password" />
-                <jet-input-error :message="form.errors.password_confirmation" class="mt-2" />
-            </div>
-        </template>
+			<!-- Confirm Password -->
+      <div class="mb-2">
+				<v-row no-gutters>
+					<v-col cols="12" sm="9" md="7">
+          	<v-text-field 
+							id="password_confirmation" 
+							type="password"
+							v-model="form.password_confirmation" 
+							autocomplete="new-password"
+							label="新しいパスワード（確認用）"
+							outlined
+							dense
+						></v-text-field>
+					</v-col>
+				
+					<v-col cols="12" sm="9" md="7" class="mt-n4">
+          	<!-- バリデーションエラー表示 -->
+						<div v-if="form.errors.password_confirmation">
+							<v-alert 
+								color="error"
+								border="left"
+								dense
+								class="white--text"
+								elevation="2"
+							>
+								{{ form.errors.password_confirmation }}
+							</v-alert>
+						</div>
+					</v-col>
+				</v-row>
+      </div>
+		</template>
 
-        <template #actions>
-            <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                Saved.
-            </jet-action-message>
+		<template #actions>
+			<span class="text-subtitle-2 mr-2" v-show="form.recentlySuccessful">保存完了</span>
 
-            <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
-            </jet-button>
-        </template>
-    </jet-form-section>
+			<v-btn
+				type="submit"
+				color="black"
+				class="white--text"
+				:disabled="form.processing"
+			>
+				保存
+			</v-btn>
+		</template>
+	</profile-form>
 </template>
 
 <script>
-    import JetActionMessage from '@/Jetstream/ActionMessage'
-    import JetButton from '@/Jetstream/Button'
-    import JetFormSection from '@/Jetstream/FormSection'
-    import JetInput from '@/Jetstream/Input'
-    import JetInputError from '@/Jetstream/InputError'
-    import JetLabel from '@/Jetstream/Label'
+import ProfileForm from '@/Components/ProfileForm'
 
-    export default {
-        components: {
-            JetActionMessage,
-            JetButton,
-            JetFormSection,
-            JetInput,
-            JetInputError,
-            JetLabel,
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    current_password: '',
-                    password: '',
-                    password_confirmation: '',
-                }),
-            }
-        },
-
-        methods: {
-            updatePassword() {
-                this.form.put(route('user-password.update'), {
-                    errorBag: 'updatePassword',
-                    preserveScroll: true,
-                    onSuccess: () => this.form.reset(),
-                    onError: () => {
-                        if (this.form.errors.password) {
-                            this.form.reset('password', 'password_confirmation')
-                            this.$refs.password.focus()
-                        }
-
-                        if (this.form.errors.current_password) {
-                            this.form.reset('current_password')
-                            this.$refs.current_password.focus()
-                        }
-                    }
-                })
-            },
-        },
-    }
+export default {
+	components: {
+		ProfileForm,
+	},
+	data() {
+		return {
+			form: this.$inertia.form({
+				current_password: '',
+				password: '',
+				password_confirmation: '',
+			}),
+		}
+	},
+	methods: {
+		updatePassword() {
+			this.form.put(route('user-password.update'), {
+				errorBag: 'updatePassword',
+				preserveScroll: true,
+				onSuccess: () => this.form.reset(),
+				onError: () => {
+					if (this.form.errors.password) {
+						this.form.reset('password', 'password_confirmation')
+						this.$refs.password.focus()
+					}
+					if (this.form.errors.current_password) {
+						this.form.reset('current_password')
+						this.$refs.current_password.focus()
+					}
+				}
+			})
+		},
+	},
+}
 </script>

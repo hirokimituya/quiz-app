@@ -15,8 +15,8 @@ class CreateQuizzesTable extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->default(0)->constrained()->onDelete('set default');
-            $table->foreignId('genre_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('genre_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title', 100);
             $table->string('description')->nullable();
             $table->string('filename')->nullable();

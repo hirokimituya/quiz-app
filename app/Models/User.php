@@ -42,7 +42,6 @@ class User extends Authenticatable
         'two_factor_secret',
         // 追加
         'current_team_id',
-        'profile_photo_path',
         'created_at',
         'updated_at',
     ];
