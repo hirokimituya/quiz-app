@@ -239,7 +239,18 @@ class Quiz extends Model
                             ->where("{$table}.user_id", Auth::id());
                     });
         }
+    }
 
-        
+    /**
+     * 引数の値をもとにtitleとdescriptionから検索する
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search_query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchWith($query, $search_query)
+    {
+        return $query->where('title', 'like', $search_query)
+                        ->orWhere('description', 'like', $search_query);
     }
 }

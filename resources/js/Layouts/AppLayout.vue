@@ -155,6 +155,7 @@
 
 <script>
 import { mdiMagnify, mdiChevronUp } from '@mdi/js'
+import { getUrlParam } from '@/util'
 
 export default {
   data() {
@@ -166,6 +167,9 @@ export default {
 			user: this.$page.props.user,
     }
   },
+	mounted() {
+		this.search = getUrlParam('q')
+	},
   methods: {
     onHome() {
       this.$inertia.get(route('home'))
@@ -177,7 +181,15 @@ export default {
       this.$inertia.get(route('login'))
     },
 		onSearch() {
-			console.log(this.search)
+			let data = {}
+			data.q = this.search
+
+			let sort = getUrlParam('sort')
+			if (sort !== '') {
+				data.sort = sort
+			}
+
+			this.$inertia.get(route('home'), data)
 		},
 		onDashboard() {
       this.$inertia.get(route('dashboard'))

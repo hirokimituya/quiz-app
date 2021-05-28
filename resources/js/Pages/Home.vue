@@ -10,7 +10,7 @@
 				<sort-item
 					:actionPath="actionPath"
 					:sortItem="sortItem"
-					:attachedUrlParams="['genre']"
+					:attachedUrlParams="['genre', 'q']"
 				></sort-item>
 			</v-col>
 		</v-row>
@@ -78,7 +78,7 @@
 			:currentPage="currentPage"
 			:perPage="perPage"
 			:actionPath="actionPath"
-			:attachedUrlParams="['genre', 'sort']"
+			:attachedUrlParams="['genre', 'q', 'sort']"
 		></pagination>
 
 	</app-layout>

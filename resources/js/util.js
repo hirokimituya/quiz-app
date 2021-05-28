@@ -17,7 +17,7 @@ export function getUrlParam(searchKey) {
     }
   })
 
-  return val
+  return decodeURI(val)
 }
 
 export function num2eng(num) {

@@ -12,13 +12,20 @@ class HomeController extends Controller
     public function home(Request $request) 
     {
         $genre_id = $request->genre;
+        $search_query = $request->q;
         $sort_item = $request->sort ?? 'new';
 
         $genres = Genre::all();
         $genres->prepend(['id' => 0, 'name' => 'すべて']);
 
         if (empty(Genre::find($genre_id))) {
-            $quizes = Quiz::sort($sort_item)->paginate()->toArray();
+            if (empty($search_query)) {
+                $quizes = Quiz::sort($sort_item)->paginate()->toArray();
+            }
+            else {
+                $quizes = Quiz::searchWith('%' . $search_query . '%')->sort($sort_item)->paginate()->toArray();
+            }
+            
             $genre_list_id = 0;
         }
         else {
