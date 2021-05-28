@@ -253,7 +253,7 @@ class QuizController extends Controller
         
 
         $grade = new Grade([
-            'user_id' => $request->user()->id,
+            'user_id' => optional($request->user())->id,
             'correct_count' => $correct_count,
         ]);
 
