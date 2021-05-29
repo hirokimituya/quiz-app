@@ -17,8 +17,8 @@
 ## 使用した技術
 以下を使用してWEBアプリケーションを作成しました。
 - **[Laravel](https://laravel.com/)**
-- **[Laravel Sail](https://laravel.com/docs/8.x/sail#introduction)**
-- **[Laravel Jetstream](https://jetstream.laravel.com/2.x/introduction.html)**
+- **[Laravel Sail](https://laravel.com/docs/8.x/sail/)**
+- **[Laravel Jetstream](https://jetstream.laravel.com/2.x/)**
 - **[Vue.js](https://jp.vuejs.org/)**
 - **[Vuetify](https://vuetifyjs.com/ja/)**
 - **[Inertia.js](https://inertiajs.com/)**
