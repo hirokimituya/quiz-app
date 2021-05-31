@@ -57,12 +57,11 @@
 			</v-col>
 
 			<v-col cols="12" md="9" order="2" order-md="1">
-
 				<v-row>
 					<v-col cols="12" sm="5" offset-sm="7">
 						<!-- ソートのセレクトボックス -->
 						<sort-item
-							class="mt-5"
+							class="mt-2 mt-md-5 mb-2 mb-md-0"
 							:actionPath="actionPath"
 							:sortItem="sortItem"
 							:attachedUrlParams="['item']"

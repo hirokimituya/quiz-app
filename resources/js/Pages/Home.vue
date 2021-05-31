@@ -51,7 +51,7 @@
 			</v-col>
 
 			<!-- ブレークポイントmd未満で表示 -->
-			<v-col order="1" class="d-block d-md-none mb-n4">
+			<v-col order="1" class="d-block d-md-none">
 				<v-menu
 					transition="slide-x-transition"
 					offset-y

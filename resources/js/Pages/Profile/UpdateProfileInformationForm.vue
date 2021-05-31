@@ -33,7 +33,7 @@
 					outlined
 					@click.prevent="selectNewPhoto"
 				>
-					新しいアイコンを選択
+					新しいアイコン選択
 				</v-btn>
 
 				<v-btn
@@ -41,7 +41,7 @@
 					@click.prevent="deletePhoto"
 					v-if="user.profile_photo_path"
 				>
-					アイコンを削除
+					アイコン削除
 				</v-btn>
 
 				<!-- バリデーションエラー表示 -->
