@@ -116,7 +116,7 @@
 			<v-container style="max-width: 1100px;" class="mx-auto">
 				<!-- ブレークポイントmd未満なら検索フォームをヘッダーの下に表示 -->
 				<portal-target 
-					class="mx-2"
+					class="mx-2 mt-2 mb-n4"
 					name="searchPlace"
 				></portal-target>
 

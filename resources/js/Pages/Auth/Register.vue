@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-		<v-card max-width="550" class="mx-auto px-sm-16 mt-md-10 pb-6">
+		<v-card max-width="550" class="mx-auto px-sm-16 mt-5 mt-md-10 pb-6">
 			<v-card-title
 				class="primary--text text-h5 d-block text-center"
 			>
