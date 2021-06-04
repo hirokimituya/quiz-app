@@ -27,7 +27,6 @@
             class="mr-1 pa-0"
             text
             @click.stop.prevent="like"
-            :disabled="likeDisabled"
           >
             <v-icon :color="likedByUser ? 'red' : 'grey'">{{ likedByUser ? mdiHeart : mdiHeartOutline }}</v-icon>
             {{ likesCount }}
@@ -86,7 +85,6 @@ export default {
       imgWidth: 200,
       likesCount: this.quiz.likesCount,
       likedByUser: this.quiz.likedByUser,
-      likeDisabled: false,
     }
   },
   mounted() {
@@ -109,8 +107,6 @@ export default {
       }))
     },
     async like() {
-      this.likeDisabled = true
-
       if (this.$page.props.user === null) {
         this.$inertia.get(route('login'))
       }
@@ -130,8 +126,6 @@ export default {
         this.likesCount--
         this.likedByUser = false
       }
-
-      this.likeDisabled = false
     },
   },
 }
