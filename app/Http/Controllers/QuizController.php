@@ -116,6 +116,13 @@ class QuizController extends Controller
         return redirect()->route('quiz.detail', ['quiz' => $quiz->id]);
     }
 
+    public function delete(Quiz $quiz)
+    {
+        $quiz->delete();
+
+        return redirect()->route('dashboard');
+    }
+
     public function detail(Quiz $quiz)
     {
         $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();

@@ -28,6 +28,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::post('/quiz/create', [QuizController::class, 'create']);
 
+    Route::delete('/quiz/{quiz}', [QuizController::class, 'delete'])->middleware('can:delete,quiz');
+
     Route::post('/quiz/{quiz}/comments', [QuizController::class, 'addComment'])->name('quiz.comment');
 
     Route::put('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');

@@ -17,6 +17,11 @@
         クイズを回答する
       </v-btn>
 
+      <delete-quiz-form
+        v-if="deleteButtonDisp"
+        :quiz_id="quiz.id"
+      ></delete-quiz-form>
+
       <!-- コメント入力 -->
       <div class="mb-4 ml-5">{{ comments.length }} 件のコメント</div>
       
@@ -87,12 +92,14 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizInfo from '@/Components/QuizInfo'
 import Comment from '@/Components/Comment'
+import DeleteQuizForm from './DeleteQuizForm'
 
 export default {
   components: { 
     AppLayout,
     QuizInfo,
     Comment,
+    DeleteQuizForm,
   },
   props: {
     quiz: {
@@ -119,6 +126,14 @@ export default {
     commentAuthorName() {
       return this.$page.props.user ? this.$page.props.user.name : '未ログイン'
     },
+    deleteButtonDisp() {
+      if (this.$page.props.user == null) {
+        return false
+      }
+      else {
+        return this.$page.props.user.id == this.quiz.user.id
+      }
+    }
   },
   methods: {
     startQuiz() {
