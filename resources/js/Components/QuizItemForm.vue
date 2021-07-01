@@ -8,7 +8,7 @@
 			<v-col>
 				<v-card color="primary lighten-4" elevation="0">
 					<v-row no-gutters class="mb-n7">
-						<v-col cols="4" md="2">
+						<v-col cols="12" sm="2" class="mb-n6">
 							<v-card-title>問題文</v-card-title>
 						</v-col>
 						<v-col>
@@ -28,7 +28,7 @@
 					</v-row>
 					<!-- バリデーションエラー表示 -->
 					<v-row v-if="getError('question')" no-gutters>
-						<v-col offset-md="2">
+						<v-col offset-sm="2">
 							<v-alert 
 								color="error"
 								border="left"
@@ -42,10 +42,10 @@
 					</v-row>
 
 					<v-row no-gutters class="mb-n7">
-						<v-col cols="5" md="2">
+						<v-col cols="12" sm="2" class="mb-n6">
 							<v-card-title>回答形式</v-card-title>
 						</v-col>
-						<v-col md="4">
+						<v-col sm="4">
 							<v-card-text>
 								<v-select
 									solo
@@ -74,7 +74,7 @@
 					</v-row>
 
 					<v-row no-gutters>
-						<v-col cols="3" md="2">
+						<v-col cols="12" sm="2" class="mb-n6">
 							<v-card-title>回答</v-card-title>
 						</v-col>
 						<v-col>
@@ -90,12 +90,12 @@
 										@change="onChange"
 									></v-textarea>
 									<!-- バリデーションエラー表示 -->
-									<div v-if="getError('answerText')" class="ml-n16 ml-md-0">
+									<div v-if="getError('answerText')">
 										<v-alert 
 											color="error"
 											border="left"
 											dense
-											class="white--text mt-n5 ml-n5 ml-md-0"
+											class="white--text mt-n5"
 											elevation="2"
 										>
 											{{ getError('answerText') }}

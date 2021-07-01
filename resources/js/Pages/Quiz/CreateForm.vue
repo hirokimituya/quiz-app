@@ -83,15 +83,19 @@
           <tr v-if="form.errors.genre">
             <th></th>
             <td>
-              <v-alert 
-                color="error"
-                border="left"
-                dense
-                class="mt-n6 white--text"
-                elevation="2"
-              >
-                {{ form.errors.genre }}
-              </v-alert>
+              <v-row>
+                <v-col md="6">
+                  <v-alert 
+                    color="error"
+                    border="left"
+                    dense
+                    class="mt-n6 white--text"
+                    elevation="2"
+                  >
+                    {{ form.errors.genre }}
+                  </v-alert>
+                </v-col>
+              </v-row>
             </td>
           </tr>
 

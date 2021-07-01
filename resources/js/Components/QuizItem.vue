@@ -8,7 +8,7 @@
 			<v-col>
 				<v-card color="primary lighten-4" elevation="0">
 					<v-row no-gutters class="mb-n3">
-						<v-col cols="4" md="2">
+						<v-col cols="12" sm="2" class="mb-n6">
 							<v-card-title>問題文</v-card-title>
 						</v-col>
 						<v-col>
@@ -19,7 +19,7 @@
 					</v-row>
 
 					<v-row no-gutters>
-						<v-col cols="3" md="2">
+						<v-col cols="12" sm="2" class="mb-n6">
 							<v-card-title>回答</v-card-title>
 						</v-col>
 						<v-col>
