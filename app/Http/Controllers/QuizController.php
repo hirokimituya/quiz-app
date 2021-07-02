@@ -8,7 +8,6 @@ use Inertia\Inertia;
 use App\Models\Genre;
 use App\Models\Grade;
 use App\Models\Comment;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreComment;
@@ -123,6 +122,19 @@ class QuizController extends Controller
         return redirect()->route('dashboard');
     }
 
+    public function showEditForm(Quiz $quiz)
+    {
+        $genres = Genre::all();
+
+        $items_data = $this->getItems($quiz, true);
+
+        return Inertia::render('Quiz/EditForm', [
+            'genres' => $genres,
+            'quiz' => $quiz,
+            'items' => $items_data,
+        ]);
+    }
+
     public function detail(Quiz $quiz)
     {
         $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();
@@ -135,30 +147,7 @@ class QuizController extends Controller
 
     public function answerForm(Quiz $quiz)
     {
-        $items = Item::where('quiz_id', $quiz->id)->get();
-
-        $items_data = [];
-        foreach ($items as $item) {
-            $key = Item::NUM_STR[$item->question_number];
-            $items_data[$key] = [
-                'question' => $item->question,
-                'answerFormat' => $item->format,
-            ];
-
-            if ($item->format == Item::FORMAT_RADIO || $item->format == Item::FORMAT_CHECK) {
-                $num = 0;
-                $text_ary = [];
-                for ($i = 1; $i <= 4; $i++) {
-                    if (!empty($item['choice' . $i])) {
-                        $num++;
-                        $text_ary[Item::NUM_STR[$i]] = $item['choice' . $i];
-                    }
-                }
-
-                $items_data[$key]['selectItemsNum'] = $num;
-                $items_data[$key]['selectItemText'] = $text_ary;
-            }
-        }
+        $items_data = $this->getItems($quiz);
 
         return Inertia::render('Quiz/AnswerForm', [
             'quiz' => $quiz,
@@ -304,5 +293,50 @@ class QuizController extends Controller
         $quiz->likes()->detach($request->user()->id);
 
         return response('');
+    }
+
+    private function getItems(Quiz $quiz, $ans_need = false)
+    {
+        $items = Item::where('quiz_id', $quiz->id)->get();
+
+        $items_data = [];
+        foreach ($items as $item) {
+            $key = Item::NUM_STR[$item->question_number];
+            $items_data[$key] = [
+                'question' => $item->question,
+                'answerFormat' => $item->format,
+            ];
+
+            if ($ans_need && $item->format == Item::FORMAT_DESCRIPTION) {
+                $items_data[$key]['answerText'] = $item->answer;
+            }
+
+            if ($item->format == Item::FORMAT_RADIO || $item->format == Item::FORMAT_CHECK) {
+                $num = 0;
+                $text_ary = [];
+                for ($i = 1; $i <= 4; $i++) {
+                    if (!empty($item['choice' . $i])) {
+                        $num++;
+                        $text_ary[Item::NUM_STR[$i]] = $item['choice' . $i];
+                    }
+                }
+                $items_data[$key]['selectItemsNum'] = $num;
+                $items_data[$key]['selectItemText'] = $text_ary;
+
+                if ($ans_need) {
+                    if ($item->format == Item::FORMAT_RADIO) {
+                        $answer = Item::STR_NUM[$item->answer];
+                        $items_data[$key]['answerRadio'] = $answer;
+                    }
+                    else {
+                        $ans_str = explode(',', $item->answer);
+                        $answers = collect($ans_str)->map(fn($str) => Item::STR_NUM[$str]);
+                        $items_data[$key]['answerCheck'] = $answers;
+                    }
+                }
+            }
+        }
+
+        return $items_data;
     }
 }

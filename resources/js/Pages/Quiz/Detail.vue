@@ -17,10 +17,23 @@
         クイズを回答する
       </v-btn>
 
-      <delete-quiz-form
-        v-if="deleteButtonDisp"
-        :quiz_id="quiz.id"
-      ></delete-quiz-form>
+      <div class="text-right mt-n8">
+        <!-- クイズ編集ボタン -->
+        <v-btn
+          color="green"
+          class="white--text my-3"
+          height="40"
+          @click.stop="editQuiz"
+        >
+          クイズを編集する
+        </v-btn>
+
+        <!-- クイズ削除ボタン -->
+        <delete-quiz-form
+          v-if="deleteButtonDisp"
+          :quiz_id="quiz.id"
+        ></delete-quiz-form>
+      </div>
 
       <!-- コメント入力 -->
       <div class="mb-4 ml-5">{{ comments.length }} 件のコメント</div>
@@ -138,6 +151,11 @@ export default {
   methods: {
     startQuiz() {
       this.$inertia.get(route('quiz.answer', {
+        quiz: this.quiz.id,
+      }))
+    },
+    editQuiz() {
+      this.$inertia.get(route('quiz.edit', {
         quiz: this.quiz.id,
       }))
     },

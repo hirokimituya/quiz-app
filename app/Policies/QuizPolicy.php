@@ -19,7 +19,7 @@ class QuizPolicy
      */
     public function update(User $user, Quiz $quiz)
     {
-        //
+        return $user->id === $quiz->user_id;
     }
 
     /**

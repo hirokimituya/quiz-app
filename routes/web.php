@@ -30,6 +30,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::delete('/quiz/{quiz}', [QuizController::class, 'delete'])->middleware('can:delete,quiz');
 
+    Route::middleware('can:update,quiz')->group(function() {
+        Route::get('/quiz/{quiz}/edit', [QuizController::class, 'showEditForm'])->name('quiz.edit');
+
+        Route::post('/quiz/{quiz}/edit', [QuizController::class, 'showEditConfirm']);
+
+        Route::patch('/quiz/{quiz}/edit', [QuizController::class, 'edit']);
+    });
+
     Route::post('/quiz/{quiz}/comments', [QuizController::class, 'addComment'])->name('quiz.comment');
 
     Route::put('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');

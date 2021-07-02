@@ -1,5 +1,5 @@
 <template>
-	<div class="text-right mt-n8">
+	<div class="d-inline">
 		<v-btn
 			color="red"
 			class="white--text my-3"
