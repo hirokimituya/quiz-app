@@ -17,7 +17,10 @@
         クイズを回答する
       </v-btn>
 
-      <div class="text-right mt-n8">
+      <div 
+        class="text-right mt-n8" 
+        v-if="editDeleteButtonDisp"
+      >
         <!-- クイズ編集ボタン -->
         <v-btn
           color="green"
@@ -30,7 +33,6 @@
 
         <!-- クイズ削除ボタン -->
         <delete-quiz-form
-          v-if="deleteButtonDisp"
           :quiz_id="quiz.id"
         ></delete-quiz-form>
       </div>
@@ -139,7 +141,7 @@ export default {
     commentAuthorName() {
       return this.$page.props.user ? this.$page.props.user.name : '未ログイン'
     },
-    deleteButtonDisp() {
+    editDeleteButtonDisp() {
       if (this.$page.props.user == null) {
         return false
       }
