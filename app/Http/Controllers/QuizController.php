@@ -152,7 +152,90 @@ class QuizController extends Controller
         return Inertia::render('Quiz/EditConfirm', [
             'formData' => $request_data,
             'genres' => $genres,
+            'quiz_id' => $quiz->id,
         ]);
+    }
+
+    public function edit(Quiz $quiz, Request $request) 
+    {
+        $filename = $request->image ? basename($request->image) : null;
+
+        $image_change_flg = !empty($filename) && $filename != $quiz->filename;
+
+        // 画像の変更または削除があった場合、現在の画像を削除する。
+        if ($image_change_flg || $request->imageDeleteFlg) {
+            Storage::disk('public')->delete('images/' . $quiz->filename);
+        }
+
+        if ($image_change_flg) {
+            Storage::disk('public')->move('images/tmp/' . $filename, 'images/' .$filename);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $quiz->genre_id = intval($request->genre);
+            $quiz->title = $request->title;
+            $quiz->description = $request->description;
+            if ($image_change_flg || $request->imageDeleteFlg) {
+                $quiz->filename = $filename;
+            }
+            $quiz->save();
+
+            // クイズに関連するItemモデルの削除
+            Item::where('quiz_id', $quiz->id)->delete();
+
+            $items= [];
+            foreach ($request->question as $key => $question) {
+                $data = [
+                    'question_number' => Item::STR_NUM[$key],
+                    'format' => intval($question['answerFormat']),
+                    'question' => $question['question'],
+                ];
+
+                switch($data['format']) {
+                    case Item::FORMAT_DESCRIPTION:
+                        $data['answer'] = $question['answerText'];
+                        break;
+                    case Item::FORMAT_RADIO:
+                        $data['answer'] = Item::NUM_STR[intval($question['answerRadio'])];
+
+                        foreach($question['selectItemText'] as $num => $text) {
+                            $data['choice' . Item::STR_NUM[$num]] = $text;
+                        }
+                        break;
+                    case Item::FORMAT_CHECK:
+                        $answer_chech = array_map(function($item) {
+                            return Item::NUM_STR[intval($item)];
+                        }, $question['answerCheck']);
+
+                        $data['answer'] = implode(',', $answer_chech);
+
+                        foreach($question['selectItemText'] as $num => $text) {
+                            $data['choice' . Item::STR_NUM[$num]] = $text;
+                        }
+                        break;
+                    default:
+                        abort(400);
+                        break;
+                }
+
+                $items[] = new Item($data);
+            }
+
+            $quiz->items()->saveMany($items);
+
+            DB::commit();
+        }
+        catch (\Exception $exception) {
+            DB::rollBack();
+            if ($image_change_flg) {
+                Storage::disk('public')->delete('images/' . $filename);
+            }
+            throw $exception;
+        }
+
+        return redirect()->route('quiz.detail', ['quiz' => $quiz->id]);
     }
 
     public function detail(Quiz $quiz)

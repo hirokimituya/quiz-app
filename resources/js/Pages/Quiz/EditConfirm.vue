@@ -95,6 +95,10 @@ export default {
       type: Array,
       required: true,
     },
+    quiz_id: {
+      type: Number,
+      required: true,
+    }
   },
   data() {
     return {
@@ -126,7 +130,7 @@ export default {
   methods: {
     onSubmit() {
       this.form.patch(route('quiz.edit', {
-        quiz: this.quiz.id,
+        quiz: this.quiz_id,
       }))
     },
     back() {
