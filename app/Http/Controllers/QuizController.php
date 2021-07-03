@@ -117,7 +117,13 @@ class QuizController extends Controller
 
     public function delete(Quiz $quiz)
     {
+        $filename = $quiz->filename;
+
         $quiz->delete();
+
+        if (!empty($filename)) {
+            Storage::disk('public')->delete('images/' . $quiz->filename);
+        }
 
         return redirect()->route('dashboard');
     }
