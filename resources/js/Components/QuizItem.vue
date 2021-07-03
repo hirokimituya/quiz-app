@@ -119,7 +119,7 @@ export default {
 				answerFormat: this.value.answerFormat || null,
 				answerText: this.value.answerText || null,
 				answerRadio: Number(this.value.answerRadio) || null,
-				answerCheck: this.value.answerCheck || null,
+				answerCheck: this.value.answerCheck.map(n => Number(n)) || null,
 				selectItemText: this.value.selectItemText || null,
 				selectItemsNum: this.value.selectItemsNum || null,
 			},

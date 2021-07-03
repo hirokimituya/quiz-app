@@ -113,6 +113,7 @@
 												dense
 												v-model="emitData.selectItemsNum"
 												type="number"
+												@change="onChange"
 											></v-select>
 											<!-- バリデーションエラー表示 -->
 											<div v-if="getError('selectItemsNum')" class="ml-n16 ml-md-0 mr-md-n16">
