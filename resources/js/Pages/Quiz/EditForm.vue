@@ -260,7 +260,7 @@ export default {
           ...data,
           question: questionData,
         }))
-        .post(route('quiz.edit', {
+        .post(route('quiz.edit.conf', {
           quiz: this.quiz.id,
         }), {
           forceFormData: true,

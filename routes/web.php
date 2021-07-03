@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware('can:update,quiz')->group(function() {
         Route::get('/quiz/{quiz}/edit', [QuizController::class, 'showEditForm'])->name('quiz.edit');
 
-        Route::post('/quiz/{quiz}/edit', [QuizController::class, 'showEditConfirm']);
+        Route::post('/quiz/{quiz}/edit/confirm', [QuizController::class, 'showEditConfirm'])->name('quiz.edit.conf');
 
         Route::patch('/quiz/{quiz}/edit', [QuizController::class, 'edit']);
     });

@@ -135,6 +135,26 @@ class QuizController extends Controller
         ]);
     }
 
+    public function showEditConfirm(Quiz $quiz, QuizCreateRequest $request)
+    {
+        $genres = Genre::all();
+
+        $request_data = $request->all();
+
+        if ($request->image) {
+            $img_path = $request->file('image')->store('images/tmp', 'public');
+            $request_data['image'] = '/storage/' . $img_path;
+        }
+        else if (!$request->imageDeleteFlg && $quiz->filename !== null) {
+            $request_data['image'] = '/storage/images/' . $quiz->filename;
+        }
+
+        return Inertia::render('Quiz/EditConfirm', [
+            'formData' => $request_data,
+            'genres' => $genres,
+        ]);
+    }
+
     public function detail(Quiz $quiz)
     {
         $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();

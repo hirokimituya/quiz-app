@@ -43,7 +43,7 @@ URLの一覧は以下表の通りです。
 | /quiz/{クイズID}                | quiz.detail                     |    GET   |      | クイズ詳細ページを表示する。                                       |
 | /quiz/{クイズID}                | quiz.detail                     |  DELETE  |![鍵][鍵]| クイズを削除する。                                              |
 | /quiz/{クイズID}/edit           | quiz.edit                      |  GET   |![鍵][鍵]| クイズ編集開始ページを表示する。                                    |
-| /quiz/{クイズID}/edit           | quiz.edit                      |  POST   |![鍵][鍵]| クイズ編集確認ページを表示する。                                  |
+| /quiz/{クイズID}/edit/confirm   | quiz.edit.conf                 |  POST   |![鍵][鍵]| クイズ編集確認ページを表示する。                                  |
 | /quiz/{クイズID}/edit           | quiz.edit                      |  PATCH   |![鍵][鍵]| クイズ編集処理を実行する。                                      |
 | /quiz/{クイズID}/answer         | quiz.answer                     |    GET   |      | クイズ回答開始ページを表示する。                                   |
 | /quiz/{クイズID}/answer/confirm | quiz.answer.conf                |   POST   |      | クイズ回答確認ページを表示する。                                   |
