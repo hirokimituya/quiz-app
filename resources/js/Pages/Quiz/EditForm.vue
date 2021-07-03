@@ -219,9 +219,10 @@ export default {
   remember: [
     'form',
     'questionNum',
+    'currentImage',
   ],
   created() {
-    if (this.quiz !== null) {
+    if (this.quiz !== null && !this.$browserBackFlg) {
       this.form.title = this.quiz.title ?? ''
       this.form.description = this.quiz.description ?? ''
       this.form.genre = this.quiz.genre.id ?? ''
