@@ -39,7 +39,6 @@ class Quiz extends Model
     protected $hidden = [
         'user_id',
         'genre_id',
-        'filename',
         'created_at',
         'updated_at',
         'likes',

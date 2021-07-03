@@ -1,7 +1,7 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ作成</v-card-title>
+      <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ編集</v-card-title>
 
       <v-form @submit.prevent="onSubmit">
         <table class="mx-auto mt-3" width="100%">
@@ -124,6 +124,21 @@
               </v-alert>
             </td>
           </tr>
+          <tr>
+            <th></th>
+            <td>
+              <div v-if="!!currentImage && !form.imageDeleteFlg">
+                <img :src="currentImage" alt='クイズ用画像' width="200px">
+                <v-btn
+                  color="red"
+                  class="white--text"
+                  @click.prevent="form.imageDeleteFlg = true"
+                >
+                  画像削除
+                </v-btn>
+              </div>
+            </td>
+          </tr>
         </table>
 
         <v-row class="my-2">
@@ -201,6 +216,9 @@ export default {
       this.form.genre = this.quiz.genre.id ?? ''
       this.form.question = { ...this.form.question, ...this.items }
       this.questionNum = Object.keys(this.items).length
+      if (this.quiz.filename !== null) {
+        this.currentImage = this.quiz.url
+      }
     }
   },
   data() {
@@ -211,8 +229,10 @@ export default {
         genre: '',
         image: [],
         question: {one:{},two:{},three:{},four:{},five:{},six:{},seven:{},eight:{},nine:{},ten:{}},
+        imageDeleteFlg: false,
       }),
       questionNum: 1,
+      currentImage: null,
     }
   },
   methods: {
@@ -240,7 +260,9 @@ export default {
           ...data,
           question: questionData,
         }))
-        .post(route('quiz.edit'), {
+        .post(route('quiz.edit', {
+          quiz: this.quiz.id,
+        }), {
           forceFormData: true,
         })
     },
