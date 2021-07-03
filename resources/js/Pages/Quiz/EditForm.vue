@@ -127,15 +127,26 @@
           <tr>
             <th></th>
             <td>
-              <div v-if="!!currentImage && !form.imageDeleteFlg">
-                <img :src="currentImage" alt='クイズ用画像' width="200px">
-                <v-btn
-                  color="red"
-                  class="white--text"
-                  @click.prevent="form.imageDeleteFlg = true"
-                >
-                  画像削除
-                </v-btn>
+              <div v-if="!!currentImage">
+                <div v-if="!form.imageDeleteFlg">
+                  <img :src="currentImage" alt='クイズ用画像' width="200px">
+                  <v-btn
+                    color="red"
+                    class="white--text"
+                    @click.prevent="form.imageDeleteFlg = true"
+                  >
+                    画像削除
+                  </v-btn>
+                </div>
+                <div v-else>
+                  <v-btn
+                    color="grey"
+                    class="white--text"
+                    @click.prevent="form.imageDeleteFlg = false"
+                  >
+                    画像を戻す
+                  </v-btn>
+                </div>
               </div>
             </td>
           </tr>
