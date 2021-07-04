@@ -7,7 +7,7 @@
         </v-avatar>
       </v-col>
 
-      <v-col  cols="10" sm="11">
+      <v-col cols="9" sm="10">
         <v-row no-gutters>
           <v-col>
             <span>{{ comment.author.name }}</span>
@@ -20,17 +20,73 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <v-col cols="1" align-self="center" class="text-right" v-if="editAndDeleteButtonDisp">
+        <v-menu offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>{{ mdiDotsVertical }}</v-icon>
+            </v-btn>
+          </template>
+          <v-list min-width="120">
+            <v-list-item @click="edit_dialog_flg = true">
+              <v-list-item-title>
+                <v-icon>{{ mdiPencil }}</v-icon>
+                編集
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <!-- コメント編集ダイアログ -->
+        <comment-edit-dialog
+          v-model="edit_dialog_flg"
+          :quiz_id="quiz_id"
+          :comment="comment"
+        ></comment-edit-dialog>
+      </v-col>
     </v-row>
   </v-card>
 </template>
 
 <script>
+import commentEditDialog from '@/Components/commentEditDialog'
+
+import { mdiDotsVertical, mdiPencil } from '@mdi/js'
+
 export default {
+  components: {
+    commentEditDialog,
+  },
   props: {
+    quiz_id: {
+      type: Number,
+      required: true,
+    },
     comment: {
       type: Object,
       required: true,
     }
-  }
+  },
+  data() {
+    return {
+      mdiDotsVertical, mdiPencil,
+      edit_dialog_flg: false,
+    }
+  },
+  computed: {
+    editAndDeleteButtonDisp() {
+      if (this.$page.props.user == null) {
+        return false
+      }
+      else {
+        return this.$page.props.user.id == this.comment.author.id
+      }
+    }
+  },
 }
 </script>

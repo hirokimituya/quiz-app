@@ -9,9 +9,11 @@ class Comment extends Model
 {
     use HasFactory;
 
-    /** JSON煮含める属性 */
+    /** JSONに含める属性 */
     protected $visible = [
-        'author', 'content',
+        'author', 
+        'id',
+        'content',
     ];
 
     /**
