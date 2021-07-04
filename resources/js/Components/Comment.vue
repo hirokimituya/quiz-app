@@ -39,6 +39,12 @@
                 編集
               </v-list-item-title>
             </v-list-item>
+            <v-list-item @click="delete_dialog_flg = true">
+              <v-list-item-title>
+                <v-icon>{{ mdiDelete }}</v-icon>
+                削除
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
 
@@ -48,6 +54,13 @@
           :quiz_id="quiz_id"
           :comment="comment"
         ></comment-edit-dialog>
+
+        <!-- コメント削除ダイアログ -->
+        <comment-delete-dialog
+          v-model="delete_dialog_flg"
+          :quiz_id="quiz_id"
+          :comment="comment"
+        ></comment-delete-dialog>
       </v-col>
     </v-row>
   </v-card>
@@ -55,12 +68,14 @@
 
 <script>
 import commentEditDialog from '@/Components/commentEditDialog'
+import commentDeleteDialog from '@/Components/commentDeleteDialog'
 
-import { mdiDotsVertical, mdiPencil } from '@mdi/js'
+import { mdiDotsVertical, mdiPencil, mdiDelete } from '@mdi/js'
 
 export default {
   components: {
     commentEditDialog,
+    commentDeleteDialog,
   },
   props: {
     quiz_id: {
@@ -74,8 +89,9 @@ export default {
   },
   data() {
     return {
-      mdiDotsVertical, mdiPencil,
+      mdiDotsVertical, mdiPencil, mdiDelete,
       edit_dialog_flg: false,
+      delete_dialog_flg: false,
     }
   },
   computed: {

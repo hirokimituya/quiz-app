@@ -52,6 +52,7 @@ URLの一覧は以下表の通りです。
 | /quiz/{クイズID}/like           | quiz.like                       |  DELETE  |![鍵][鍵]| クイズのいいねを解除する。                                         |
 | /quiz/{クイズID}/comments       | quiz.comment                   |   POST   |![鍵][鍵]| クイズにコメントを追加する。                                       |
 | /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   PATCH   |![鍵][鍵]| クイズのコメントを編集する。                                       |
+| /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   DELETE  |![鍵][鍵]| クイズのコメントを削除する。                                       |
 | /register                       | register                        |    GET   |      | 会員登録ページを表示する。                                         |
 | /register                       | register                        |   POST   |      | 会員登録処理を実行する。                                           |
 | /login                          | login                           |    GET   |      | ログイン画面を表示する。                                           |
