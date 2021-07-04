@@ -96,6 +96,7 @@
       <comment
         v-for="(comment, key) in comments"
         :key="key"
+        :quiz_id="quiz.id"
         :comment="comment"
       ></comment>
 

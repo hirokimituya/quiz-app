@@ -378,11 +378,22 @@ class QuizController extends Controller
         return empty($diff_a_to_b) && empty($diff_b_to_a);
     }
 
-    public function addComment(Quiz $quiz, StoreComment $request) {
+    public function addComment(Quiz $quiz, StoreComment $request) 
+    {
         $comment = new Comment();
         $comment->content = $request->comment;
         $comment->user_id = $request->user()->id;
         $quiz->comments()->save($comment);
+
+        return redirect()->route('quiz.detail', [
+            'quiz' => $quiz->id,
+        ]);
+    }
+
+    public function editComment(Quiz $quiz, Comment $comment, StoreComment $request) 
+    {
+        $comment->content = $request->comment;
+        $comment->save();
 
         return redirect()->route('quiz.detail', [
             'quiz' => $quiz->id,
