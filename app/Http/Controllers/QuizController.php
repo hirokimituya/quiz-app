@@ -400,6 +400,15 @@ class QuizController extends Controller
         ]);
     }
 
+    public function deleteComment(Quiz $quiz, Comment $comment) 
+    {
+        $comment->delete();
+
+        return redirect()->route('quiz.detail', [
+            'quiz' => $quiz->id,
+        ]);
+    }
+
     public function like(Quiz $quiz, Request $request)
     {
         $quiz->likes()->detach($request->user()->id);

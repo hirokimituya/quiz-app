@@ -42,6 +42,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::patch('/quiz/{quiz}/comments/{comment}', [QuizController::class, 'editComment'])->middleware('can:update,comment')->name('quiz.comment.edit');
 
+    Route::delete('/quiz/{quiz}/comments/{comment}', [QuizController::class, 'deleteComment'])->middleware('can:delete,comment');
+
     Route::put('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');
 
     Route::delete('/quiz/{quiz}/like', [QuizController::class, 'unlike']);
