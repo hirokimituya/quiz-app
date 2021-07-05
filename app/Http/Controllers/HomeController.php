@@ -7,6 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -49,6 +50,14 @@ class HomeController extends Controller
 
     public function dashboard(User $user, Request $request) 
     {
+        if ($user->id === null) {
+            if (Auth::check()) {
+                $user = $request->user();
+            }
+            else {
+                return redirect()->route('home');
+            }
+        }
         $user_id = $user->id;
         $sort_item = $request->sort ?? 'new';
         $item_list_name = $request->item ?? 'make';
