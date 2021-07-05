@@ -6,14 +6,15 @@
 				<v-card style="position: sticky; top: 100px;">
 					<v-card-text>
 						<v-avatar class="mr-3" size="60">
-							<img :src="user.profile_photo_url" :alt="user.name">
+							<img :src="dashboard_user.profile_photo_url" :alt="dashboard_user.name">
 						</v-avatar>
-						{{ user.name }}
+						{{ dashboard_user.name }}
 						<v-btn
 							class="mt-4"
 							block
 							color="primary"
 							@click.prevent="onCreate"
+							v-if="createBtnShow"
 						>
 							クイズ作成
 						</v-btn>
@@ -63,6 +64,7 @@
 						<sort-item
 							class="mt-2 mt-md-5 mb-2 mb-md-0"
 							:actionPath="actionPath"
+							:actionParam="{ user: dashboard_user.id }"
 							:sortItem="sortItem"
 							:attachedUrlParams="['item']"
 						></sort-item>
@@ -120,6 +122,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		dashboard_user: {
+			type: Object,
+			required: true,
+		},
 		quizCount: {
 			type: Number,
 			default: 0,
@@ -159,7 +165,6 @@ export default {
 	},
 	data() {
 		return {
-			user: this.$page.props.user,
 			actionPath: 'dashboard',
 			selectedItem: this.itemListId,
 		}
@@ -174,8 +179,18 @@ export default {
         data.sort = sort
       }
 
-      this.$inertia.get(route(this.actionPath), data)
+      this.$inertia.get(route(this.actionPath, {
+				user: this.dashboard_user.id,
+			}), data)
     }
+	},
+	computed: {
+		createBtnShow() {
+			if (this.$page.props.user !== null) {
+				return this.$page.props.user.id == this.dashboard_user.id
+			}
+			return false
+		}
 	},
 	methods: {
 		onCreate() {

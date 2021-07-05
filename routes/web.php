@@ -19,9 +19,9 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
+Route::get('/dashboard/{user}', [HomeController::class, 'dashboard'])->name('dashboard');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
 
     Route::post('/quiz/confirm', [QuizController::class, 'showCreateConfirm'])->name('quiz.create.conf');

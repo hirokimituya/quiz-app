@@ -192,7 +192,9 @@ export default {
 			this.$inertia.get(route('home'), data)
 		},
 		onDashboard() {
-      this.$inertia.get(route('dashboard'))
+      this.$inertia.get(route('dashboard', {
+				user: this.$page.props.user.id
+			}))
     },
 		onProfile() {
       this.$inertia.get(route('profile.show'))

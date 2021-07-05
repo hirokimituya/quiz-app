@@ -8,10 +8,21 @@
     <v-card-text>
       <v-row no-gutters>
         <v-col cols="8" sm="7" class="mb-5">
-          <v-avatar :size="avatarSize">
-            <img :src="quiz.user.profile_photo_url" :alt="quiz.user.name">
-          </v-avatar>
-          <span :class="{ 'text-h6': detail }">{{ quiz.user.name }}</span>
+          <a
+            text-decoration="none"
+            @click.stop.prevent="mypage"
+          >
+            <v-avatar :size="avatarSize">
+              <img :src="quiz.user.profile_photo_url" :alt="quiz.user.name">
+            </v-avatar>
+          </a>
+          <a
+            class="black--text"
+            text-decoration="none"
+            @click.stop.prevent="mypage"
+          >
+            <span :class="{ 'text-h6': detail }">{{ quiz.user.name }}</span>
+          </a>
         </v-col>
 
         <v-col cols="8" sm="5" class="text-sm-right">
@@ -133,6 +144,11 @@ export default {
 
       this.likeDisabled = false
     },
+    mypage() {
+      this.$inertia.get(route('dashboard', {
+        user: this.quiz.user.id,
+      }))
+    }
   },
 }
 </script>

@@ -21,6 +21,10 @@ export default {
       type: String,
       required: true,
     },
+    actionParam: {
+      type: Object,
+      required: false,
+    },
     attachedUrlParams: {
       type: Array,
       defalut: [],
@@ -50,8 +54,8 @@ export default {
       }
 
 			data.sort = this.selectSortItem
-
-			this.$inertia.get(route(this.actionPath), data);
+      
+			this.$inertia.get(route(this.actionPath, this.actionParam), data);
 		},
   }
 }

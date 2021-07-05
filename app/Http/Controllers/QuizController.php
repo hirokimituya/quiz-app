@@ -125,7 +125,7 @@ class QuizController extends Controller
             Storage::disk('public')->delete('images/' . $quiz->filename);
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard', ['user' => $quiz->user_id]);
     }
 
     public function showEditForm(Quiz $quiz)

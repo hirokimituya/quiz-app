@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Genre;
 use Illuminate\Http\Request;
@@ -46,18 +47,18 @@ class HomeController extends Controller
         ]);
     }
 
-    public function dashboard(Request $request) 
+    public function dashboard(User $user, Request $request) 
     {
-        $user_id = $request->user()->id;
+        $user_id = $user->id;
         $sort_item = $request->sort ?? 'new';
         $item_list_name = $request->item ?? 'make';
         
-        $quizes = Quiz::ofType($item_list_name, $sort_item)->sort($sort_item)->paginate()->toArray();
+        $quizes = Quiz::ofType($user_id, $item_list_name, $sort_item)->sort($sort_item)->paginate()->toArray();
 
         // ダッシュボードの左側に記載する数を算出
         $quiz_create_count = Quiz::where('user_id', $user_id)->count();
         $likes_total_count = Quiz::rightJoin('likes', 'quizzes.id', '=', 'likes.quiz_id')->where('quizzes.user_id', $user_id)->count();
-        $quiz_grades_count = $request->user()->grades()->count();
+        $quiz_grades_count = $user->grades()->count();
 
         $items = collect([
             ['name' => '作成クイズ', 'value' => 'make'],
@@ -71,6 +72,7 @@ class HomeController extends Controller
 
         return Inertia::render('Dashboard', [
             'quizes' => $quizes['data'],
+            'dashboard_user' => $user,
             'quizCount' => $quizes['total'],
             'currentPage' => $quizes['current_page'],
             'perPage' => $quizes['per_page'],

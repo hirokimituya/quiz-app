@@ -202,40 +202,40 @@ class Quiz extends Model
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfType($query, $type, $sort_item)
+    public function scopeOfType($query, $user_id, $type, $sort_item)
     {
         switch ($type) {
             case 'like':
-                return $this->whereOfType($query, 'likes', $sort_item);
+                return $this->whereOfType($query, $user_id, 'likes', $sort_item);
             case 'comment':
-                return $this->whereOfType($query, 'comments', $sort_item);
+                return $this->whereOfType($query, $user_id, 'comments', $sort_item);
             case 'grade':
-                return $this->whereOfType($query, 'grades', $sort_item);
+                return $this->whereOfType($query, $user_id, 'grades', $sort_item);
             default:    /* case 'make': */
-                return $query->where('user_id', Auth::id());
+                return $query->where('user_id', $user_id);
         }
     }
 
-    private function whereOfType($query, $table, $sort_item)
+    private function whereOfType($query, $user_id, $table, $sort_item)
     {
         if (in_array($sort_item, ['quiz', 'like', 'comment'])) {
             return $query
-                    ->whereExists(function ($query) use ($table) {
+                    ->whereExists(function ($query) use ($table, $user_id) {
                         $query
                             ->selectRaw(1)
                             ->from($table)
                             ->whereColumn("{$table}.quiz_id", 'count_table.id')
-                            ->where("{$table}.user_id", Auth::id());
+                            ->where("{$table}.user_id", $user_id);
                     });
         }
         else {
             return $query
-                    ->whereExists(function ($query) use ($table) {
+                    ->whereExists(function ($query) use ($table, $user_id) {
                         $query
                             ->selectRaw(1)
                             ->from($table)
                             ->whereColumn("{$table}.quiz_id", 'quizzes.id')
-                            ->where("{$table}.user_id", Auth::id());
+                            ->where("{$table}.user_id", $user_id);
                     });
         }
     }
