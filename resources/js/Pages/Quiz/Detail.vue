@@ -37,6 +37,47 @@
         ></delete-quiz-form>
       </div>
 
+      <!-- クイズの成績表 -->
+      <v-card
+        v-if="user_grades_ary.length >= 2"
+        class="mx-auto text-center mt-5 mb-10"
+        color="blue"
+        max-width="800"
+      >
+        <v-card-text>
+          <v-sheet color="rgba(0, 0, 0, .5)">
+            <v-sparkline
+              :value="user_grades_ary"
+              :gradient="gradient"
+              gradient-direction="top"
+              line-width="1"
+              height="100"
+              padding="15"
+              stroke-linecap="round"
+              smooth
+              auto-draw
+            >
+              <template #label="item">
+                {{ item.value }}問
+              </template>
+            </v-sparkline>
+          </v-sheet>
+        </v-card-text>
+
+        <v-card-text>
+          <div class="text-h5 font-weight-thin white--text">
+            <v-row no-gutters justify="center">
+              <v-col cols="12" md="3" class="mr-md-n10">
+                クイズ正答数
+              </v-col>
+              <v-col md="4" class="ml-md-n6">
+                （出題数 {{ items_count }}問）
+              </v-col>
+            </v-row>
+          </div>
+        </v-card-text>
+      </v-card>
+
       <!-- コメント入力 -->
       <div class="mb-4 ml-5">{{ comments.length }} 件のコメント</div>
       
@@ -110,6 +151,15 @@ import QuizInfo from '@/Components/QuizInfo'
 import Comment from '@/Components/Comment'
 import DeleteQuizForm from './DeleteQuizForm'
 
+const gradients = [
+  ['#222'],
+  ['#42b3f4'],
+  ['red', 'orange', 'yellow'],
+  ['purple', 'violet'],
+  ['#00c6ff', '#F0F', '#FF0'],
+  ['#f72047', '#ffd200', '#1feaea'],
+]
+
 export default {
   components: { 
     AppLayout,
@@ -125,6 +175,14 @@ export default {
     comments: {
       type: Array,
       required: true,
+    },
+    user_grades_ary: {
+      type: Array,
+      required: true,
+    },
+    items_count: {
+      type: Number,
+      required: true,
     }
   },
   data() {
@@ -133,6 +191,8 @@ export default {
         comment: '',
       }),
       commentBtnFlg: false,
+      gradient: gradients[5],
+      gradients,
     }
   },
   computed: {

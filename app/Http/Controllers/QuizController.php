@@ -11,6 +11,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreComment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuizAnswerRequest;
 use App\Http\Requests\QuizCreateRequest;
@@ -248,9 +249,21 @@ class QuizController extends Controller
     {
         $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();
 
+        $items_count = $quiz->items()->count();
+
+        $user_grades_ary = [];
+        if (Auth::check()) {
+            $grades = Grade::quizUserGet($quiz, Auth::user())->get();
+            $user_grades_ary = $grades->map(function($grade) {
+                return $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0;
+            });
+        }
+
         return Inertia::render('Quiz/Detail', [
             'quiz' => $quiz,
             'comments' => $comments,
+            'user_grades_ary' => $user_grades_ary,
+            'items_count' => $items_count,
         ]);
     }
 
