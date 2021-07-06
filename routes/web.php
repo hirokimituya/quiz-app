@@ -19,7 +19,7 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::get('/dashboard/{user?}', [HomeController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard/{user?}', [HomeController::class, 'dashboard'])->name('dashboard')->where('user', '[0-9]+');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
