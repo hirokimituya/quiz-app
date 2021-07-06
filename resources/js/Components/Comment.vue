@@ -2,15 +2,26 @@
   <v-card elevation="0" class="mb-7">
     <v-row no-gutters>
       <v-col cols="2" sm="1" class="text-center">
-        <v-avatar :size="45">
-          <img :src="comment.author.profile_photo_url" :alt="comment.author.name">
-        </v-avatar>
+        <a
+          text-decoration="none"
+          @click.stop.prevent="mypage"
+        >
+          <v-avatar :size="45">
+            <img :src="comment.author.profile_photo_url" :alt="comment.author.name">
+          </v-avatar>
+        </a>
       </v-col>
 
       <v-col cols="9" sm="10">
         <v-row no-gutters>
           <v-col>
-            <span>{{ comment.author.name }}</span>
+            <a
+              class="black--text"
+              text-decoration="none"
+              @click.stop.prevent="mypage"
+            >
+              <span>{{ comment.author.name }}</span>
+            </a>
           </v-col>
         </v-row>
 
@@ -104,5 +115,12 @@ export default {
       }
     }
   },
+  methods: {
+    mypage() {
+      this.$inertia.get(route('dashboard', {
+        user: this.comment.author.id,
+      }))
+    }
+  }
 }
 </script>
