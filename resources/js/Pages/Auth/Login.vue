@@ -59,6 +59,19 @@
 
 				</v-form>
 			</v-card-text>
+
+			<v-divider class="mt-10"></v-divider>
+
+			<!-- テストユーザログインボタン -->
+			<div class="text-center">
+				<v-btn
+					color="green"
+					class="white--text my-10"
+					@click.prevent="testLogin"
+				>
+					テストユーザでログインします
+				</v-btn>
+			</div>
 		</v-card>
 	</app-layout>
 </template>
@@ -102,7 +115,18 @@ export default {
 		},
 		pwForget() {
 			this.$inertia.get(route('password.request'))
-		}
+		},
+		testLogin() {
+			let test_user_login_data = {
+				email: 'test@test.co.jp',
+				password: 'testtest',
+				remember: '',
+			}
+
+			this.$inertia.post(this.route('login'), test_user_login_data, {
+					onFinish: () => this.form.reset('password'),
+			})
+		},
 	}
 }
 </script>
