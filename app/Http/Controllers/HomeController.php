@@ -6,6 +6,7 @@ use App\Models\Quiz;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Genre;
+use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -91,6 +92,39 @@ class HomeController extends Controller
             'quiz_create_count' => $quiz_create_count,
             'likes_total_count' => $likes_total_count,
             'quiz_grades_count' => $quiz_grades_count,
+        ]);
+    }
+
+    public function grade(User $user, Request $request)
+    {
+        if ($user->id === null) {
+            if (Auth::check()) {
+                $user = $request->user();
+            }
+            else {
+                return redirect()->route('home');
+            }
+        }
+
+        $grades = Grade::where('user_id', $user->id)->with('quiz.items')->latest()->get();
+
+        $grades_list = [];
+        foreach ($grades as $grade) {
+            $grades_list[] = [
+                'grade_id' => $grade->id,
+                'quiz_id' => $grade->quiz->id,
+                'quiz_title' => $grade->quiz->title,
+                'genre_name' => $grade->quiz->genre->name,
+                'user_id' => $grade->quiz->user->id,
+                'user_name' => $grade->quiz->user->name,
+                'items_count' => $grade->quiz->items->count(),
+                'correct_count' => $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0,
+                'created_at' => $grade->created_at->format('Y/m/d H:i:s'),
+            ];
+        }
+
+        return Inertia::render('Quiz/GradeList', [
+            'grades_list' => $grades_list,
         ]);
     }
 }

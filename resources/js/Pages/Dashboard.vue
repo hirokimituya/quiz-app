@@ -18,6 +18,14 @@
 						>
 							クイズ作成
 						</v-btn>
+						<v-btn
+							class="mt-4 white--text"
+							block
+							color="green"
+							@click.prevent="onGradeList"
+						>
+							クイズ実行履歴
+						</v-btn>
 						<table class="mt-4 mx-auto mx-sm-0">
 							<tr>
 								<th class="text-left pa-2">クイズ作成数：</th>
@@ -195,7 +203,12 @@ export default {
 	methods: {
 		onCreate() {
 			this.$inertia.get(route('quiz.create'))
-		}
+		},
+		onGradeList() {
+			this.$inertia.get(route('grade', {
+				user: this.dashboard_user.id,
+			}))
+		},
 	}
 }
 </script>

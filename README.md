@@ -67,6 +67,8 @@ URLの一覧は以下表の通りです。
 | /user/profile-photo             | current-user-photo.destroy      |  DELETE  |![鍵][鍵]| ユーザのアイコンの削除処理を実行する。                             |
 | /user/password                  | user-password.update            |    PUT   |![鍵][鍵]| ユーザのパスワードの変更処理を実行する。                           |
 | /user                           | current-user.destroy            |  DELETE  |![鍵][鍵]| ユーザを削除する。                                                 |
+| /grade/{ユーザID}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
+
 
 <br><br>
 

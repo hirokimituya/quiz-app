@@ -34,4 +34,13 @@ class Grade extends Model
             ->orderByDesc('created_at')
             ->limit(10);
     }
+
+    /**
+     * リレーションシップ - quizzesテーブル
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class, 'quiz_id', 'id', 'quizzes');
+    }
 }
