@@ -66,16 +66,29 @@
           </tr>
         </tbody>
       </v-simple-table>
+
+      <!-- ページネーションを表示 -->
+		  <pagination
+		  	v-if="grades_list.length"
+		  	:quizCount="gradeCount"
+		  	:currentPage="currentPage"
+		  	:perPage="perPage"
+		  	:actionPath="actionPath"
+        :actionPathParam="actionPathParam"
+        class="mt-5"
+		  ></pagination>
     </v-card>
   </app-layout>
 </template>
 
 <script>
 import AppLayout from '@/Layouts/AppLayout'
+import Pagination from '@/Components/Pagination'
 
 export default {
   components: {
     AppLayout,
+    Pagination,
   },
   props: {
     grades_list: {
@@ -85,7 +98,19 @@ export default {
     grade_user: {
       type: Object,
       required: true,
-    }
+    },
+    gradeCount: {
+			type: Number,
+			default: 0,
+		},
+		currentPage: {
+			type: Number,
+			default: 1,
+		},
+		perPage: {
+			type:Number,
+			required: true,
+		},
   },
   data() {
     return {
@@ -97,6 +122,8 @@ export default {
         '正解数',
         '回答日時',
       ],
+      actionPath: 'grade',
+      actionPathParam: { user: this.grade_user.id },
     }
   },
   methods: {

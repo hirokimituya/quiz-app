@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Quiz;
 use App\Models\User;
 use Inertia\Inertia;
@@ -106,26 +107,31 @@ class HomeController extends Controller
             }
         }
 
-        $grades = Grade::where('user_id', $user->id)->with('quiz.items')->latest()->get();
+        $grades = Grade::where('user_id', $user->id)->with('quiz.items')->latest()->paginate()->toArray();
+
+        logger($grades['data'][0]['created_at']);
 
         $grades_list = [];
-        foreach ($grades as $grade) {
+        foreach ($grades['data'] as $grade) {
             $grades_list[] = [
-                'grade_id' => $grade->id,
-                'quiz_id' => $grade->quiz->id,
-                'quiz_title' => $grade->quiz->title,
-                'genre_name' => $grade->quiz->genre->name,
-                'user_id' => $grade->quiz->user->id,
-                'user_name' => $grade->quiz->user->name,
-                'items_count' => $grade->quiz->items->count(),
-                'correct_count' => $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0,
-                'created_at' => $grade->created_at->format('Y/m/d H:i:s'),
+                'grade_id' => $grade['id'],
+                'quiz_id' => $grade['quiz']['id'],
+                'quiz_title' => $grade['quiz']['title'],
+                'genre_name' => $grade['quiz']['genre']['name'],
+                'user_id' => $grade['quiz']['user']['id'],
+                'user_name' => $grade['quiz']['user']['name'],
+                'items_count' => count($grade['quiz']['items']),
+                'correct_count' => $grade['correct_count'] != 0 ? count(explode(',', $grade['correct_count'])) : 0,
+                'created_at' => Carbon::parse($grade['created_at'])->format('Y/m/d H:i:s'),
             ];
         }
 
         return Inertia::render('Quiz/GradeList', [
             'grades_list' => $grades_list,
             'grade_user' => $user,
+            'gradeCount' => $grades['total'],
+            'currentPage' => $grades['current_page'],
+            'perPage' => $grades['per_page'],
         ]);
     }
 }

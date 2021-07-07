@@ -28,9 +28,17 @@ export default {
       type: String,
       required: true,
     },
+    actionPathParam: {
+      type: Object,
+      default: function() {
+        return {}
+      },
+    },
     attachedUrlParams: {
       type: Array,
-      defalut: [],
+      default: function() {
+        return []
+      },
     }
   },
   data() {
@@ -57,7 +65,7 @@ export default {
 
 			data.page = this.page
 
-			this.$inertia.get(route(this.actionPath), data);
+      this.$inertia.get(route(this.actionPath, this.actionPathParam), data);
 		}
 	}
 }
