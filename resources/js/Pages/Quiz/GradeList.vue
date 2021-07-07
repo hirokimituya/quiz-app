@@ -1,8 +1,25 @@
 <template>
   <app-layout>
+    <div class="text-center mt-7 text-h4">
+      クイズ実行履歴
+    </div>
     <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title class="text-h4 mb-5">
-        クイズ実行履歴
+      <v-card-title class="mb-5">
+        <a
+          text-decoration="none"
+          @click.stop.prevent="mypage"
+        >
+          <v-avatar class="mr-3" size="60">
+				  	<img :src="grade_user.profile_photo_url" :alt="grade_user.name">
+				  </v-avatar>
+        </a>
+        <a
+          class="black--text"
+          text-decoration="none"
+          @click.stop.prevent="mypage"
+        >
+			  	{{ grade_user.name }}
+        </a>
       </v-card-title>
       <v-simple-table>
         <thead>
@@ -65,6 +82,10 @@ export default {
       type: Array,
       required: true,
     },
+    grade_user: {
+      type: Object,
+      required: true,
+    }
   },
   data() {
     return {
@@ -78,6 +99,13 @@ export default {
       ],
     }
   },
+  methods: {
+    mypage() {
+      this.$inertia.get(route('dashboard', {
+        user: this.grade_user.id,
+      }))
+    }
+  }
 }
 </script>
 

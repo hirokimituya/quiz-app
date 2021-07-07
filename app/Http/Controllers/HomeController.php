@@ -125,6 +125,7 @@ class HomeController extends Controller
 
         return Inertia::render('Quiz/GradeList', [
             'grades_list' => $grades_list,
+            'grade_user' => $user,
         ]);
     }
 }
