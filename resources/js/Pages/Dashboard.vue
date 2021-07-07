@@ -73,6 +73,7 @@
 							class="mt-2 mt-md-5 mb-2 mb-md-0"
 							:actionPath="actionPath"
 							:actionParam="{ user: dashboard_user.id }"
+							:sortItems="sortItems"
 							:sortItem="sortItem"
 							:attachedUrlParams="['item']"
 						></sort-item>
@@ -116,7 +117,7 @@ import QuizInfo from '@/Components/QuizInfo'
 import SortItem from '@/Components/SortItem'
 import Pagination from '@/Components/Pagination'
 
-import { getUrlParam } from '@/util'
+import { getUrlParam, SORT_ITEMS } from '@/util'
 
 export default {
 	components: {
@@ -175,6 +176,7 @@ export default {
 		return {
 			actionPath: 'dashboard',
 			selectedItem: this.itemListId,
+			sortItems: SORT_ITEMS,
 		}
 	},
 	watch: {

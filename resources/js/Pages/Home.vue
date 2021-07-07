@@ -9,6 +9,7 @@
 			<v-col cols="6" md="4" offset-md="2">
 				<sort-item
 					:actionPath="actionPath"
+					:sortItems="sortItems"
 					:sortItem="sortItem"
 					:attachedUrlParams="['genre', 'q']"
 				></sort-item>
@@ -91,6 +92,8 @@ import GenreNav from '@/Components/GenreNav'
 import SortItem from '@/Components/SortItem'
 import Pagination from '@/Components/Pagination'
 
+import { SORT_ITEMS } from '@/util'
+
 export default {
 	components: {
 		AppLayout,
@@ -133,6 +136,7 @@ export default {
 		return {
 			DispGenreListPC: false,
 			actionPath: 'home',
+			sortItems: SORT_ITEMS,
 		}
 	},
 	computed: {

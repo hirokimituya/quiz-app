@@ -13,6 +13,12 @@ import { getUrlParam } from '@/util'
 
 export default {
   props: {
+    sortItems: {
+      sortItems: {
+        type: Array,
+        required: true,
+      }
+    },
     sortItem: {
       type: String,
 			required: true,
@@ -32,12 +38,6 @@ export default {
   },
   data() {
 		return {
-			sortItems: [
-        { value: 'new', text: '新着順' },
-				{ value: 'quiz', text: 'クイズ回答回数順' },
-				{ value: 'like', text: 'いいね数順' },
-				{ value: 'comment', text: 'コメント数順'},
-			],
       selectSortItem: this.sortItem,
 		}
 	},

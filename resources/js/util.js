@@ -51,3 +51,10 @@ export function eng2num(str) {
     case 'ten': return 10;
   }
 }
+
+export const SORT_ITEMS = [
+  { value: 'new', text: '新着順' },
+  { value: 'quiz', text: 'クイズ回答回数順' },
+  { value: 'like', text: 'いいね数順' },
+  { value: 'comment', text: 'コメント数順'},
+]
