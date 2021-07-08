@@ -99,6 +99,7 @@ class HomeController extends Controller
     public function grade(User $user, Request $request)
     {
         $sort_item = $request->sort ?? 'latest';
+        $disp_num = $request->disp_num ? intval($request->disp_num) : 30;
 
         if ($user->id === null) {
             if (Auth::check()) {
@@ -109,7 +110,7 @@ class HomeController extends Controller
             }
         }
 
-        $grades = Grade::where('grades.user_id', $user->id)->sort($sort_item)->with('quiz.items')->paginate()->toArray();
+        $grades = Grade::where('grades.user_id', $user->id)->sort($sort_item)->with('quiz.items')->paginate($disp_num)->toArray();
 
         logger($grades['data'][0]['created_at']);
 

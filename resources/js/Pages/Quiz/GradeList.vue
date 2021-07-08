@@ -6,7 +6,7 @@
     <v-card class="pa-3 px-md-16 my-5">
       <v-card-title class="mb-5">
         <v-row no-gutters justify="space-between">
-          <v-col cols="12" sm="5">
+          <v-col cols="12" sm="6">
             <a
               text-decoration="none"
               @click.stop.prevent="mypage"
@@ -23,12 +23,22 @@
 			      	{{ grade_user.name }}
             </a>
           </v-col>
-          <v-col sm="4" class="mt-5 mt-sm-0">
+          <v-col cols="4" sm="2" class="mt-5 ml-n2 mt-sm-0">
+            <v-select
+	          	:items="numItems"
+	          	v-model="numItem"
+	          	label="表示数"
+	          	outlined
+	          	dense
+	          ></v-select>
+          </v-col>
+          <v-col cols="8" sm="4" class="mt-5 mt-sm-0">
             <sort-item
             	:actionPath="actionPath"
               :actionParam="actionPathParam"
             	:sortItems="sortItems"
             	:sortItem="sortItem"
+              :attachedUrlParams="['disp_num']"
             ></sort-item>
           </v-col>
         </v-row>
@@ -87,6 +97,7 @@
 		  	:perPage="perPage"
 		  	:actionPath="actionPath"
         :actionPathParam="actionPathParam"
+        :attachedUrlParams="['disp_num', 'sort']"
         class="mt-5"
 		  ></pagination>
     </v-card>
@@ -97,6 +108,8 @@
 import AppLayout from '@/Layouts/AppLayout'
 import Pagination from '@/Components/Pagination'
 import SortItem from '@/Components/SortItem'
+
+import { getUrlParam } from '@/util'
 
 export default {
   components: {
@@ -146,6 +159,8 @@ export default {
         { value: 'quiz_title', text: 'クイズタイトル' },
         { value: 'latest', text: '回答日時' },
       ],
+      numItems: [ 15, 30, 50, 80, 100 ],
+      numItem: this.perPage,
     }
   },
   methods: {
@@ -154,6 +169,23 @@ export default {
         user: this.grade_user.id,
       }))
     }
+  },
+  watch: {
+    numItem() {
+      let data = {}
+
+      data.disp_num = this.numItem
+
+      let item;
+      for(let param of ['sort']) {
+        item = getUrlParam(param)
+			  if (item !== '') {
+				  data[param] = item
+			  }
+      }
+
+			this.$inertia.get(route(this.actionPath, this.actionPathParam), data);
+		},
   }
 }
 </script>
