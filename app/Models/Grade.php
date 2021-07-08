@@ -36,6 +36,26 @@ class Grade extends Model
     }
 
     /**
+     * 引数のソートタイプをもとにソートする
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query, $type)
+    {
+        switch ($type) {
+            case 'quiz_title':
+                return $query
+                            ->select('grades.*')
+                            ->leftJoin('quizzes', 'grades.quiz_id', '=', 'quizzes.id')
+                            ->orderBy('quizzes.title');
+            default:    /* case 'latest': */
+                return $query->latest();
+        }
+    }
+
+    /**
      * リレーションシップ - quizzesテーブル
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

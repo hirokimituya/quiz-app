@@ -33,7 +33,9 @@ export default {
     },
     attachedUrlParams: {
       type: Array,
-      defalut: [],
+      default: function() {
+        return []
+      },
     }
   },
   data() {

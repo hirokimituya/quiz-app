@@ -5,21 +5,33 @@
     </div>
     <v-card class="pa-3 px-md-16 my-5">
       <v-card-title class="mb-5">
-        <a
-          text-decoration="none"
-          @click.stop.prevent="mypage"
-        >
-          <v-avatar class="mr-3" size="60">
-				  	<img :src="grade_user.profile_photo_url" :alt="grade_user.name">
-				  </v-avatar>
-        </a>
-        <a
-          class="black--text"
-          text-decoration="none"
-          @click.stop.prevent="mypage"
-        >
-			  	{{ grade_user.name }}
-        </a>
+        <v-row no-gutters justify="space-between">
+          <v-col cols="12" sm="5">
+            <a
+              text-decoration="none"
+              @click.stop.prevent="mypage"
+            >
+              <v-avatar class="mr-3" size="60">
+				      	<img :src="grade_user.profile_photo_url" :alt="grade_user.name">
+				      </v-avatar>
+            </a>
+            <a
+              class="black--text"
+              text-decoration="none"
+              @click.stop.prevent="mypage"
+            >
+			      	{{ grade_user.name }}
+            </a>
+          </v-col>
+          <v-col sm="4" class="mt-5 mt-sm-0">
+            <sort-item
+            	:actionPath="actionPath"
+              :actionParam="actionPathParam"
+            	:sortItems="sortItems"
+            	:sortItem="sortItem"
+            ></sort-item>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-simple-table>
         <thead>
@@ -84,11 +96,13 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout'
 import Pagination from '@/Components/Pagination'
+import SortItem from '@/Components/SortItem'
 
 export default {
   components: {
     AppLayout,
     Pagination,
+    SortItem,
   },
   props: {
     grades_list: {
@@ -111,6 +125,10 @@ export default {
 			type:Number,
 			required: true,
 		},
+    sortItem: {
+			type: String,
+			required: true,
+		},
   },
   data() {
     return {
@@ -124,6 +142,10 @@ export default {
       ],
       actionPath: 'grade',
       actionPathParam: { user: this.grade_user.id },
+      sortItems: [
+        { value: 'quiz_title', text: 'クイズタイトル' },
+        { value: 'latest', text: '回答日時' },
+      ],
     }
   },
   methods: {

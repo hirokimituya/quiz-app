@@ -98,6 +98,8 @@ class HomeController extends Controller
 
     public function grade(User $user, Request $request)
     {
+        $sort_item = $request->sort ?? 'latest';
+
         if ($user->id === null) {
             if (Auth::check()) {
                 $user = $request->user();
@@ -107,7 +109,7 @@ class HomeController extends Controller
             }
         }
 
-        $grades = Grade::where('user_id', $user->id)->with('quiz.items')->latest()->paginate()->toArray();
+        $grades = Grade::where('grades.user_id', $user->id)->sort($sort_item)->with('quiz.items')->paginate()->toArray();
 
         logger($grades['data'][0]['created_at']);
 
@@ -132,6 +134,7 @@ class HomeController extends Controller
             'gradeCount' => $grades['total'],
             'currentPage' => $grades['current_page'],
             'perPage' => $grades['per_page'],
+            'sortItem'=> $sort_item,
         ]);
     }
 }
