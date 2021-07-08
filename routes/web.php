@@ -23,6 +23,14 @@ Route::get('/dashboard/{user?}', [HomeController::class, 'dashboard'])->name('da
 
 Route::get('/grade/{user?}', [HomeController::class, 'grade'])->name('grade')->where('user', '[0-9]+');
 
+Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');
+
+Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where('quiz', '[0-9]*')->name('quiz.answer');
+
+Route::post('/quiz/{quiz}/answer/confirm', [QuizController::class, 'answerConfirm'])->where('quiz', '[0-9]*')->name('quiz.answer.conf');
+
+Route::post('/quiz/{quiz}/answer/result', [QuizController::class, 'answerResult'])->where('quiz', '[0-9]*')->name('quiz.answer.result');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
 
@@ -50,13 +58,3 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::delete('/quiz/{quiz}/like', [QuizController::class, 'unlike']);
 });
-
-Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');
-
-Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where('quiz', '[0-9]*')->name('quiz.answer');
-
-Route::post('/quiz/{quiz}/answer/confirm', [QuizController::class, 'answerConfirm'])->where('quiz', '[0-9]*')->name('quiz.answer.conf');
-
-Route::post('/quiz/{quiz}/answer/result', [QuizController::class, 'answerResult'])->where('quiz', '[0-9]*')->name('quiz.answer.result');
-
-Route::get('/{any?}', fn() => redirect()->route('home'))->where('any', '.+');

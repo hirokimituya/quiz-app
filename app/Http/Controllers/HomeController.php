@@ -57,7 +57,7 @@ class HomeController extends Controller
                 $user = $request->user();
             }
             else {
-                return redirect()->route('home');
+                return redirect()->route('login');
             }
         }
         $user_id = $user->id;
