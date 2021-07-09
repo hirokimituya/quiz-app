@@ -25,24 +25,29 @@
           </a>
         </v-col>
 
-        <v-col cols="8" sm="5" class="text-sm-right">
-          <span class="mr-4">
-            <v-icon color="blue">{{ mdiClipboardPlay }}</v-icon>
-            {{ quiz.gradesCount }}
+        <v-col cols="8" sm="5" class="text-sm-right mb-2">
+          <div class="mb-2">
+            <span class="mr-4">
+              <v-icon color="blue">{{ mdiClipboardPlay }}</v-icon>
+              {{ quiz.gradesCount }}
+            </span>
+            <span class="mr-1">
+              <v-icon color="green">{{ mdiCommentTextMultiple }}</v-icon>
+              {{ quiz.commentsCount }}
+            </span>
+            <v-btn 
+              class="mr-1 pa-0"
+              text
+              @click.stop.prevent="like"
+              :disabled="likeDisabled"
+            >
+              <v-icon :color="likedByUser ? 'red' : 'grey'">{{ likedByUser ? mdiHeart : mdiHeartOutline }}</v-icon>
+              {{ likesCount }}
+            </v-btn>
+          </div>
+          <span class="mr-5">
+            平均正解率：{{ avgCorrectRage }}%
           </span>
-          <span class="mr-1">
-            <v-icon color="green">{{ mdiCommentTextMultiple }}</v-icon>
-            {{ quiz.commentsCount }}
-          </span>
-          <v-btn 
-            class="mr-1 pa-0"
-            text
-            @click.stop.prevent="like"
-            :disabled="likeDisabled"
-          >
-            <v-icon :color="likedByUser ? 'red' : 'grey'">{{ likedByUser ? mdiHeart : mdiHeartOutline }}</v-icon>
-            {{ likesCount }}
-          </v-btn>
         </v-col>
 
         <v-col cols="4" class="mt-n10 mt-sm-0">
@@ -76,6 +81,7 @@
 
 <script>
 import { mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline } from '@mdi/js';
+import { getDecimalPointLength } from '@/util'
 
 export default {
   props: {
@@ -111,6 +117,17 @@ export default {
   computed: {
     eventName() {
       return this.detail ? null : 'click'
+    },
+    avgCorrectRage() {
+      let num = this.quiz.avgCorrectRate * 100
+      num = Math.round(num) / 100;
+      if (getDecimalPointLength(num) == 0) {
+        return num + '.00'
+      }
+      else if  (getDecimalPointLength(num) == 1) {
+        return num * '0'
+      }
+      return num;
     }
   },
   methods: {

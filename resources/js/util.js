@@ -20,6 +20,12 @@ export function getUrlParam(searchKey) {
   return decodeURI(val)
 }
 
+export function getDecimalPointLength(number) {
+  var numbers = String(number).split('.');
+
+  return (numbers[1]) ? numbers[1].length : 0;
+};
+
 export function num2eng(num) {
   switch(num) {
     case 0: return 'zero';

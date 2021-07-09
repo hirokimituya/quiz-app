@@ -32,7 +32,8 @@ class Quiz extends Model
         'gradesCount',
         'commentsCount',
         'likesCount',
-        'likedByUser'
+        'likedByUser',
+        'avgCorrectRate',
     ];
 
     /** JSONに含めない属性 */
@@ -157,6 +158,30 @@ class Quiz extends Model
         return $this->likes->contains(function($user) {
             return $user->id === Auth::user()->id;
         });
+    }
+
+    /**
+     * 平均正解数
+     * @return int
+     */
+    public function getAvgCorrectRateAttribute() 
+    {
+        $grades = Grade::where('quiz_id', $this->attributes['id'])->with('quiz')->get();
+
+        if ($grades->count() == 0) {
+            return 0;
+        }
+
+        $item_count = $this->items()->count();
+
+        $correct_rate_ary = [];
+        foreach ($grades as $grade) {
+            $correct_count = $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0;
+            $correct_rate_ary[] = $correct_count / $item_count;
+            logger($correct_count / $item_count);
+        }
+        
+        return array_sum($correct_rate_ary) / count($correct_rate_ary) * 100;
     }
 
     /**
