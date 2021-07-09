@@ -9,20 +9,42 @@
 
 <!--- 本文はこちらから --->
 # [QuizMaker](https://quiz-maker-777.herokuapp.com/)
-
-## アプリ概要
-クイズを作成・実行できるWEBアプリケーションです。
+クイズを作成・実行できるWEBアプリケーションです。<br>
+自由にクイズを作成して他ユーザに回答してもらったり、他ユーザが作成したクイズを回答できます。<br>
+（レスポンシブ対応しているため、PC・タブレット・スマートフォンからでもご確認いただけます。）
 <br><br>
 
-## 使用した技術
+## 作成した目的
+クイズ番組などが好きなのですが、クイズを自作して他の人に回答してもらったり、他の人が作った興味あるクイズを回答したりできたら素敵だなと思いこのアプリを開発しました。<br>
+シンプルなデザインで使いやすさにこだわって作りました。
+<br><br>
+
+## 使用技術
 以下を使用してWEBアプリケーションを作成しました。
-- **[Laravel](https://laravel.com/)**
-- **[Laravel Sail](https://laravel.com/docs/8.x/sail/)**
-- **[Laravel Jetstream](https://jetstream.laravel.com/2.x/)**
-- **[Vue.js](https://jp.vuejs.org/)**
-- **[Vuetify](https://vuetifyjs.com/ja/)**
-- **[Inertia.js](https://inertiajs.com/)**
-- **[axios](https://axios-http.com/)**
+- **[HTML/CSS](https://developer.mozilla.org/ja/docs/Web/HTML)**
+- **[PHP](https://laravel.com/)** 8.0.7
+- **[Laravel](https://laravel.com/)** 8.45.1
+- **[Laravel Sail](https://laravel.com/docs/8.x/sail/)** 1.0.1
+- **[docker-compose](https://docs.docker.jp/compose/toc.html)** 1.29.2
+- **[Laravel Jetstream](https://jetstream.laravel.com/2.x/)** 2.3
+- **[Vue.js](https://jp.vuejs.org/)** 2.6.1
+- **[Vuetify](https://vuetifyjs.com/ja/)** 2.4.11
+- **[Inertia.js](https://inertiajs.com/)** 0.8.7
+- **[axios](https://axios-http.com/)** 0.21.1
+- **[MariaDB](https://mariadb.com/kb/ja/mariadb/)** 10.5.10
+<br><br>
+
+## 機能一覧
+実装した機能は以下の通りです。
+- ユーザー登録、ログイン機能
+- クイズ作成機能
+- クイズ回答機能
+- クイズ実績表示機能
+- いいね機能
+- コメント機能
+- 検索機能
+- ページネーション機能
+
 <br><br>
 
 ## 画面遷移図
