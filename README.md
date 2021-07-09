@@ -54,6 +54,7 @@ URLの一覧は以下表の通りです。
 | /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   PATCH   |![鍵][鍵]| クイズのコメントを編集する。                                       |
 | /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   DELETE  |![鍵][鍵]| クイズのコメントを削除する。                                       |
 | /grade/{ユーザID}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
+| /user/show/grade                | show.grade                       |  PATCH | ![鍵][鍵]| 成績ページを他ユーザに表示するかどうかの設定をする。            |
 | /register                       | register                        |    GET   |      | 会員登録ページを表示する。                                         |
 | /register                       | register                        |   POST   |      | 会員登録処理を実行する。                                           |
 | /login                          | login                           |    GET   |      | ログイン画面を表示する。                                           |
@@ -67,7 +68,7 @@ URLの一覧は以下表の通りです。
 | /user/profile-information       | user-profile-information.update |    PUT   |![鍵][鍵]| ユーザ情報（アイコン、名前、メールアドレス）の変更処理を実行する。 |
 | /user/profile-photo             | current-user-photo.destroy      |  DELETE  |![鍵][鍵]| ユーザのアイコンの削除処理を実行する。                             |
 | /user/password                  | user-password.update            |    PUT   |![鍵][鍵]| ユーザのパスワードの変更処理を実行する。                           |
-| /user                           | current-user.destroy            |  DELETE  |![鍵][鍵]| ユーザを削除する。                                                 |
+| /user                           | current-user.destroy            |  DELETE  |![鍵][鍵]| ユーザを削除する。                                             |
 
 
 <br><br>

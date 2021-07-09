@@ -57,4 +57,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');
 
     Route::delete('/quiz/{quiz}/like', [QuizController::class, 'unlike']);
+
+    Route::patch('/user/show/grade', [HomeController::class, 'showGradeSetting'])->name('show.grade');
+
 });

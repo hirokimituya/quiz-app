@@ -23,6 +23,7 @@
 							block
 							color="green"
 							@click.prevent="onGradeList"
+							v-if="gradeBtnShow"
 						>
 							クイズ実行履歴
 						</v-btn>
@@ -199,6 +200,18 @@ export default {
 			if (this.$page.props.user !== null) {
 				return this.$page.props.user.id == this.dashboard_user.id
 			}
+			return false
+		},
+		gradeBtnShow() {
+			if (!!this.dashboard_user.show_grade) {
+				return true;
+			}
+			else {
+				if (this.$page.props.user !== null) {
+					return this.$page.props.user.id == this.dashboard_user.id
+				}
+			}
+
 			return false
 		}
 	},

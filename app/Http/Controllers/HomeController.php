@@ -106,13 +106,18 @@ class HomeController extends Controller
                 $user = $request->user();
             }
             else {
-                return redirect()->route('home');
+                return abort(404);
+            }
+        }
+        else {
+            if (!$user->show_grade) {
+                if ($user->id !== optional($request->user())->id) {
+                    return abort(403);
+                }
             }
         }
 
         $grades = Grade::where('grades.user_id', $user->id)->sort($sort_item)->with('quiz.items')->paginate($disp_num)->toArray();
-
-        logger($grades['data'][0]['created_at']);
 
         $grades_list = [];
         foreach ($grades['data'] as $grade) {
@@ -137,5 +142,16 @@ class HomeController extends Controller
             'perPage' => $grades['per_page'],
             'sortItem'=> $sort_item,
         ]);
+    }
+
+    public function showGradeSetting(Request $request)
+    {
+        $user = $request->user();
+
+        $user->show_grade = $request->show_grade;
+
+        $user->save();
+
+        return redirect()->route('profile.show');
     }
 }

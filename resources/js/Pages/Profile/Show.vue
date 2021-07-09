@@ -11,6 +11,12 @@
     </div>
 
 		<v-divider></v-divider>
+
+    <div v-if="$page.props.jetstream.canUpdatePassword">
+      <show-grade-form class="my-8" />
+    </div>
+
+		<v-divider></v-divider>
 		
     <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
       <delete-user-form class="my-8" />
@@ -23,6 +29,7 @@
 	import DeleteUserForm from './DeleteUserForm'
 	import UpdatePasswordForm from './UpdatePasswordForm'
 	import UpdateProfileInformationForm from './UpdateProfileInformationForm'
+	import ShowGradeForm from './ShowGradeForm.vue'
 
 	export default {
 		props: ['sessions'],
@@ -32,6 +39,7 @@
 			DeleteUserForm,
 			UpdatePasswordForm,
 			UpdateProfileInformationForm,
+			ShowGradeForm,
 		},
 	}
 </script>
