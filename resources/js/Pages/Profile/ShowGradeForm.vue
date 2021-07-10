@@ -5,7 +5,7 @@
 		</template>
 
 		<template #description>
-			クイズ実行履歴を他の人に見せたくない場合は、
+			クイズ実行履歴を他のユーザに表示するかどうかを設定します。
 		</template>
 
 		<template #form>

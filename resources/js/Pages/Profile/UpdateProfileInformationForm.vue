@@ -5,7 +5,7 @@
 		</template>
 
 		<template #description>
-			アカウント情報とメールアドレスの更新
+			アカウント情報とメールアドレスの更新をします。
 		</template>
 
 		<template #form>
