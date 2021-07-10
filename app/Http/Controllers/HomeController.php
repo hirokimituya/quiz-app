@@ -130,7 +130,7 @@ class HomeController extends Controller
                 'user_name' => $grade['quiz']['user']['name'],
                 'items_count' => count($grade['quiz']['items']),
                 'correct_count' => $grade['correct_count'] != 0 ? count(explode(',', $grade['correct_count'])) : 0,
-                'created_at' => Carbon::parse($grade['created_at'])->format('Y/m/d H:i:s'),
+                'created_at' => Carbon::parse($grade['created_at'])->addHour(9)->format('Y/m/d H:i:s'),
             ];
         }
 
