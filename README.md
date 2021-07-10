@@ -1,5 +1,5 @@
 <!--- 画像URLの変数定義 --->
-[画面遷移図]: https://user-images.githubusercontent.com/81066421/119996914-24878800-c00a-11eb-900d-6236d78f2dcd.png
+[画面遷移図]: https://user-images.githubusercontent.com/81066421/125150452-d45c2380-e17a-11eb-96a9-b95d46509a97.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
 [ER図]: https://user-images.githubusercontent.com/81066421/120052090-7e19a200-c05e-11eb-8850-5085b1ddde2b.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
