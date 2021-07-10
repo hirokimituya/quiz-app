@@ -254,6 +254,7 @@ class QuizController extends Controller
         $user_grades_ary = [];
         if (Auth::check()) {
             $grades = Grade::quizUserGet($quiz, Auth::user())->get();
+            $grades = $grades->sortBy('created_at')->values();
             $user_grades_ary = $grades->map(function($grade) {
                 return $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0;
             });
