@@ -1,7 +1,7 @@
 <!--- 画像URLの変数定義 --->
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/125150452-d45c2380-e17a-11eb-96a9-b95d46509a97.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/125150557-97446100-e17b-11eb-91de-fa637d15b1b5.png
+[ER図]: https://user-images.githubusercontent.com/81066421/125150649-687aba80-e17c-11eb-8910-ee84ff8cfa5b.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -116,6 +116,7 @@ ER図は以下画像の通りです。
 | パスワード           | password                  |     VARCHAR(255)    |         |        |![チェック][チェック]|         |
 | リメンバートークン   | remember_token            |     VARCHAR(100)    |         |        |          |         |
 | プロファイル画像パス | profile_photo_path        |         TEXT        |         |        |          |         |
+| クイズ実行履歴表示フラグ | show_grade        |         SMALLINT        |         |        |![チェック][チェック]|         |
 | 作成日               | created_at                |      TIMESTAMP      |         |        |          |         |
 | 更新日               | updated_at                |      TIMESTAMP      |         |        |          |         |
 
