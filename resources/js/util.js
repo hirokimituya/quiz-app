@@ -20,11 +20,33 @@ export function getUrlParam(searchKey) {
   return decodeURI(val)
 }
 
+/**
+ * 小数点以下の桁数を取得する
+ * @param {Number} number 対象の数値
+ * @return {Number} 小数点以下の桁数
+ */
 export function getDecimalPointLength(number) {
   var numbers = String(number).split('.');
 
   return (numbers[1]) ? numbers[1].length : 0;
 };
+
+/**
+ * 小数点以下2までの文字列に変換する
+ * @param {Number} num 対象の数値
+ * @return {String} 小数点以下2まである文字列
+ */
+export function putDesimalPointTwo(num) {
+  num = num * 100
+  num = Math.round(num) / 100;
+  if (getDecimalPointLength(num) == 0) {
+    return num + '.00'
+  }
+  else if  (getDecimalPointLength(num) == 1) {
+    return num * '0'
+  }
+  return num;
+} 
 
 export function num2eng(num) {
   switch(num) {

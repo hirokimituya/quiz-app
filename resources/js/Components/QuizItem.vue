@@ -2,7 +2,16 @@
 	<v-sheet class="mb-8">
 		<v-row no-gutters>
 			<v-col cols="12" md="2">
-				<h3 class="text-h5">問題{{ num }}</h3>
+				<v-row no-gutters justify="space-between">
+					<v-col cols="7" md="12">
+						<h3 class="text-h5 mb-3">問題{{ num }}</h3>
+					</v-col>
+					<v-col class="text-right text-md-left">
+						<span v-if="!!correctRate">
+        		  正解率：{{ correctRate }}%
+        		</span>
+					</v-col>
+				</v-row>
 			</v-col>
 
 			<v-col>
@@ -96,6 +105,7 @@
 
 <script>
 import { num2eng } from '@/util'
+import { putDesimalPointTwo } from '@/util'
 
 export default {
 	props: {
@@ -122,8 +132,17 @@ export default {
 				answerCheck: this.value.answerCheck ? this.value.answerCheck.map(n => Number(n)) : null,
 				selectItemText: this.value.selectItemText || null,
 				selectItemsNum: this.value.selectItemsNum || null,
+				correctRate: this.value.correctRate,
 			},
 		}
+	},
+	computed: {
+		correctRate() {
+			if (this.value.correctRate != "undefined") {
+				return putDesimalPointTwo(this.value.correctRate);
+			}
+			return false;
+    },
 	},
 	methods: {
 		onChange() {

@@ -441,6 +441,8 @@ class QuizController extends Controller
     {
         $items = Item::where('quiz_id', $quiz->id)->get();
 
+        $correct_rates = $this->getItemCorrectRate($quiz);
+
         $items_data = [];
         foreach ($items as $item) {
             $key = Item::NUM_STR[$item->question_number];
@@ -477,8 +479,46 @@ class QuizController extends Controller
                     }
                 }
             }
+            $items_data[$key]['correctRate'] = $correct_rates[$item->question_number];
         }
 
         return $items_data;
+    }
+
+    private function getItemCorrectRate(Quiz $quiz)
+    {
+        $grades = Grade::where('quiz_id', $quiz->id)->with('quiz')->get();
+
+        $item_count = $quiz->items()->count();
+
+        $correct_rates = [];
+
+        for ($i = 1; $i <= $item_count; $i++) {
+            $correct_rates[$i] = 0;
+        }
+            
+        if ($grades->count() == 0) {
+            return $correct_rates;
+        }
+
+        foreach ($grades as $grade) {
+            if ($grade->correct_count == 0) {
+                continue;
+            }
+            $correct_ary = explode(',', $grade->correct_count);
+
+            foreach ($correct_ary as $correct_num) {
+                $correct_num = intval($correct_num);
+                if (isset($correct_rates[$correct_num])) {
+                    $correct_rates[$correct_num]++;
+                }
+            }
+        }
+
+        foreach ($correct_rates as $key => $correct_rate) {
+            $correct_rates[$key] = $correct_rate / $grades->count() * 100;
+        }
+
+        return $correct_rates;
     }
 }

@@ -46,7 +46,7 @@
             </v-btn>
           </div>
           <span class="mr-5">
-            平均正解率：{{ avgCorrectRage }}%
+            平均正解率：{{ avgCorrectRate }}%
           </span>
         </v-col>
 
@@ -81,7 +81,7 @@
 
 <script>
 import { mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline } from '@mdi/js';
-import { getDecimalPointLength } from '@/util'
+import { putDesimalPointTwo } from '@/util'
 
 export default {
   props: {
@@ -118,16 +118,8 @@ export default {
     eventName() {
       return this.detail ? null : 'click'
     },
-    avgCorrectRage() {
-      let num = this.quiz.avgCorrectRate * 100
-      num = Math.round(num) / 100;
-      if (getDecimalPointLength(num) == 0) {
-        return num + '.00'
-      }
-      else if  (getDecimalPointLength(num) == 1) {
-        return num * '0'
-      }
-      return num;
+    avgCorrectRate() {
+      return putDesimalPointTwo(this.quiz.avgCorrectRate);
     }
   },
   methods: {
