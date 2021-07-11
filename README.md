@@ -208,6 +208,5 @@ ER図は以下画像の通りです。
 | ユーザID     | user_id      | BIGINT UNSIGNED |         |        |![チェック][チェック]|  ![外部][外部]&nbsp;users(id)  |
 | 作成日       | created_at   |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at   |    TIMESTAMP    |         |        |          |             |
-| 更新日       | updated_at   |    TIMESTAMP    |         |        |          |             |
 
 <br>
