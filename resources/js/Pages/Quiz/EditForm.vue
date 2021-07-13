@@ -165,12 +165,15 @@
           </v-col>
         </v-row>
 
-        <quiz-item-form
-          v-for="num in questionNum"
-          :key="num"
-          v-model="form.question[num2eng(num)]"
-          :num="num"
-        ></quiz-item-form>
+        <draggable @end="onEnd" id="draggable">
+          <quiz-item-form
+            v-for="num in questionNum"
+            :key="key[num - 1]"
+            v-model="form.question[num2eng(num)]"
+            :num="num"
+            :id="num"
+          ></quiz-item-form>
+        </draggable>
 
         <v-row no-gutters>
           <v-col md="6" offset-md="3">
@@ -195,12 +198,15 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizItemForm from '@/Components/QuizItemForm'
 
+import draggable from 'vuedraggable'
+
 import { num2eng, eng2num } from '@/util'
 
 export default {
   components: { 
     AppLayout,
-    QuizItemForm
+    QuizItemForm,
+    draggable,
   },
   props: {
     genres: {
@@ -244,6 +250,7 @@ export default {
         imageDeleteFlg: false,
       }),
       questionNum: 1,
+      key: [],
       currentImage: null,
     }
   },
@@ -281,6 +288,26 @@ export default {
     num2eng(num) {
       return num2eng(num)
     },
+    createKey() {
+      let S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      let array_count = Object.keys(this.form.question).length
+      this.key = [...Array(array_count)].map(() => {
+        return Array.from(Array(12)).map(()=>S[Math.floor(Math.random()*S.length)]).join('')
+      })
+    },
+    onEnd() {
+      let children = document.getElementById('draggable').childNodes
+      let new_question = {}
+      for (let key in Object.keys(children)) {
+        let question_new_num = Number(key) + 1
+        let question_old_num = Number(children[key].id)
+        new_question[num2eng(question_new_num)] = this.form.question[num2eng(question_old_num)]
+      }
+      new_question = Object.assign(this.form.question, new_question)
+      this.form.question = new_question
+      // QuizItemFormを強制更新するためにkeyプロパティを変更する
+      this.createKey()
+    },
   },
   watch: {
     questionNum: {
@@ -301,6 +328,9 @@ export default {
       },
       immediate: true,
     },
-  }
+  },
+  mounted() {
+    this.createKey()
+  },
 }
 </script>
