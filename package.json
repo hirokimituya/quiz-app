@@ -33,5 +33,8 @@
         "vuetify": "^2.4.11",
         "vuetify-loader": "^1.7.2",
         "vuetifyjs-mix-extension": "^0.0.20"
+    },
+    "dependencies": {
+        "vuedraggable": "^2.24.3"
     }
 }
