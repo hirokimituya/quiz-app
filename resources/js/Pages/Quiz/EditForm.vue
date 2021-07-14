@@ -165,7 +165,11 @@
           </v-col>
         </v-row>
 
-        <draggable @end="onEnd" id="draggable">
+        <draggable 
+          @end="onEnd" 
+          id="draggable"
+          :options="options"
+        >
           <quiz-item-form
             v-for="num in questionNum"
             :key="key[num - 1]"
@@ -252,6 +256,9 @@ export default {
       questionNum: 1,
       key: [],
       currentImage: null,
+      options: {
+        animation: 200,
+      },
     }
   },
   methods: {
