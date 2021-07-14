@@ -69,7 +69,12 @@
               </inertia-link>
             </td>
             <td>
-              {{ grade.genre_name }}
+              <inertia-link 
+                :href="route('home')"
+                :data="{ genre: grade.genre_id }" 
+              >
+                {{ grade.genre_name }}
+              </inertia-link>
             </td>
             <td>
               <inertia-link :href="route('dashboard', {user: grade.user_id})">
