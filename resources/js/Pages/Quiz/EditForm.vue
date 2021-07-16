@@ -176,6 +176,7 @@
             v-model="form.question[num2eng(num)]"
             :num="num"
             :id="num"
+            @delete="onDelete"
           ></quiz-item-form>
         </draggable>
 
@@ -204,7 +205,7 @@ import QuizItemForm from '@/Components/QuizItemForm'
 
 import draggable from 'vuedraggable'
 
-import { num2eng, eng2num } from '@/util'
+import { num2eng, eng2num, quizItemDelete } from '@/util'
 
 export default {
   components: { 
@@ -310,8 +311,20 @@ export default {
         let question_old_num = Number(children[key].id)
         new_question[num2eng(question_new_num)] = this.form.question[num2eng(question_old_num)]
       }
-      new_question = Object.assign(this.form.question, new_question)
+      new_question = Object.assign({}, this.form.question, new_question)
       this.form.question = new_question
+      // QuizItemFormを強制更新するためにkeyプロパティを変更する
+      this.createKey()
+    },
+    onDelete(item_num) {
+      if (this.questionNum <= 1) {
+        return alert('問題が1つの場合は、削除できません。')
+      }
+
+      this.form.question = quizItemDelete(this.form.question, item_num)
+
+      this.questionNum--
+
       // QuizItemFormを強制更新するためにkeyプロパティを変更する
       this.createKey()
     },

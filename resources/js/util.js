@@ -48,6 +48,27 @@ export function putDesimalPointTwo(num) {
   return num;
 } 
 
+/*
+ * クイズアイテムを削除する
+ * @param {Object} question クイズアイテム郡
+ * @param {Number} num 削除対象のクイズアイテム番号
+ * @return {Object} quextion 対象アイテムを削除したクイズアイテム群
+ */
+export function quizItemDelete(question, num) {
+  let ret_question = Object.assign({}, question)
+  let question_length = Object.keys(ret_question).length
+
+  delete ret_question[num2eng(num)]
+
+  for (let i = num; i < question_length; i++) {
+    ret_question[num2eng(i)] = ret_question[num2eng(i + 1)]
+  }
+
+  ret_question[num2eng(question_length)] = {}
+  
+  return ret_question
+} 
+
 export function num2eng(num) {
   switch(num) {
     case 0: return 'zero';

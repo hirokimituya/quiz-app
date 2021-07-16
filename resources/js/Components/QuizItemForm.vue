@@ -3,13 +3,22 @@
 		<v-row no-gutters>
 			<v-col cols="12" md="2">
 				<v-row no-gutters justify="space-between">
-					<v-col cols="7" md="12">
+					<v-col cols="5" md="12">
 						<h3 class="text-h5 mb-3">問題{{ num }}</h3>
 					</v-col>
-					<v-col class="text-right text-md-left">
+					<v-col class="text-right text-md-left" cols="5" md="12" order="3" order-md="2">
 						<span v-if="!!correctRate">
         		  正解率：{{ correctRate }}%
         		</span>
+					</v-col>
+					<v-col class="mt-md-1 text-right text-md-left" cols="2" md="12" order="2" order-md="3">
+						<v-btn
+							color="red"
+							class="white--text"
+							@click="itemDelete"
+						>
+							削除
+						</v-btn>
 					</v-col>
 				</v-row>
 			</v-col>
@@ -343,6 +352,11 @@ export default {
 		getSelectItemTextErrors(num) {
       return this.errors['question.' + num2eng(this.num) + '.selectItemText.' + num]
     },
+		itemDelete() {
+			if (confirm('問題' + this.num + 'を削除しますが、よろしいですか。')) {
+				this.$emit('delete', this.num)
+			}
+		}
 	},
 	watch: {
 		'emitData.selectItemsNum': {
