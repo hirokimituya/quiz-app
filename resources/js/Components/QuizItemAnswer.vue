@@ -40,7 +40,7 @@
 										dense
 										required
 										rows="1"
-										:disabled="true"
+										readonly
 										v-model="item.answerText"
 									></v-textarea>
 								</div>
@@ -52,7 +52,7 @@
 												<v-radio-group 
 													required 
 													v-model="item.answerRadio"
-													:disabled="true"
+													readonly
 												>
 													<div v-for="n in Number(item.selectItemsNum)" :key="n">
 														<v-radio
@@ -76,7 +76,7 @@
 														hide-details
 														multiple
 														:value='n'
-														:disabled="true"
+														readonly
 													>
 														<template #label>
 															<v-card-text class="text-subtitle-1">

@@ -40,7 +40,7 @@
 										dense
 										required
 										rows="1"
-										:disabled="disabled"
+										:readonly="readonly"
 										v-model="emitData.answerText"
 										@change="onChange"
 									></v-textarea>
@@ -53,7 +53,7 @@
 												<v-radio-group 
 													required 
 													v-model="emitData.answerRadio"
-													:disabled="disabled"
+													:readonly="readonly"
 													@change="onChange"
 												>
 													<div v-for="n in Number(value.selectItemsNum)" :key="n">
@@ -78,7 +78,7 @@
 														hide-details
 														multiple
 														:value='n'
-														:disabled="disabled"
+														:readonly="readonly"
 														@change="onChange"
 													>
 														<template #label>
@@ -117,7 +117,7 @@ export default {
 			type: Number,
 			required: true,
 		},
-		disabled: {
+		readonly: {
 			type: Boolean,
 			default: false,
 		}

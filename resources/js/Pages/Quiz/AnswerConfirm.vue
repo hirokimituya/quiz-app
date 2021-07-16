@@ -11,7 +11,7 @@
           v-for="num in questionNum"
           :key="num"
           v-model="form.question[num2eng(num)]"
-          disabled
+          readonly
           :num="num"
         ></quiz-item>
 
