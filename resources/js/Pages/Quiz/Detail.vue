@@ -149,7 +149,7 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizInfo from '@/Components/QuizInfo'
 import Comment from '@/Components/Comment'
-import DeleteQuizForm from './DeleteQuizForm'
+import DeleteQuizForm from '@/Components/DeleteQuizForm'
 
 const gradients = [
   ['#222'],
