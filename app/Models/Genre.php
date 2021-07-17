@@ -14,4 +14,26 @@ class Genre extends Model
         'created_at',
         'updated_at',
     ];
+
+    /** JSONに含めるアクセサ */
+    protected $appends = [
+        'quiz_count',
+    ];
+
+    /**
+     * リレーションシップ - quizzesテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function quizzes() {
+        return $this->hasMany(Quiz::class);
+    }
+
+    /**
+     * アクセサ - quiz_count
+     * @return string
+     */
+    public function getQuizCountAttribute()
+    {
+        return $this->quizzes()->count();
+    }
 }

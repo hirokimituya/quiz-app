@@ -20,7 +20,8 @@ class HomeController extends Controller
         $sort_item = $request->sort ?? 'new';
 
         $genres = Genre::all();
-        $genres->prepend(['id' => 0, 'name' => 'すべて']);
+        $genres = $genres->sortByDesc('quiz_count');
+        $genres->prepend(['id' => 0, 'name' => 'すべて', 'quiz_count' => Quiz::count()]);
 
         if (empty(Genre::find($genre_id))) {
             if (empty($search_query)) {
