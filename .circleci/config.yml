@@ -5,8 +5,6 @@ jobs:
       - image: circleci/php:7.3-node-browsers
     steps:
       - checkout
-      - restore_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
       - run: composer install -n --prefer-dist
       - save_cache:
           key: composer-v1-{{ checksum "composer.lock" }}
