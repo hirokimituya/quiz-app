@@ -8,7 +8,7 @@
 
 
 <!--- 本文はこちらから --->
-# [QuizMaker](https://quiz-maker-777.herokuapp.com/)
+# [QuizMaker](http://quiz-maker-elb-693979393.ap-northeast-1.elb.amazonaws.com//)
 クイズを作成・実行できるWEBアプリケーションです。<br>
 自由にクイズを作成して他ユーザに回答してもらったり、他ユーザが作成したクイズを回答できます。<br>
 また、高速なページ遷移を可能にするため、Vue.jsやInertia.jsを使用したSPAでアプリケーションを作成しています。<br>
