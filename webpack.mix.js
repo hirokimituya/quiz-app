@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 require('vuetifyjs-mix-extension');
-require('laravel-mix-bundle-analyzer');
+//require('laravel-mix-bundle-analyzer');
 
 /*
  |--------------------------------------------------------------------------
@@ -21,6 +21,6 @@ mix.browserSync('localhost')
     .version()
     .webpackConfig(require('./webpack.config'));
 
-if (!mix.inProduction()) {
-    mix.bundleAnalyzer();
-}
+//if (!mix.inProduction()) {
+//    mix.bundleAnalyzer();
+//}
