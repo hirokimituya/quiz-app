@@ -107,10 +107,10 @@ export default {
 		},
   },
   watch: {
-    selectedGenre() {
+    selectedGenre(newVal, oldVale) {
+      let selectedGenreTmp = newVal !== undefined ? newVal : oldVale
       let data = {}
-      data.genre = this.genres[this.selectedGenre].id
-      console.log('selectedGenre: ' + data.genre)
+      data.genre = this.genres[selectedGenreTmp].id
 
       let sort = getUrlParam('sort')
       if (sort !== '') {
