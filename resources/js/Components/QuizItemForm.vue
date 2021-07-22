@@ -6,12 +6,12 @@
 					<v-col cols="5" md="12">
 						<h3 class="text-h5 mb-3">問題{{ num }}</h3>
 					</v-col>
-					<v-col class="text-right text-md-left" cols="5" md="12" order="3" order-md="2">
+					<v-col class="text-right text-md-left" cols="5" md="12">
 						<span v-if="!!correctRate">
         		  正解率：{{ correctRate }}%
         		</span>
 					</v-col>
-					<v-col class="mt-md-1 text-right text-md-left" cols="2" md="12" order="2" order-md="3">
+					<v-col class="mt-md-1 text-right text-md-left" cols="2" md="12">
 						<v-btn
 							color="red"
 							class="white--text"
