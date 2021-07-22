@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Quiz extends Model
@@ -107,10 +108,10 @@ class Quiz extends Model
     public function getUrlAttribute()
     {
         if ($this->attributes['filename'] == null) {
-            return asset('storage/images/noimage.png');
+            return Storage::disk('s3')->url('images/noimage.png');
         }
 
-        return asset('storage/images/' . $this->attributes['filename']);
+        return Storage::disk('s3')->url('images/' . $this->attributes['filename']);
     }
 
     /**
