@@ -197,7 +197,8 @@ export default {
   },
   computed: {
     commentAuthorAvator() {
-      return this.$page.props.user ? this.$page.props.user.profile_photo_url : '/storage/images/no_avator.jpg'
+      var s3_origin = this.quiz.url.match(/(^https?:\/{2,}.*?)(?:\/|\?|#|$)/)[1]
+      return this.$page.props.user ? this.$page.props.user.profile_photo_url : s3_origin + '/images/no_avator.jpg'
     },
     commentAuthorName() {
       return this.$page.props.user ? this.$page.props.user.name : '未ログイン'
