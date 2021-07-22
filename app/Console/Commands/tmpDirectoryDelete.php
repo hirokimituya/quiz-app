@@ -38,11 +38,12 @@ class tmpDirectoryDelete extends Command
      */
     public function handle()
     {
+        $file_count = count(Storage::disk('s3')->files('/images/tmp'));
         $result = Storage::disk('s3')->deleteDirectory('/images/tmp');
 
         if ($result) {
-            $this->info('tmpディレクトリの削除に成功しました。');
-            logger()->info('tmpディレクトリの削除に成功しました。');
+            $this->info("tmpディレクトリの削除に成功しました。【削除ファイル数： ${file_count}】");
+            logger()->info("tmpディレクトリの削除に成功しました。【削除ファイル数： ${file_count}】");
         }
         else {
             $this->error('tmpディレクトリの削除に失敗しました。');
