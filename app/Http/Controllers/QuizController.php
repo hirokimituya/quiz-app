@@ -34,8 +34,9 @@ class QuizController extends Controller
         $request_data = $request->all();
 
         if ($request->image) {
-            $img_path = $request->file('image')->store('images/tmp', 'public');
-            $request_data['image'] = '/storage/' . $img_path;
+            $img_path = $request->file('image')->store('images/tmp', 's3');
+            $img_path = Storage::disk('s3')->url($img_path);
+            $request_data['image'] = $img_path;
         }
 
         return Inertia::render('Quiz/CreateConfirm', [
@@ -49,7 +50,7 @@ class QuizController extends Controller
         $filename = $request->image ? basename($request->image) : null;
 
         if (!empty($filename)) {
-            Storage::disk('public')->move('images/tmp/' . $filename, 'images/' .$filename);
+            Storage::disk('s3')->move('images/tmp/' . $filename, 'images/' .$filename);
         }
 
         DB::beginTransaction();
@@ -108,7 +109,7 @@ class QuizController extends Controller
         catch (\Exception $exception) {
             DB::rollBack();
             if (!empty($filename)) {
-                Storage::disk('public')->delete('images/' . $filename);
+                Storage::disk('s3')->delete('images/' . $filename);
             }
             throw $exception;
         }
@@ -123,7 +124,7 @@ class QuizController extends Controller
         $quiz->delete();
 
         if (!empty($filename)) {
-            Storage::disk('public')->delete('images/' . $quiz->filename);
+            Storage::disk('s3')->delete('images/' . $quiz->filename);
         }
 
         return redirect()->route('dashboard', ['user' => $quiz->user_id]);
@@ -149,11 +150,12 @@ class QuizController extends Controller
         $request_data = $request->all();
 
         if ($request->image) {
-            $img_path = $request->file('image')->store('images/tmp', 'public');
-            $request_data['image'] = '/storage/' . $img_path;
+            $img_path = $request->file('image')->store('images/tmp', 's3');
+            $img_path = Storage::disk('s3')->url($img_path);
+            $request_data['image'] = $img_path;
         }
         else if (!$request->imageDeleteFlg && $quiz->filename !== null) {
-            $request_data['image'] = '/storage/images/' . $quiz->filename;
+            $request_data['image'] = 'images/' . $quiz->filename;
         }
 
         return Inertia::render('Quiz/EditConfirm', [
@@ -171,11 +173,11 @@ class QuizController extends Controller
 
         // 画像の変更または削除があった場合、現在の画像を削除する。
         if ($image_change_flg || $request->imageDeleteFlg) {
-            Storage::disk('public')->delete('images/' . $quiz->filename);
+            Storage::disk('s3')->delete('images/' . $quiz->filename);
         }
 
         if ($image_change_flg) {
-            Storage::disk('public')->move('images/tmp/' . $filename, 'images/' .$filename);
+            Storage::disk('s3')->move('images/tmp/' . $filename, 'images/' .$filename);
         }
 
         DB::beginTransaction();
@@ -237,7 +239,7 @@ class QuizController extends Controller
         catch (\Exception $exception) {
             DB::rollBack();
             if ($image_change_flg) {
-                Storage::disk('public')->delete('images/' . $filename);
+                Storage::disk('s3')->delete('images/' . $filename);
             }
             throw $exception;
         }
