@@ -168,7 +168,7 @@
         <draggable 
           @end="onEnd" 
           id="draggable"
-          :options="options"
+          :animation="200"
         >
           <quiz-item-form
             v-for="num in questionNum"
@@ -257,9 +257,6 @@ export default {
       questionNum: 1,
       key: [],
       currentImage: null,
-      options: {
-        animation: 200,
-      },
     }
   },
   methods: {
