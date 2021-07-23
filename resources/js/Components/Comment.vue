@@ -79,15 +79,15 @@
 </template>
 
 <script>
-import commentEditDialog from '@/Components/commentEditDialog'
-import commentDeleteDialog from '@/Components/commentDeleteDialog'
+import CommentEditDialog from '@/Components/CommentEditDialog'
+import CommentDeleteDialog from '@/Components/CommentDeleteDialog'
 
 import { mdiDotsVertical, mdiPencil, mdiDelete } from '@mdi/js'
 
 export default {
   components: {
-    commentEditDialog,
-    commentDeleteDialog,
+    CommentEditDialog,
+    CommentDeleteDialog,
   },
   props: {
     quizId: {
