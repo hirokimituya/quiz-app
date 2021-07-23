@@ -7,7 +7,9 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production"
+        "production": "mix --production",
+        "lint": "./node_modules/.bin/eslint --ext .js,.vue --ignore-path .gitignore .",
+        "lint-fix": "./node_modules/.bin/eslint --fix --ext .js,.vue --ignore-path .gitignore ."
     },
     "devDependencies": {
         "@inertiajs/inertia": "^0.8.4",
@@ -20,6 +22,9 @@
         "browser-sync-webpack-plugin": "^2.3.0",
         "compression-webpack-plugin": "^8.0.1",
         "deepmerge": "^4.2.2",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-vue": "^7.14.0",
         "laravel-mix": "^6.0.6",
         "laravel-mix-bundle-analyzer": "^1.0.5",
         "lodash": "^4.17.19",
