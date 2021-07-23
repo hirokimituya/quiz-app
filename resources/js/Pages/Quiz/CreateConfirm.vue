@@ -1,7 +1,10 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ作成確認</v-card-title>
+      <v-card-title
+        class="text-h5 text-md-h4 d-block text-center secondary--text"
+        >クイズ作成確認</v-card-title
+      >
 
       <v-form @submit.prevent="onSubmit">
         <table class="mx-auto mb-3" width="90%">
@@ -29,7 +32,7 @@
           <tr v-if="form.image">
             <th class="text-left pb-4">画像</th>
             <td>
-              <img :src="form.image" alt='クイズ用画像' width="200px">
+              <img :src="form.image" alt="クイズ用画像" width="200px" />
             </td>
           </tr>
         </table>
@@ -69,7 +72,6 @@
             </v-btn>
           </v-col>
         </v-row>
-
       </v-form>
     </v-card>
   </app-layout>
@@ -112,15 +114,15 @@ export default {
       return Object.keys(this.form.question).length
     },
     getGenre() {
-      let ret;
+      let ret
       this.genres.forEach(genre => {
-        if(genre.id == this.form.genre) {
-          ret = genre.name;
+        if (genre.id == this.form.genre) {
+          ret = genre.name
         }
       })
 
-      return ret;
-    }
+      return ret
+    },
   },
   methods: {
     onSubmit() {
@@ -131,7 +133,7 @@ export default {
     },
     num2eng(num) {
       return num2eng(num)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,10 +1,7 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <quiz-info
-				:quiz="quiz"
-        :detail="true"
-			></quiz-info>
+      <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 
       <v-form @submit.prevent="onSubmit">
         <quiz-item
@@ -41,9 +38,7 @@
             </v-btn>
           </v-col>
         </v-row>
-
       </v-form>
-
     </v-card>
   </app-layout>
 </template>
@@ -56,7 +51,7 @@ import QuizItem from '@/Components/QuizItem'
 import { num2eng } from '@/util'
 
 export default {
-  components: { 
+  components: {
     AppLayout,
     QuizInfo,
     QuizItem,
@@ -69,11 +64,9 @@ export default {
     items: {
       type: Object,
       required: true,
-    }
+    },
   },
-  remember: [
-    'form',
-  ],
+  remember: ['form'],
   data() {
     return {
       form: this.$inertia.form({
@@ -88,19 +81,21 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.post(route('quiz.answer.conf', {
-        quiz: this.quiz.id,
-      }))
+      this.form.post(
+        route('quiz.answer.conf', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     back() {
       history.back()
     },
     num2eng(num) {
       return num2eng(num)
-    }
+    },
   },
   mounted() {
-    this.$vuetify.goTo(0, {duration: 0});
-  }
+    this.$vuetify.goTo(0, { duration: 0 })
+  },
 }
 </script>

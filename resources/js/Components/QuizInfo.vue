@@ -1,19 +1,16 @@
 <template>
-  <v-card 
+  <v-card
     :max-width="maxWidth"
     class="mb-5"
     :elevation="elevation"
-    v-on:[eventName]="onClick"
+    @[eventName]="onClick"
   >
     <v-card-text>
       <v-row no-gutters>
         <v-col cols="8" sm="7" class="mb-5">
-          <a
-            text-decoration="none"
-            @click.stop.prevent="mypage"
-          >
+          <a text-decoration="none" @click.stop.prevent="mypage">
             <v-avatar :size="avatarSize">
-              <img :src="quiz.user.profile_photo_url" :alt="quiz.user.name">
+              <img :src="quiz.user.profile_photo_url" :alt="quiz.user.name" />
             </v-avatar>
           </a>
           <a
@@ -35,19 +32,19 @@
               <v-icon color="green">{{ mdiCommentTextMultiple }}</v-icon>
               {{ quiz.commentsCount }}
             </span>
-            <v-btn 
+            <v-btn
               class="mr-1 pa-0"
               text
               @click.stop.prevent="like"
               :disabled="likeDisabled"
             >
-              <v-icon :color="likedByUser ? 'red' : 'grey'">{{ likedByUser ? mdiHeart : mdiHeartOutline }}</v-icon>
+              <v-icon :color="likedByUser ? 'red' : 'grey'">{{
+                likedByUser ? mdiHeart : mdiHeartOutline
+              }}</v-icon>
               {{ likesCount }}
             </v-btn>
           </div>
-          <span class="mr-5">
-            平均正解率：{{ avgCorrectRate }}%
-          </span>
+          <span class="mr-5"> 平均正解率：{{ avgCorrectRate }}% </span>
         </v-col>
 
         <v-col cols="4" class="mt-n10 mt-sm-0">
@@ -55,7 +52,7 @@
         </v-col>
 
         <v-col cols="12" sm="8" class="ml-sm-5 mr-sm-n5" align-self="center">
-          <table :class="{ 'text-subtitle-1' : detail }">
+          <table :class="{ 'text-subtitle-1': detail }">
             <tr>
               <th width="80px" class="text-left">タイトル</th>
               <td class="pa-1">{{ quiz.title }}</td>
@@ -80,7 +77,12 @@
 </template>
 
 <script>
-import { mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline } from '@mdi/js';
+import {
+  mdiClipboardPlay,
+  mdiCommentTextMultiple,
+  mdiHeart,
+  mdiHeartOutline,
+} from '@mdi/js'
 import { putDesimalPointTwo } from '@/util'
 
 export default {
@@ -92,11 +94,14 @@ export default {
     detail: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
-      mdiClipboardPlay, mdiCommentTextMultiple, mdiHeart, mdiHeartOutline,
+      mdiClipboardPlay,
+      mdiCommentTextMultiple,
+      mdiHeart,
+      mdiHeartOutline,
       elevation: undefined,
       maxWidth: 800,
       avatarSize: 35,
@@ -119,33 +124,37 @@ export default {
       return this.detail ? null : 'click'
     },
     avgCorrectRate() {
-      return putDesimalPointTwo(this.quiz.avgCorrectRate);
-    }
+      return putDesimalPointTwo(this.quiz.avgCorrectRate)
+    },
   },
   methods: {
     onClick() {
-      this.$inertia.get(route('quiz.detail', {
-        quiz: this.quiz.id,
-      }))
+      this.$inertia.get(
+        route('quiz.detail', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     async like() {
       this.likeDisabled = true
 
       if (this.$page.props.user === null) {
         this.$inertia.get(route('login'))
-      }
-      else if (!this.likedByUser) {
-        const response = await axios.put(route('quiz.like', {
-          quiz: this.quiz.id,
-        }))
+      } else if (!this.likedByUser) {
+        const response = await axios.put(
+          route('quiz.like', {
+            quiz: this.quiz.id,
+          }),
+        )
 
         this.likesCount++
         this.likedByUser = true
-      }
-      else {
-        const response = await axios.delete(route('quiz.like', {
-          quiz: this.quiz.id,
-        }))
+      } else {
+        const response = await axios.delete(
+          route('quiz.like', {
+            quiz: this.quiz.id,
+          }),
+        )
 
         this.likesCount--
         this.likedByUser = false
@@ -154,10 +163,12 @@ export default {
       this.likeDisabled = false
     },
     mypage() {
-      this.$inertia.get(route('dashboard', {
-        user: this.quiz.user.id,
-      }))
-    }
+      this.$inertia.get(
+        route('dashboard', {
+          user: this.quiz.user.id,
+        }),
+      )
+    },
   },
 }
 </script>

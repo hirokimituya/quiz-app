@@ -1,11 +1,11 @@
 <template>
   <v-select
-		:items="sortItems"
-		v-model="selectSortItem"
-		label="ソート"
-		outlined
-		dense
-	></v-select>
+    :items="sortItems"
+    v-model="selectSortItem"
+    label="ソート"
+    outlined
+    dense
+  ></v-select>
 </template>
 
 <script>
@@ -17,11 +17,11 @@ export default {
       sortItems: {
         type: Array,
         required: true,
-      }
+      },
     },
     sortItem: {
       type: String,
-			required: true,
+      required: true,
     },
     actionPath: {
       type: String,
@@ -36,29 +36,29 @@ export default {
       default: function() {
         return []
       },
-    }
+    },
   },
   data() {
-		return {
+    return {
       selectSortItem: this.sortItem,
-		}
-	},
+    }
+  },
   watch: {
     selectSortItem() {
-			let data = {}
+      let data = {}
 
-      let item;
-      for(let param of this.attachedUrlParams) {
+      let item
+      for (let param of this.attachedUrlParams) {
         item = getUrlParam(param)
-			  if (item !== '') {
-				  data[param] = item
-			  }
+        if (item !== '') {
+          data[param] = item
+        }
       }
 
-			data.sort = this.selectSortItem
-      
-			this.$inertia.get(route(this.actionPath, this.actionParam), data);
-		},
-  }
+      data.sort = this.selectSortItem
+
+      this.$inertia.get(route(this.actionPath, this.actionParam), data)
+    },
+  },
 }
 </script>

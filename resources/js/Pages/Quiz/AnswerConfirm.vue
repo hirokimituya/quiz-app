@@ -1,10 +1,7 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <quiz-info
-				:quiz="quiz"
-        :detail="true"
-			></quiz-info>
+      <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 
       <v-form @submit.prevent="onSubmit">
         <quiz-item
@@ -42,7 +39,6 @@
             </v-btn>
           </v-col>
         </v-row>
-
       </v-form>
     </v-card>
   </app-layout>
@@ -85,16 +81,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.form.post(route('quiz.answer.result', {
-        quiz: this.quiz.id
-      }))
+      this.form.post(
+        route('quiz.answer.result', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     back() {
       history.back()
     },
     num2eng(num) {
       return num2eng(num)
-    }
+    },
   },
 }
 </script>

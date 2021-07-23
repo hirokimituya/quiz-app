@@ -2,12 +2,12 @@
   <v-card elevation="0" class="mb-7">
     <v-row no-gutters>
       <v-col cols="2" sm="1" class="text-center">
-        <a
-          text-decoration="none"
-          @click.stop.prevent="mypage"
-        >
+        <a text-decoration="none" @click.stop.prevent="mypage">
           <v-avatar :size="45">
-            <img :src="comment.author.profile_photo_url" :alt="comment.author.name">
+            <img
+              :src="comment.author.profile_photo_url"
+              :alt="comment.author.name"
+            />
           </v-avatar>
         </a>
       </v-col>
@@ -32,14 +32,15 @@
         </v-row>
       </v-col>
 
-      <v-col cols="1" align-self="center" class="text-right" v-if="editAndDeleteButtonDisp">
+      <v-col
+        cols="1"
+        align-self="center"
+        class="text-right"
+        v-if="editAndDeleteButtonDisp"
+      >
         <v-menu offset-y>
           <template #activator="{ on, attrs }">
-            <v-btn
-              icon
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn icon v-bind="attrs" v-on="on">
               <v-icon>{{ mdiDotsVertical }}</v-icon>
             </v-btn>
           </template>
@@ -96,11 +97,13 @@ export default {
     comment: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
-      mdiDotsVertical, mdiPencil, mdiDelete,
+      mdiDotsVertical,
+      mdiPencil,
+      mdiDelete,
       edit_dialog_flg: false,
       delete_dialog_flg: false,
     }
@@ -109,18 +112,19 @@ export default {
     editAndDeleteButtonDisp() {
       if (this.$page.props.user == null) {
         return false
-      }
-      else {
+      } else {
         return this.$page.props.user.id == this.comment.author.id
       }
-    }
+    },
   },
   methods: {
     mypage() {
-      this.$inertia.get(route('dashboard', {
-        user: this.comment.author.id,
-      }))
-    }
-  }
+      this.$inertia.get(
+        route('dashboard', {
+          user: this.comment.author.id,
+        }),
+      )
+    },
+  },
 }
 </script>

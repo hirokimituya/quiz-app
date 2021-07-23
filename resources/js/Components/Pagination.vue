@@ -1,10 +1,10 @@
 <template>
   <v-pagination
-		v-model="page"
+    v-model="page"
     class="mb-8"
     :length="pageCount"
     :total-visible="10"
-	></v-pagination>
+  ></v-pagination>
 </template>
 
 <script>
@@ -13,17 +13,17 @@ import { getUrlParam } from '@/util'
 export default {
   props: {
     quizCount: {
-			type: Number,
-			default: 0,
-		},
-		currentPage: {
-			type: Number,
-			default: 1,
-		},
-		perPage: {
-			type:Number,
-			required: true,
-		},
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
+    },
+    perPage: {
+      type: Number,
+      required: true,
+    },
     actionPath: {
       type: String,
       required: true,
@@ -39,7 +39,7 @@ export default {
       default: function() {
         return []
       },
-    }
+    },
   },
   data() {
     return {
@@ -48,25 +48,25 @@ export default {
   },
   computed: {
     pageCount() {
-			return Math.ceil(this.quizCount / this.perPage)
-		}
+      return Math.ceil(this.quizCount / this.perPage)
+    },
   },
   watch: {
-		page() {
-			let data = {}
+    page() {
+      let data = {}
 
-			let item;
-      for(let param of this.attachedUrlParams) {
+      let item
+      for (let param of this.attachedUrlParams) {
         item = getUrlParam(param)
-			  if (item !== '') {
-				  data[param] = item
-			  }
+        if (item !== '') {
+          data[param] = item
+        }
       }
 
-			data.page = this.page
+      data.page = this.page
 
-      this.$inertia.get(route(this.actionPath, this.actionPathParam), data);
-		}
-	}
+      this.$inertia.get(route(this.actionPath, this.actionPathParam), data)
+    },
+  },
 }
 </script>
