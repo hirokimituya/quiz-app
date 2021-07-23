@@ -22,6 +22,7 @@
         "browser-sync-webpack-plugin": "^2.3.0",
         "compression-webpack-plugin": "^8.0.1",
         "deepmerge": "^4.2.2",
+        "eslint": "^7.31.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-vue": "^7.14.0",
