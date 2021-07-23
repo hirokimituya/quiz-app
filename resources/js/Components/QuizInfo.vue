@@ -141,22 +141,28 @@ export default {
       if (this.$page.props.user === null) {
         this.$inertia.get(route('login'))
       } else if (!this.likedByUser) {
-        await axios.put(
-          route('quiz.like', {
-            quiz: this.quiz.id,
-          }),
-        )
+        await axios
+          .put(
+            route('quiz.like', {
+              quiz: this.quiz.id,
+            }),
+          )
+          .then(() => {
+            this.likesCount++
+          })
 
-        this.likesCount++
         this.likedByUser = true
       } else {
-        await axios.delete(
-          route('quiz.like', {
-            quiz: this.quiz.id,
-          }),
-        )
+        await axios
+          .delete(
+            route('quiz.like', {
+              quiz: this.quiz.id,
+            }),
+          )
+          .then(() => {
+            this.likesCount--
+          })
 
-        this.likesCount--
         this.likedByUser = false
       }
 
