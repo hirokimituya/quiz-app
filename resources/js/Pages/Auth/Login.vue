@@ -86,10 +86,7 @@ export default {
   },
   props: {
     canResetPass: Boolean,
-    status: {
-      type: String,
-      default: '',
-    },
+    status: String,
   },
   data() {
     return {
