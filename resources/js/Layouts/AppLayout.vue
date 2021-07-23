@@ -48,7 +48,10 @@
           <template #activator="{ on, attrs }">
             <v-btn icon class="mr-md-16" v-bind="attrs" v-on="on">
               <v-avatar>
-                <img :src="user.profile_photo_url" :alt="user.name" />
+                <img
+                  :src="$page.props.user.profile_photo_url"
+                  :alt="$page.props.user.name"
+                />
               </v-avatar>
             </v-btn>
           </template>
