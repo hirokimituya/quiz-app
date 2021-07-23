@@ -181,10 +181,24 @@
               block
               type="submit"
               color="primary"
-              class="mt-8 mb-12"
+              class="mt-8"
               :disabled="form.processing"
             >
               送信確認
+            </v-btn>
+          </v-col>
+        </v-row>
+
+        <v-row no-gutters>
+          <v-col md="6" offset-md="3">
+            <v-btn
+              block
+              type="submit"
+              color="secondary"
+              class="mt-8 mb-12"
+              @click.prevent="back"
+            >
+              クイズ詳細ページに戻る
             </v-btn>
           </v-col>
         </v-row>
@@ -338,6 +352,9 @@ export default {
 
       // QuizItemFormを強制更新するためにkeyプロパティを変更する
       this.createKey()
+    },
+    back() {
+      history.back()
     },
   },
   watch: {

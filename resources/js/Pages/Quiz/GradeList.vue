@@ -102,6 +102,20 @@
         :attached-url-params="['disp_num', 'sort']"
         class="mt-5"
       ></pagination>
+
+      <v-row no-gutters>
+        <v-col md="6" offset-md="3">
+          <v-btn
+            block
+            type="submit"
+            color="secondary"
+            class="mt-8 mb-12"
+            @click.prevent="back"
+          >
+            "{{ gradeUser.name }}"さんのマイページに戻る
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card>
   </app-layout>
 </template>
@@ -172,6 +186,9 @@ export default {
           user: this.gradeUser.id,
         }),
       )
+    },
+    back() {
+      history.back()
     },
   },
   watch: {
