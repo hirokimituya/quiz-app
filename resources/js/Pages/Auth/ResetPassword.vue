@@ -61,8 +61,14 @@ export default {
     AlertValidation,
   },
   props: {
-    email: String,
-    token: String,
+    email: {
+      type: String,
+      default: '',
+    },
+    token: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {

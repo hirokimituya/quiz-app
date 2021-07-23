@@ -14,10 +14,8 @@ import { getUrlParam } from '@/util'
 export default {
   props: {
     sortItems: {
-      sortItems: {
-        type: Array,
-        required: true,
-      },
+      type: Array,
+      required: true,
     },
     sortItem: {
       type: String,
@@ -30,6 +28,9 @@ export default {
     actionParam: {
       type: Object,
       required: false,
+      default: function() {
+        return {}
+      },
     },
     attachedUrlParams: {
       type: Array,

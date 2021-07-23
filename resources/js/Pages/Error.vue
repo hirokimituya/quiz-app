@@ -16,7 +16,10 @@ export default {
     AppLayout,
   },
   props: {
-    status: Number,
+    status: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     title() {

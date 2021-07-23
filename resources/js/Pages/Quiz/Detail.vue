@@ -26,12 +26,12 @@
         </v-btn>
 
         <!-- クイズ削除ボタン -->
-        <delete-quiz-form :quiz_id="quiz.id"></delete-quiz-form>
+        <delete-quiz-form :quiz-id="quiz.id"></delete-quiz-form>
       </div>
 
       <!-- クイズの成績表 -->
       <v-card
-        v-if="user_grades_ary.length >= 2"
+        v-if="userGradesAry.length >= 2"
         class="mx-auto text-center mt-5 mb-10"
         color="blue"
         max-width="800"
@@ -39,7 +39,7 @@
         <v-card-text>
           <v-sheet color="rgba(0, 0, 0, .5)">
             <v-sparkline
-              :value="user_grades_ary"
+              :value="userGradesAry"
               :gradient="gradient"
               gradient-direction="top"
               line-width="1"
@@ -61,7 +61,7 @@
                 クイズ正答数
               </v-col>
               <v-col md="4" class="ml-md-n6">
-                （出題数 {{ items_count }}問）
+                （出題数 {{ itemsCount }}問）
               </v-col>
             </v-row>
           </div>
@@ -127,7 +127,7 @@
       <comment
         v-for="(comment, key) in comments"
         :key="key"
-        :quiz_id="quiz.id"
+        :quiz-id="quiz.id"
         :comment="comment"
       ></comment>
     </v-card>
@@ -165,11 +165,11 @@ export default {
       type: Array,
       required: true,
     },
-    user_grades_ary: {
+    userGradesAry: {
       type: Array,
       required: true,
     },
-    items_count: {
+    itemsCount: {
       type: Number,
       required: true,
     },

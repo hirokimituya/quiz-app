@@ -220,7 +220,9 @@ export default {
     items: {
       type: Object,
       required: false,
-      default: null,
+      default: function() {
+        return {}
+      },
     },
   },
   remember: ['form', 'questionNum', 'currentImage'],

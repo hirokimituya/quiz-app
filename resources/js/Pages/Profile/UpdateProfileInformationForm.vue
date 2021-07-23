@@ -148,7 +148,12 @@ export default {
   components: {
     ProfileForm,
   },
-  props: ['user'],
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       form: this.$inertia.form({

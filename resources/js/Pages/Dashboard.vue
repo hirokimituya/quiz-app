@@ -6,11 +6,11 @@
           <v-card-text>
             <v-avatar class="mr-3" size="60">
               <img
-                :src="dashboard_user.profile_photo_url"
-                :alt="dashboard_user.name"
+                :src="dashboardUser.profile_photo_url"
+                :alt="dashboardUser.name"
               />
             </v-avatar>
-            {{ dashboard_user.name }}
+            {{ dashboardUser.name }}
             <v-btn
               class="mt-4"
               block
@@ -32,15 +32,15 @@
             <table class="mt-4 mx-auto mx-sm-0">
               <tr>
                 <th class="text-left pa-2">クイズ作成数：</th>
-                <td class="text-center pa-2">{{ quiz_create_count }}</td>
+                <td class="text-center pa-2">{{ quizCreateCount }}</td>
               </tr>
               <tr>
                 <th class="text-left pa-2">総いいね数：</th>
-                <td class="text-center pa-2">{{ likes_total_count }}</td>
+                <td class="text-center pa-2">{{ likesTotalCount }}</td>
               </tr>
               <tr>
                 <th class="text-left pa-2">総クイズ回答数:</th>
-                <td class="text-center pa-2">{{ quiz_grades_count }}</td>
+                <td class="text-center pa-2">{{ quizGradesCount }}</td>
               </tr>
             </table>
 
@@ -72,7 +72,7 @@
             <sort-item
               class="mt-2 mt-md-5 mb-2 mb-md-0"
               :action-path="actionPath"
-              :action-param="{ user: dashboard_user.id }"
+              :action-param="{ user: dashboardUser.id }"
               :sort-items="sortItems"
               :sort-item="sortItem"
               :attached-url-params="['item']"
@@ -130,7 +130,7 @@ export default {
       type: Array,
       required: true,
     },
-    dashboard_user: {
+    dashboardUser: {
       type: Object,
       required: true,
     },
@@ -158,15 +158,15 @@ export default {
       type: String,
       required: true,
     },
-    quiz_create_count: {
+    quizCreateCount: {
       type: Number,
       required: true,
     },
-    likes_total_count: {
+    likesTotalCount: {
       type: Number,
       required: true,
     },
-    quiz_grades_count: {
+    quizGradesCount: {
       type: Number,
       required: true,
     },
@@ -190,7 +190,7 @@ export default {
 
       this.$inertia.get(
         route(this.actionPath, {
-          user: this.dashboard_user.id,
+          user: this.dashboardUser.id,
         }),
         data,
       )
@@ -199,16 +199,16 @@ export default {
   computed: {
     createBtnShow() {
       if (this.$page.props.user !== null) {
-        return this.$page.props.user.id == this.dashboard_user.id
+        return this.$page.props.user.id == this.dashboardUser.id
       }
       return false
     },
     gradeBtnShow() {
-      if (this.dashboard_user.show_grade) {
+      if (this.dashboardUser.show_grade) {
         return true
       } else {
         if (this.$page.props.user !== null) {
-          return this.$page.props.user.id == this.dashboard_user.id
+          return this.$page.props.user.id == this.dashboardUser.id
         }
       }
 
@@ -222,7 +222,7 @@ export default {
     onGradeList() {
       this.$inertia.get(
         route('grade', {
-          user: this.dashboard_user.id,
+          user: this.dashboardUser.id,
         }),
       )
     },

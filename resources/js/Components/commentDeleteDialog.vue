@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    quiz_id: {
+    quizId: {
       type: Number,
       required: true,
     },
@@ -56,7 +56,7 @@ export default {
 
       this.$inertia.delete(
         route('quiz.comment.edit', {
-          quiz: this.quiz_id,
+          quiz: this.quizId,
           comment: this.comment.id,
         }),
         {

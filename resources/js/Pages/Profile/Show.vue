@@ -32,8 +32,14 @@ import UpdateProfileInformationForm from './UpdateProfileInformationForm'
 import ShowGradeForm from './ShowGradeForm.vue'
 
 export default {
-  props: ['sessions'],
-
+  props: {
+    sessions: {
+      type: Array,
+      default: function() {
+        return []
+      },
+    },
+  },
   components: {
     AppLayout,
     DeleteUserForm,

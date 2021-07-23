@@ -47,7 +47,7 @@
 <script>
 export default {
   props: {
-    quiz_id: {
+    quizId: {
       type: Number,
       required: true,
     },
@@ -67,7 +67,7 @@ export default {
 
       this.$inertia.delete(
         route('quiz.detail', {
-          quiz: this.quiz_id,
+          quiz: this.quizId,
         }),
         {
           preserveScroll: true,

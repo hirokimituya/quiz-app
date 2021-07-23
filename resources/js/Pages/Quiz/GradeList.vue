@@ -9,10 +9,7 @@
           <v-col cols="12" sm="6">
             <a text-decoration="none" @click.stop.prevent="mypage">
               <v-avatar class="mr-3" size="60">
-                <img
-                  :src="grade_user.profile_photo_url"
-                  :alt="grade_user.name"
-                />
+                <img :src="gradeUser.profile_photo_url" :alt="gradeUser.name" />
               </v-avatar>
             </a>
             <a
@@ -20,7 +17,7 @@
               text-decoration="none"
               @click.stop.prevent="mypage"
             >
-              {{ grade_user.name }}
+              {{ gradeUser.name }}
             </a>
           </v-col>
           <v-col cols="4" sm="2" class="mt-5 ml-n2 mt-sm-0">
@@ -57,7 +54,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="grade in grades_list"
+            v-for="grade in gradesList"
             :key="grade.grade_id"
             class="text-center"
           >
@@ -96,7 +93,7 @@
 
       <!-- ページネーションを表示 -->
       <pagination
-        v-if="grades_list.length"
+        v-if="gradesList.length"
         :quiz-count="gradeCount"
         :current-page="currentPage"
         :per-page="perPage"
@@ -123,11 +120,11 @@ export default {
     SortItem,
   },
   props: {
-    grades_list: {
+    gradesList: {
       type: Array,
       required: true,
     },
-    grade_user: {
+    gradeUser: {
       type: Object,
       required: true,
     },
@@ -159,7 +156,7 @@ export default {
         '回答日時',
       ],
       actionPath: 'grade',
-      actionPathParam: { user: this.grade_user.id },
+      actionPathParam: { user: this.gradeUser.id },
       sortItems: [
         { value: 'quiz_title', text: 'クイズタイトル' },
         { value: 'latest', text: '回答日時' },
@@ -172,7 +169,7 @@ export default {
     mypage() {
       this.$inertia.get(
         route('dashboard', {
-          user: this.grade_user.id,
+          user: this.gradeUser.id,
         }),
       )
     },

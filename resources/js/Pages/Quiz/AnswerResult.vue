@@ -6,7 +6,7 @@
       <v-row class="mt-n6 mb-3">
         <v-col offset-md="2">
           <div class="red--text text-h4">
-            {{ questionNum }} 問中 {{ correct_count }} 問 正解
+            {{ questionNum }} 問中 {{ correctCount }} 問 正解
           </div>
         </v-col>
       </v-row>
@@ -57,7 +57,7 @@ export default {
       type: Object,
       required: true,
     },
-    correct_count: {
+    correctCount: {
       type: Number,
       required: true,
     },

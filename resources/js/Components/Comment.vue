@@ -63,14 +63,14 @@
         <!-- コメント編集ダイアログ -->
         <comment-edit-dialog
           v-model="edit_dialog_flg"
-          :quiz_id="quiz_id"
+          :quiz-id="quizId"
           :comment="comment"
         ></comment-edit-dialog>
 
         <!-- コメント削除ダイアログ -->
         <comment-delete-dialog
           v-model="delete_dialog_flg"
-          :quiz_id="quiz_id"
+          :quiz-id="quizId"
           :comment="comment"
         ></comment-delete-dialog>
       </v-col>
@@ -90,7 +90,7 @@ export default {
     commentDeleteDialog,
   },
   props: {
-    quiz_id: {
+    quizId: {
       type: Number,
       required: true,
     },
