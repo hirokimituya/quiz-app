@@ -56,7 +56,10 @@ export default {
     AlertValidation,
   },
   props: {
-    status: String,
+    status: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -69,7 +72,7 @@ export default {
   methods: {
     submit() {
       this.form.post(this.route('password.email'), {
-        onSuccess: page => (this.sendSuccess = true),
+        onSuccess: () => (this.sendSuccess = true),
       })
     },
   },

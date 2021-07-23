@@ -20,7 +20,7 @@
             </v-col>
             <v-col>
               <v-card-text class="mt-1 text-subtitle-1">
-                {{ item.question }}
+                {{ data_item.question }}
               </v-card-text>
             </v-col>
           </v-row>
@@ -31,34 +31,38 @@
             </v-col>
             <v-col>
               <v-card-text>
-                <div v-if="item.answerFormat == 1">
+                <div v-if="data_item.answerFormat == 1">
                   <v-textarea
                     solo
                     dense
                     required
                     rows="1"
                     readonly
-                    v-model="item.answerText"
+                    v-model="data_item.answerText"
                   ></v-textarea>
                 </div>
 
-                <div v-if="item.answerFormat == 2 || item.answerFormat == 3">
+                <div
+                  v-if="
+                    data_item.answerFormat == 2 || data_item.answerFormat == 3
+                  "
+                >
                   <v-row no-gutters>
                     <v-col cols="12" class="mt-n5">
-                      <div v-if="item.answerFormat == 2" class="mb-n3">
+                      <div v-if="data_item.answerFormat == 2" class="mb-n3">
                         <v-radio-group
                           required
-                          v-model="item.answerRadio"
+                          v-model="data_item.answerRadio"
                           readonly
                         >
                           <div
-                            v-for="n in Number(item.selectItemsNum)"
+                            v-for="n in Number(data_item.selectItemsNum)"
                             :key="n"
                           >
                             <v-radio :value="n" mandatory>
                               <template #label>
                                 <v-card-text class="text-subtitle-1">
-                                  {{ item.selectItemText[num2eng(n)] }}
+                                  {{ data_item.selectItemText[num2eng(n)] }}
                                 </v-card-text>
                               </template>
                             </v-radio>
@@ -66,14 +70,14 @@
                         </v-radio-group>
                       </div>
 
-                      <div v-if="item.answerFormat == 3" class="mt-5">
+                      <div v-if="data_item.answerFormat == 3" class="mt-5">
                         <div
-                          v-for="n in Number(item.selectItemsNum)"
+                          v-for="n in Number(data_item.selectItemsNum)"
                           :key="n"
                           class="mt-n4"
                         >
                           <v-checkbox
-                            v-model="item.answerCheck"
+                            v-model="data_item.answerCheck"
                             hide-details
                             multiple
                             :value="n"
@@ -81,7 +85,7 @@
                           >
                             <template #label>
                               <v-card-text class="text-subtitle-1">
-                                {{ item.selectItemText[num2eng(n)] }}
+                                {{ data_item.selectItemText[num2eng(n)] }}
                               </v-card-text>
                             </template>
                           </v-checkbox>
@@ -93,7 +97,7 @@
               </v-card-text>
             </v-col>
 
-            <div v-if="item.pass" class="position-absolute-circle">
+            <div v-if="data_item.pass" class="position-absolute-circle">
               <!-- マルの画像 -->
               <svg
                 width="200"
@@ -199,17 +203,22 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      data_item: this.item,
+    }
+  },
   computed: {
     correctDisplay() {
-      if (Array.isArray(this.item.correct)) {
-        return this.item.correct.join(', ')
+      if (Array.isArray(this.data_item.correct)) {
+        return this.data_item.correct.join(', ')
       } else {
-        return this.item.correct
+        return this.data_item.correct
       }
     },
     correctRate() {
-      if (this.item.correctRate != null) {
-        return putDesimalPointTwo(this.item.correctRate)
+      if (this.data_item.correctRate != null) {
+        return putDesimalPointTwo(this.data_item.correctRate)
       }
       return false
     },

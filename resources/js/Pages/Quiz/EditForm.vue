@@ -215,10 +215,12 @@ export default {
     quiz: {
       type: Object,
       required: false,
+      default: null,
     },
     items: {
       type: Object,
       required: false,
+      default: null,
     },
   },
   remember: ['form', 'questionNum', 'currentImage'],
@@ -273,6 +275,8 @@ export default {
           switch (questionData[key].selectItemsNum) {
             case 2:
               delete questionData[key].selectItemText['three']
+              delete questionData[key].selectItemText['four']
+              break
             case 3:
               delete questionData[key].selectItemText['four']
               break

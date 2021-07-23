@@ -11,7 +11,7 @@
     <template #form>
       <v-switch
         v-model="form.show_grade"
-        :label="`クイズ実行履歴:　${form.show_grade ? '表示' : '非表示'}`"
+        :label="`クイズ実行履歴: ${form.show_grade ? '表示' : '非表示'}`"
         class="ml-2"
       ></v-switch>
     </template>

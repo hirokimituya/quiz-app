@@ -225,6 +225,8 @@ export default {
           switch (questionData[key].selectItemsNum) {
             case 2:
               delete questionData[key].selectItemText['three']
+              delete questionData[key].selectItemText['four']
+              break
             case 3:
               delete questionData[key].selectItemText['four']
               break
