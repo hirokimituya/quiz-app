@@ -7,38 +7,35 @@
       <v-card-title class="mb-5">
         <v-row no-gutters justify="space-between">
           <v-col cols="12" sm="6">
-            <a
-              text-decoration="none"
-              @click.stop.prevent="mypage"
-            >
+            <a text-decoration="none" @click.stop.prevent="mypage">
               <v-avatar class="mr-3" size="60">
-				      	<img :src="grade_user.profile_photo_url" :alt="grade_user.name">
-				      </v-avatar>
+                <img :src="gradeUser.profile_photo_url" :alt="gradeUser.name" />
+              </v-avatar>
             </a>
             <a
               class="black--text"
               text-decoration="none"
               @click.stop.prevent="mypage"
             >
-			      	{{ grade_user.name }}
+              {{ gradeUser.name }}
             </a>
           </v-col>
           <v-col cols="4" sm="2" class="mt-5 ml-n2 mt-sm-0">
             <v-select
-	          	:items="numItems"
-	          	v-model="numItem"
-	          	label="表示数"
-	          	outlined
-	          	dense
-	          ></v-select>
+              :items="numItems"
+              v-model="numItem"
+              label="表示数"
+              outlined
+              dense
+            ></v-select>
           </v-col>
           <v-col cols="8" sm="4" class="mt-5 mt-sm-0">
             <sort-item
-            	:actionPath="actionPath"
-              :actionParam="actionPathParam"
-            	:sortItems="sortItems"
-            	:sortItem="sortItem"
-              :attachedUrlParams="['disp_num']"
+              :action-path="actionPath"
+              :action-param="actionPathParam"
+              :sort-items="sortItems"
+              :sort-item="sortItem"
+              :attached-url-params="['disp_num']"
             ></sort-item>
           </v-col>
         </v-row>
@@ -46,8 +43,8 @@
       <v-simple-table>
         <thead>
           <tr>
-            <th 
-              v-for="header in table_headers" 
+            <th
+              v-for="header in table_headers"
               :key="header.key"
               class="text-md-h6 text-center"
             >
@@ -57,27 +54,27 @@
         </thead>
         <tbody>
           <tr
-            v-for="grade in grades_list"
+            v-for="grade in gradesList"
             :key="grade.grade_id"
             class="text-center"
           >
             <td>
-              <inertia-link 
-                :href="route('quiz.detail', {quiz: grade.quiz_id})" 
+              <inertia-link
+                :href="route('quiz.detail', { quiz: grade.quiz_id })"
               >
                 {{ grade.quiz_title }}
               </inertia-link>
             </td>
             <td>
-              <inertia-link 
+              <inertia-link
                 :href="route('home')"
-                :data="{ genre: grade.genre_id }" 
+                :data="{ genre: grade.genre_id }"
               >
                 {{ grade.genre_name }}
               </inertia-link>
             </td>
             <td>
-              <inertia-link :href="route('dashboard', {user: grade.user_id})">
+              <inertia-link :href="route('dashboard', { user: grade.user_id })">
                 {{ grade.user_name }}
               </inertia-link>
             </td>
@@ -95,16 +92,16 @@
       </v-simple-table>
 
       <!-- ページネーションを表示 -->
-		  <pagination
-		  	v-if="grades_list.length"
-		  	:quizCount="gradeCount"
-		  	:currentPage="currentPage"
-		  	:perPage="perPage"
-		  	:actionPath="actionPath"
-        :actionPathParam="actionPathParam"
-        :attachedUrlParams="['disp_num', 'sort']"
+      <pagination
+        v-if="gradesList.length"
+        :quiz-count="gradeCount"
+        :current-page="currentPage"
+        :per-page="perPage"
+        :action-path="actionPath"
+        :action-path-param="actionPathParam"
+        :attached-url-params="['disp_num', 'sort']"
         class="mt-5"
-		  ></pagination>
+      ></pagination>
     </v-card>
   </app-layout>
 </template>
@@ -123,30 +120,30 @@ export default {
     SortItem,
   },
   props: {
-    grades_list: {
+    gradesList: {
       type: Array,
       required: true,
     },
-    grade_user: {
+    gradeUser: {
       type: Object,
       required: true,
     },
     gradeCount: {
-			type: Number,
-			default: 0,
-		},
-		currentPage: {
-			type: Number,
-			default: 1,
-		},
-		perPage: {
-			type:Number,
-			required: true,
-		},
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
+    },
+    perPage: {
+      type: Number,
+      required: true,
+    },
     sortItem: {
-			type: String,
-			required: true,
-		},
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -159,21 +156,23 @@ export default {
         '回答日時',
       ],
       actionPath: 'grade',
-      actionPathParam: { user: this.grade_user.id },
+      actionPathParam: { user: this.gradeUser.id },
       sortItems: [
         { value: 'quiz_title', text: 'クイズタイトル' },
         { value: 'latest', text: '回答日時' },
       ],
-      numItems: [ 15, 30, 50, 80, 100 ],
+      numItems: [15, 30, 50, 80, 100],
       numItem: this.perPage,
     }
   },
   methods: {
     mypage() {
-      this.$inertia.get(route('dashboard', {
-        user: this.grade_user.id,
-      }))
-    }
+      this.$inertia.get(
+        route('dashboard', {
+          user: this.gradeUser.id,
+        }),
+      )
+    },
   },
   watch: {
     numItem() {
@@ -181,17 +180,17 @@ export default {
 
       data.disp_num = this.numItem
 
-      let item;
-      for(let param of ['sort']) {
+      let item
+      for (let param of ['sort']) {
         item = getUrlParam(param)
-			  if (item !== '') {
-				  data[param] = item
-			  }
+        if (item !== '') {
+          data[param] = item
+        }
       }
 
-			this.$inertia.get(route(this.actionPath, this.actionPathParam), data);
-		},
-  }
+      this.$inertia.get(route(this.actionPath, this.actionPathParam), data)
+    },
+  },
 }
 </script>
 
@@ -202,6 +201,6 @@ td a {
 }
 td a:hover {
   text-decoration: underline;
-  color: blue
+  color: blue;
 }
 </style>

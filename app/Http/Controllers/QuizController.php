@@ -161,7 +161,7 @@ class QuizController extends Controller
         return Inertia::render('Quiz/EditConfirm', [
             'formData' => $request_data,
             'genres' => $genres,
-            'quiz_id' => $quiz->id,
+            'quizId' => $quiz->id,
         ]);
     }
 
@@ -265,8 +265,8 @@ class QuizController extends Controller
         return Inertia::render('Quiz/Detail', [
             'quiz' => $quiz,
             'comments' => $comments,
-            'user_grades_ary' => $user_grades_ary,
-            'items_count' => $items_count,
+            'userGradesAry' => $user_grades_ary,
+            'itemsCount' => $items_count,
         ]);
     }
 
@@ -383,7 +383,7 @@ class QuizController extends Controller
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
             'answers' => $answers,
-            'correct_count' => count($correct_count_ary),
+            'correctCount' => count($correct_count_ary),
         ]);
     }
 

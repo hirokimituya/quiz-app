@@ -1,14 +1,13 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <quiz-info
-				:quiz="quiz"
-        :detail="true"
-			></quiz-info>
+      <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 
       <v-row class="mt-n6 mb-3">
         <v-col offset-md="2">
-          <div class="red--text text-h4">{{ questionNum }} 問中 {{ correct_count }} 問 正解</div>
+          <div class="red--text text-h4">
+            {{ questionNum }} 問中 {{ correctCount }} 問 正解
+          </div>
         </v-col>
       </v-row>
 
@@ -32,7 +31,6 @@
           </v-btn>
         </v-col>
       </v-row>
-
     </v-card>
   </app-layout>
 </template>
@@ -59,7 +57,7 @@ export default {
       type: Object,
       required: true,
     },
-    correct_count: {
+    correctCount: {
       type: Number,
       required: true,
     },
@@ -71,13 +69,15 @@ export default {
   },
   methods: {
     onQuizDetailPage() {
-      this.$inertia.get(route('quiz.detail', {
-        quiz: this.quiz.id,
-      }))
+      this.$inertia.get(
+        route('quiz.detail', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     num2eng(num) {
       return num2eng(num)
-    }
+    },
   },
 }
 </script>

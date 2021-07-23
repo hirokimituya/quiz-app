@@ -1,5 +1,5 @@
-const mix = require('laravel-mix');
-require('vuetifyjs-mix-extension');
+const mix = require('laravel-mix')
+require('vuetifyjs-mix-extension')
 //require('laravel-mix-bundle-analyzer');
 
 /*
@@ -13,13 +13,14 @@ require('vuetifyjs-mix-extension');
  |
  */
 
-mix.browserSync('localhost')
-    .js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
-    .vuetify('vuetify-loader')
-    .vue()
-    .version()
-    .webpackConfig(require('./webpack.config'));
+mix
+  .browserSync('localhost')
+  .js('resources/js/app.js', 'public/js')
+  .sass('resources/sass/app.scss', 'public/css')
+  .vuetify('vuetify-loader')
+  .vue()
+  .version()
+  .webpackConfig(require('./webpack.config'))
 
 //if (!mix.inProduction()) {
 //    mix.bundleAnalyzer();

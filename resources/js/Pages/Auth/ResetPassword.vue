@@ -1,57 +1,54 @@
 <template>
   <app-layout>
-		<v-card max-width="550" class="mx-auto px-sm-16 mt-5 mt-md-10 pb-6">
-			<v-card-title
-				class="primary--text text-h5 d-block text-center"
-			>
-				パスワードリセット
-			</v-card-title>
+    <v-card max-width="550" class="mx-auto px-sm-16 mt-5 mt-md-10 pb-6">
+      <v-card-title class="primary--text text-h5 d-block text-center">
+        パスワードリセット
+      </v-card-title>
 
-			<v-card-text>
-				<!-- バリデーションエラー -->
-				<alert-validation></alert-validation>
+      <v-card-text>
+        <!-- バリデーションエラー -->
+        <alert-validation></alert-validation>
 
-				<v-form>
-					<v-text-field
-						id="email"
-						label="メールアドレス"
-						type="email"
-						required
-						autofocus
-						v-model="form.email"
-					></v-text-field>
+        <v-form>
+          <v-text-field
+            id="email"
+            label="メールアドレス"
+            type="email"
+            required
+            autofocus
+            v-model="form.email"
+          ></v-text-field>
 
-					<v-text-field
-						label="パスワード"
-						type="password"
-						required 
-						autocomplete="new-password"
-						v-model="form.password"
-					></v-text-field>
+          <v-text-field
+            label="パスワード"
+            type="password"
+            required
+            autocomplete="new-password"
+            v-model="form.password"
+          ></v-text-field>
 
-      		<v-text-field
-						label="パスワード（確認用）"
-						type="password"
-						required 
-						autocomplete="new-password"
-						v-model="form.password_confirmation"
-					></v-text-field>
+          <v-text-field
+            label="パスワード（確認用）"
+            type="password"
+            required
+            autocomplete="new-password"
+            v-model="form.password_confirmation"
+          ></v-text-field>
 
-					<v-btn 
-						type="submit"
-						block
-						color="primary darken-2"
-						class="white--text mb-5 mt-5"
-						:disabled="form.processing"
-						@click.prevent="submit()"
-					>
-						パスワードをリセット
-					</v-btn>
-
-				</v-form>
-			</v-card-text>
-		</v-card>
-	</app-layout>
+          <v-btn
+            type="submit"
+            block
+            color="primary darken-2"
+            class="white--text mb-5 mt-5"
+            :disabled="form.processing"
+            @click.prevent="submit()"
+          >
+            パスワードをリセット
+          </v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </app-layout>
 </template>
 
 <script>
@@ -61,11 +58,17 @@ import AlertValidation from '@/Components/AlertValidation'
 export default {
   components: {
     AppLayout,
-		AlertValidation,
+    AlertValidation,
   },
   props: {
-    email: String,
-    token: String,
+    email: {
+      type: String,
+      default: '',
+    },
+    token: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -74,7 +77,7 @@ export default {
         email: this.email,
         password: '',
         password_confirmation: '',
-      })
+      }),
     }
   },
   methods: {
@@ -82,7 +85,7 @@ export default {
       this.form.post(this.route('password.update'), {
         onFinish: () => this.form.reset('password', 'password_confirmation'),
       })
-    }
-  }
+    },
+  },
 }
 </script>

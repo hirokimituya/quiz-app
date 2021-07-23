@@ -84,16 +84,16 @@ class HomeController extends Controller
 
         return Inertia::render('Dashboard', [
             'quizes' => $quizes['data'],
-            'dashboard_user' => $user,
+            'dashboardUser' => $user,
             'quizCount' => $quizes['total'],
             'currentPage' => $quizes['current_page'],
             'perPage' => $quizes['per_page'],
             'items' => $items,
             'itemListId' => $item_list_id,
             'sortItem' => $sort_item,
-            'quiz_create_count' => $quiz_create_count,
-            'likes_total_count' => $likes_total_count,
-            'quiz_grades_count' => $quiz_grades_count,
+            'quizCreateCount' => $quiz_create_count,
+            'likesTotalCount' => $likes_total_count,
+            'quizGradesCount' => $quiz_grades_count,
         ]);
     }
 
@@ -137,8 +137,8 @@ class HomeController extends Controller
         }
 
         return Inertia::render('Quiz/GradeList', [
-            'grades_list' => $grades_list,
-            'grade_user' => $user,
+            'gradesList' => $grades_list,
+            'gradeUser' => $user,
             'gradeCount' => $grades['total'],
             'currentPage' => $grades['current_page'],
             'perPage' => $grades['per_page'],

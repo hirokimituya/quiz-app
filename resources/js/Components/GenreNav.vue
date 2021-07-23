@@ -3,24 +3,19 @@
     <v-list>
       <v-subheader>ジャンル別</v-subheader>
       <v-divider></v-divider>
-      <v-list-item-group
-        v-model="selectedGenre"
-        color="primary"
-      >
-        <v-list-item
-          v-for="genre in genres.slice(0,10)"
-          :key="genre.id"
-        >
-        <v-list-item-content>
-          <v-badge
-            inline
-            :content="genre.quiz_count || '0'"
-          >
-            <v-list-item-title>
-              {{ genre.name.length >= 10 ? genre.name.substr(0, 10) + '...' : genre.name }}
-            </v-list-item-title>
-          </v-badge>
-        </v-list-item-content>
+      <v-list-item-group v-model="selectedGenre" color="primary">
+        <v-list-item v-for="genre in genres.slice(0, 10)" :key="genre.id">
+          <v-list-item-content>
+            <v-badge inline :content="genre.quiz_count || '0'">
+              <v-list-item-title>
+                {{
+                  genre.name.length >= 10
+                    ? genre.name.substr(0, 10) + '...'
+                    : genre.name
+                }}
+              </v-list-item-title>
+            </v-badge>
+          </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -31,49 +26,33 @@
     </v-card-text>
 
     <!-- Genre List Modal -->
-		<v-dialog
-			v-model="genreDialogFlg"
-			max-width="500"
-		>
-			<v-card>
-				<v-list class="mb-3">
+    <v-dialog v-model="genreDialogFlg" max-width="500">
+      <v-card>
+        <v-list class="mb-3">
           <v-subheader>ジャンル一覧</v-subheader>
           <v-divider></v-divider>
-          <v-list-item-group
-            v-model="selectedGenre"
-            color="primary"
-            mandatory
-          >
-            <v-list-item
-              v-for="genre in genres"
-              :key="genre.id"
-            >
-            <v-list-item-content>
-              <v-badge
-                inline
-                :content="genre.quiz_count || '0'"
-              >
-                <v-list-item-title>
-                  {{ genre.name }}
-                </v-list-item-title>
-              </v-badge>
-            </v-list-item-content>
+          <v-list-item-group v-model="selectedGenre" color="primary" mandatory>
+            <v-list-item v-for="genre in genres" :key="genre.id">
+              <v-list-item-content>
+                <v-badge inline :content="genre.quiz_count || '0'">
+                  <v-list-item-title>
+                    {{ genre.name }}
+                  </v-list-item-title>
+                </v-badge>
+              </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
 
-				<v-card-actions class="mt-n5 grey lighten-4">
-					<v-spacer></v-spacer>
+        <v-card-actions class="mt-n5 grey lighten-4">
+          <v-spacer></v-spacer>
 
-					<v-btn
-						class="my-1"
-						@click="closeModal"
-					>
-						キャンセル
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
+          <v-btn class="my-1" @click="closeModal">
+            キャンセル
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -89,7 +68,7 @@ export default {
     genreListId: {
       type: Number,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -103,8 +82,8 @@ export default {
       this.genreDialogFlg = true
     },
     closeModal() {
-			this.genreDialogFlg = false
-		},
+      this.genreDialogFlg = false
+    },
   },
   watch: {
     selectedGenre(newVal, oldVale) {
@@ -118,7 +97,7 @@ export default {
       }
 
       this.$inertia.get(route('home'), data)
-    }
+    },
   },
 }
 </script>

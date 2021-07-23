@@ -1,7 +1,10 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title class="text-h5 text-md-h4 d-block text-center secondary--text">クイズ作成</v-card-title>
+      <v-card-title
+        class="text-h5 text-md-h4 d-block text-center secondary--text"
+        >クイズ作成</v-card-title
+      >
 
       <v-form @submit.prevent="onSubmit">
         <table class="mx-auto mt-3" width="100%">
@@ -13,7 +16,7 @@
                 type="text"
                 dense
                 required
-			  		    autofocus
+                autofocus
                 v-model="form.title"
               ></v-text-field>
             </td>
@@ -22,7 +25,7 @@
           <tr v-if="form.errors.title">
             <th></th>
             <td>
-              <v-alert 
+              <v-alert
                 color="error"
                 border="left"
                 dense
@@ -49,7 +52,7 @@
           <tr v-if="form.errors.description">
             <th></th>
             <td>
-              <v-alert 
+              <v-alert
                 color="error"
                 border="left"
                 dense
@@ -68,9 +71,9 @@
                 <v-col md="6">
                   <v-select
                     :items="genres"
-		                v-model="form.genre"
-		                outlined
-		                dense
+                    v-model="form.genre"
+                    outlined
+                    dense
                     item-text="name"
                     item-value="id"
                   >
@@ -85,7 +88,7 @@
             <td>
               <v-row>
                 <v-col md="6">
-                  <v-alert 
+                  <v-alert
                     color="error"
                     border="left"
                     dense
@@ -102,18 +105,14 @@
           <tr>
             <th width="80px"><div class="mt-n6">画像</div></th>
             <td>
-              <v-file-input
-                outlined
-                dense
-                v-model="form.image"
-              ></v-file-input>
+              <v-file-input outlined dense v-model="form.image"></v-file-input>
             </td>
           </tr>
           <!-- バリデーションエラー表示 -->
           <tr v-if="form.errors.image">
             <th></th>
             <td>
-              <v-alert 
+              <v-alert
                 color="error"
                 border="left"
                 dense
@@ -139,11 +138,7 @@
           </v-col>
         </v-row>
 
-        <draggable 
-          @end="onEnd" 
-          id="draggable"
-          :animation="200"
-        >
+        <draggable @end="onEnd" id="draggable" :animation="200">
           <quiz-item-form
             v-for="num in questionNum"
             :key="key[num - 1]"
@@ -167,7 +162,6 @@
             </v-btn>
           </v-col>
         </v-row>
-
       </v-form>
     </v-card>
   </app-layout>
@@ -182,7 +176,7 @@ import draggable from 'vuedraggable'
 import { num2eng, eng2num, quizItemDelete } from '@/util'
 
 export default {
-  components: { 
+  components: {
     AppLayout,
     QuizItemForm,
     draggable,
@@ -193,10 +187,7 @@ export default {
       required: true,
     },
   },
-  remember: [
-    'form',
-    'questionNum',
-  ],
+  remember: ['form', 'questionNum'],
   data() {
     return {
       form: this.$inertia.form({
@@ -204,7 +195,18 @@ export default {
         description: '',
         genre: '',
         image: [],
-        question: {one:{},two:{},three:{},four:{},five:{},six:{},seven:{},eight:{},nine:{},ten:{}},
+        question: {
+          one: {},
+          two: {},
+          three: {},
+          four: {},
+          five: {},
+          six: {},
+          seven: {},
+          eight: {},
+          nine: {},
+          ten: {},
+        },
       }),
       questionNum: 1,
       key: [],
@@ -215,17 +217,19 @@ export default {
       return [...Array(i)].map((_, i) => i + 1)
     },
     onSubmit() {
-      const questionData = {};
+      const questionData = {}
       Object.keys(this.form.question).forEach(key => {
         if (eng2num(key) <= this.questionNum) {
           questionData[key] = this.form.question[key]
 
-          switch(questionData[key].selectItemsNum) {
+          switch (questionData[key].selectItemsNum) {
             case 2:
               delete questionData[key].selectItemText['three']
+              delete questionData[key].selectItemText['four']
+              break
             case 3:
               delete questionData[key].selectItemText['four']
-              break;
+              break
           }
         }
       })
@@ -243,10 +247,12 @@ export default {
       return num2eng(num)
     },
     createKey() {
-      let S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      let S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
       let array_count = Object.keys(this.form.question).length
       this.key = [...Array(array_count)].map(() => {
-        return Array.from(Array(12)).map(()=>S[Math.floor(Math.random()*S.length)]).join('')
+        return Array.from(Array(12))
+          .map(() => S[Math.floor(Math.random() * S.length)])
+          .join('')
       })
     },
     onEnd() {
@@ -257,7 +263,9 @@ export default {
         let question_new_num = Number(key) + 1
         let question_old_num = Number(children[key].id)
 
-        new_question[num2eng(question_new_num)] = this.form.question[num2eng(question_old_num)]
+        new_question[num2eng(question_new_num)] = this.form.question[
+          num2eng(question_old_num)
+        ]
       }
       new_question = Object.assign({}, this.form.question, new_question)
       this.form.question = new_question
@@ -284,12 +292,12 @@ export default {
           if (!Object.keys(this.form.question[num2eng(i)]).length) {
             this.form.question[num2eng(i)] = {
               question: null,
-				      answerFormat: 1,
-				      answerText: null,
-				      answerRadio: 1,
-				      answerCheck: [1],
-				      selectItemsNum: 2,
-				      selectItemText: {one:'', two:'', three:'', four:''},
+              answerFormat: 1,
+              answerText: null,
+              answerRadio: 1,
+              answerCheck: [1],
+              selectItemsNum: 2,
+              selectItemText: { one: '', two: '', three: '', four: '' },
             }
           }
         }

@@ -1,10 +1,7 @@
 <template>
   <app-layout>
     <v-card class="pa-3 px-md-16 my-5">
-      <quiz-info
-				:quiz="quiz"
-        :detail="true"
-			></quiz-info>
+      <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 
       <v-btn
         block
@@ -17,10 +14,7 @@
         クイズを回答する
       </v-btn>
 
-      <div 
-        class="text-right mt-n8" 
-        v-if="editDeleteButtonDisp"
-      >
+      <div class="text-right mt-n8" v-if="editDeleteButtonDisp">
         <!-- クイズ編集ボタン -->
         <v-btn
           color="green"
@@ -32,14 +26,12 @@
         </v-btn>
 
         <!-- クイズ削除ボタン -->
-        <delete-quiz-form
-          :quiz_id="quiz.id"
-        ></delete-quiz-form>
+        <delete-quiz-form :quiz-id="quiz.id"></delete-quiz-form>
       </div>
 
       <!-- クイズの成績表 -->
       <v-card
-        v-if="user_grades_ary.length >= 2"
+        v-if="userGradesAry.length >= 2"
         class="mx-auto text-center mt-5 mb-10"
         color="blue"
         max-width="800"
@@ -47,7 +39,7 @@
         <v-card-text>
           <v-sheet color="rgba(0, 0, 0, .5)">
             <v-sparkline
-              :value="user_grades_ary"
+              :value="userGradesAry"
               :gradient="gradient"
               gradient-direction="top"
               line-width="1"
@@ -57,9 +49,7 @@
               smooth
               auto-draw
             >
-              <template #label="item">
-                {{ item.value }}問
-              </template>
+              <template #label="item"> {{ item.value }}問 </template>
             </v-sparkline>
           </v-sheet>
         </v-card-text>
@@ -71,7 +61,7 @@
                 クイズ正答数
               </v-col>
               <v-col md="4" class="ml-md-n6">
-                （出題数 {{ items_count }}問）
+                （出題数 {{ itemsCount }}問）
               </v-col>
             </v-row>
           </div>
@@ -80,11 +70,11 @@
 
       <!-- コメント入力 -->
       <div class="mb-4 ml-5">{{ comments.length }} 件のコメント</div>
-      
+
       <v-row no-gutters class="mb-4">
         <v-col cols="2" sm="1" class="text-center">
           <v-avatar :size="45">
-            <img :src="commentAuthorAvator" :alt="commentAuthorName">
+            <img :src="commentAuthorAvator" :alt="commentAuthorName" />
           </v-avatar>
         </v-col>
 
@@ -99,33 +89,33 @@
             ></v-textarea>
 
             <!-- バリデーションエラー表示 -->
-						<div v-if="form.errors.comment" class="ml-n10 ml-md-0">
-							<v-alert 
-								color="error"
-								border="left"
-								dense
-								class="white--text ml-n5 ml-md-0"
-								elevation="2"
-							>
-								{{ form.errors.comment }}
-							</v-alert>
-						</div>
+            <div v-if="form.errors.comment" class="ml-n10 ml-md-0">
+              <v-alert
+                color="error"
+                border="left"
+                dense
+                class="white--text ml-n5 ml-md-0"
+                elevation="2"
+              >
+                {{ form.errors.comment }}
+              </v-alert>
+            </div>
 
             <div v-show="commentBtnFlg" class="mt-2">
               <div class="text-right">
                 <v-btn
                   color="secondary"
                   :disabled="form.processing"
-                  @click.prevent="form.comment = ''; commentBtnFlg = false; form.errors.comment = null;"
+                  @click.prevent="
+                    form.comment = ''
+                    commentBtnFlg = false
+                    form.errors.comment = null
+                  "
                 >
                   キャンセル
                 </v-btn>
 
-                <v-btn
-                  color="accent"
-                  :disabled="!form.comment"
-                  type="submit"
-                >
+                <v-btn color="accent" :disabled="!form.comment" type="submit">
                   コメント投稿
                 </v-btn>
               </div>
@@ -137,10 +127,9 @@
       <comment
         v-for="(comment, key) in comments"
         :key="key"
-        :quiz_id="quiz.id"
+        :quiz-id="quiz.id"
         :comment="comment"
       ></comment>
-
     </v-card>
   </app-layout>
 </template>
@@ -161,7 +150,7 @@ const gradients = [
 ]
 
 export default {
-  components: { 
+  components: {
     AppLayout,
     QuizInfo,
     Comment,
@@ -176,14 +165,14 @@ export default {
       type: Array,
       required: true,
     },
-    user_grades_ary: {
+    userGradesAry: {
       type: Array,
       required: true,
     },
-    items_count: {
+    itemsCount: {
       type: Number,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -198,7 +187,9 @@ export default {
   computed: {
     commentAuthorAvator() {
       var s3_origin = this.quiz.url.match(/(^https?:\/{2,}.*?)(?:\/|\?|#|$)/)[1]
-      return this.$page.props.user ? this.$page.props.user.profile_photo_url : s3_origin + '/images/no_avator.jpg'
+      return this.$page.props.user
+        ? this.$page.props.user.profile_photo_url
+        : s3_origin + '/images/no_avator.jpg'
     },
     commentAuthorName() {
       return this.$page.props.user ? this.$page.props.user.name : '未ログイン'
@@ -206,37 +197,43 @@ export default {
     editDeleteButtonDisp() {
       if (this.$page.props.user == null) {
         return false
-      }
-      else {
+      } else {
         return this.$page.props.user.id == this.quiz.user.id
       }
-    }
+    },
   },
   methods: {
     startQuiz() {
-      this.$inertia.get(route('quiz.answer', {
-        quiz: this.quiz.id,
-      }))
+      this.$inertia.get(
+        route('quiz.answer', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     editQuiz() {
-      this.$inertia.get(route('quiz.edit', {
-        quiz: this.quiz.id,
-      }))
+      this.$inertia.get(
+        route('quiz.edit', {
+          quiz: this.quiz.id,
+        }),
+      )
     },
     commentSend() {
-      this.form.post(route('quiz.comment', {
-        quiz: this.quiz.id,
-      }), {
-				onSuccess: () => {
-          this.form.reset('comment')
-          this.commentBtnFlg = false
+      this.form.post(
+        route('quiz.comment', {
+          quiz: this.quiz.id,
+        }),
+        {
+          onSuccess: () => {
+            this.form.reset('comment')
+            this.commentBtnFlg = false
+          },
+          preserveScroll: true,
         },
-        preserveScroll: true,
-			})
+      )
     },
     commentFoucus() {
       if (this.$page.props.user === null) {
-        this.$inertia.get(route('login'));
+        this.$inertia.get(route('login'))
       }
 
       this.commentBtnFlg = true

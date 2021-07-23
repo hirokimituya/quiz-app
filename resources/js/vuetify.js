@@ -12,8 +12,8 @@ const opts = {
         primary: colors.blue.lighten1,
         secondary: colors.grey.darken1,
         accent: colors.cyan,
-      }
-    }
+      },
+    },
   },
   icons: {
     iconfont: 'mdiSvg',
