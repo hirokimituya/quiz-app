@@ -22,7 +22,7 @@ history.replaceState(
   document.getElementsByTagName('title')[0].innerHTML,
   null,
 )
-window.addEventListener('popstate', function() {
+window.addEventListener('popstate', function(e) {
   Vue.prototype.$browserBackFlg = true
 
   window.setTimeout(() => {
