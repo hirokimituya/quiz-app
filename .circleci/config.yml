@@ -29,6 +29,7 @@ jobs:
           name: ESLint
           command: |
             curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
+            set +o pipefail
             npm run lint ./... 2>&1 | ./bin/reviewdog -f=eslint -reporter=github-pr-review
       - run: npm run dev
       - run:
