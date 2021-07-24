@@ -45,12 +45,12 @@ commands:
     steps:
       - restore_cache:
           name: Resotere webpack cache
-          key: weppack-v1
+          key: weppack-v1-{{ epoch }}
   save_webpack_cache_always:
     steps:
       - save_cache:
           name: Save webpack cache
-          key: weppack-v1
+          key: weppack-v1-{{ epoch }}
           paths:
             - node_modules/.cache/webpack
 
