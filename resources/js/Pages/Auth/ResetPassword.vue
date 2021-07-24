@@ -12,27 +12,27 @@
         <v-form>
           <v-text-field
             id="email"
+            v-model="form.email"
             label="メールアドレス"
             type="email"
             required
             autofocus
-            v-model="form.email"
           ></v-text-field>
 
           <v-text-field
+            v-model="form.password"
             label="パスワード"
             type="password"
             required
             autocomplete="new-password"
-            v-model="form.password"
           ></v-text-field>
 
           <v-text-field
+            v-model="form.password_confirmation"
             label="パスワード（確認用）"
             type="password"
             required
             autocomplete="new-password"
-            v-model="form.password_confirmation"
           ></v-text-field>
 
           <v-btn

@@ -12,20 +12,20 @@
             </v-avatar>
             {{ dashboardUser.name }}
             <v-btn
+              v-if="createBtnShow"
               class="mt-4"
               block
               color="primary"
               @click.prevent="onCreate"
-              v-if="createBtnShow"
             >
               クイズ作成
             </v-btn>
             <v-btn
+              v-if="gradeBtnShow"
               class="mt-4 white--text"
               block
               color="green"
               @click.prevent="onGradeList"
-              v-if="gradeBtnShow"
             >
               クイズ実行履歴
             </v-btn>
@@ -92,8 +92,8 @@
 
         <quiz-info
           v-for="quiz in quizes"
-          :quiz="quiz"
           :key="quiz.id"
+          :quiz="quiz"
         ></quiz-info>
       </v-col>
     </v-row>
@@ -178,24 +178,6 @@ export default {
       sortItems: SORT_ITEMS,
     }
   },
-  watch: {
-    selectedItem() {
-      let data = {}
-      data.item = this.items[this.selectedItem].value
-
-      let sort = getUrlParam('sort')
-      if (sort !== '') {
-        data.sort = sort
-      }
-
-      this.$inertia.get(
-        route(this.actionPath, {
-          user: this.dashboardUser.id,
-        }),
-        data,
-      )
-    },
-  },
   computed: {
     createBtnShow() {
       if (this.$page.props.user !== null) {
@@ -213,6 +195,24 @@ export default {
       }
 
       return false
+    },
+  },
+  watch: {
+    selectedItem() {
+      let data = {}
+      data.item = this.items[this.selectedItem].value
+
+      let sort = getUrlParam('sort')
+      if (sort !== '') {
+        data.sort = sort
+      }
+
+      this.$inertia.get(
+        route(this.actionPath, {
+          user: this.dashboardUser.id,
+        }),
+        data,
+      )
     },
   },
   methods: {

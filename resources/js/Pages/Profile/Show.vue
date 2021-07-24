@@ -32,6 +32,13 @@ import UpdateProfileInformationForm from './UpdateProfileInformationForm'
 import ShowGradeForm from './ShowGradeForm.vue'
 
 export default {
+  components: {
+    AppLayout,
+    DeleteUserForm,
+    UpdatePasswordForm,
+    UpdateProfileInformationForm,
+    ShowGradeForm,
+  },
   props: {
     sessions: {
       type: Array,
@@ -39,13 +46,6 @@ export default {
         return []
       },
     },
-  },
-  components: {
-    AppLayout,
-    DeleteUserForm,
-    UpdatePasswordForm,
-    UpdateProfileInformationForm,
-    ShowGradeForm,
   },
 }
 </script>

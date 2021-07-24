@@ -17,7 +17,7 @@
     </template>
 
     <template #actions>
-      <span class="text-subtitle-2 mr-2" v-show="form.recentlySuccessful"
+      <span v-show="form.recentlySuccessful" class="text-subtitle-2 mr-2"
         >保存完了</span
       >
 

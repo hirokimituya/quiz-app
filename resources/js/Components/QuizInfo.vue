@@ -35,8 +35,8 @@
             <v-btn
               class="mr-1 pa-0"
               text
-              @click.stop.prevent="like"
               :disabled="likeDisabled"
+              @click.stop.prevent="like"
             >
               <v-icon :color="likedByUser ? 'red' : 'grey'">{{
                 likedByUser ? mdiHeart : mdiHeartOutline
@@ -111,14 +111,6 @@ export default {
       likeDisabled: false,
     }
   },
-  mounted() {
-    if (this.detail) {
-      this.elevation = 0
-      this.maxWidth = undefined
-      this.avatarSize = 55
-      this.imgWidth = 300
-    }
-  },
   computed: {
     eventName() {
       return this.detail ? null : 'click'
@@ -126,6 +118,14 @@ export default {
     avgCorrectRate() {
       return putDesimalPointTwo(this.quiz.avgCorrectRate)
     },
+  },
+  mounted() {
+    if (this.detail) {
+      this.elevation = 0
+      this.maxWidth = undefined
+      this.avatarSize = 55
+      this.imgWidth = 300
+    }
   },
   methods: {
     onClick() {

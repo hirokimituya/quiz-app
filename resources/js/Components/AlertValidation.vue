@@ -1,7 +1,7 @@
 <template>
   <v-alert
-    type="error"
     v-show="hasErrors"
+    type="error"
     transition="slide-x-transition"
     border="left"
     dense

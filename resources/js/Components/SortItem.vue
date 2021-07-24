@@ -1,7 +1,7 @@
 <template>
   <v-select
-    :items="sortItems"
     v-model="selectSortItem"
+    :items="sortItems"
     label="ソート"
     outlined
     dense

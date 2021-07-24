@@ -23,11 +23,11 @@
         <v-form>
           <v-text-field
             id="email"
+            v-model="form.email"
             label="メールアドレス"
             type="email"
             required
             autofocus
-            v-model="form.email"
           ></v-text-field>
 
           <v-btn

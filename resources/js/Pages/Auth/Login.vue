@@ -11,27 +11,27 @@
 
         <v-form>
           <v-text-field
-            label="メールアドレス"
             id="email"
+            v-model="form.email"
+            label="メールアドレス"
             type="email"
             required
             autofocus
-            v-model="form.email"
           ></v-text-field>
 
           <v-text-field
+            v-model="form.password"
             label="パスワード"
             :append-icon="showPassword ? mdiEye : mdiEyeOff"
             :type="showPassword ? 'text' : 'password'"
-            @click:append="showPassword = !showPassword"
             required
             autocomplete="current-password"
-            v-model="form.password"
+            @click:append="showPassword = !showPassword"
           ></v-text-field>
 
           <v-checkbox
-            class="mt-n2"
             v-model="form.remember"
+            class="mt-n2"
             label="次回から自動ログイン"
           ></v-checkbox>
 

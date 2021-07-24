@@ -33,12 +33,12 @@
               <v-card-text>
                 <div v-if="data_item.answerFormat == 1">
                   <v-textarea
+                    v-model="data_item.answerText"
                     solo
                     dense
                     required
                     rows="1"
                     readonly
-                    v-model="data_item.answerText"
                   ></v-textarea>
                 </div>
 
@@ -51,8 +51,8 @@
                     <v-col cols="12" class="mt-n5">
                       <div v-if="data_item.answerFormat == 2" class="mb-n3">
                         <v-radio-group
-                          required
                           v-model="data_item.answerRadio"
+                          required
                           readonly
                         >
                           <div

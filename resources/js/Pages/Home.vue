@@ -30,17 +30,17 @@
 
         <quiz-info
           v-for="quiz in quizes"
-          :quiz="quiz"
           :key="quiz.id"
+          :quiz="quiz"
         ></quiz-info>
       </v-col>
 
       <!-- ブレークポイントmd以上で表示 -->
       <v-col order="2">
         <portal
+          v-resize="onResize"
           to="genreListPlace"
           :disabled="DispGenreListPC"
-          v-resize="onResize"
           style="position: sticky; top: 100px;"
         >
           <genre-nav :genres="genres" :genre-list-id="genreListId"></genre-nav>

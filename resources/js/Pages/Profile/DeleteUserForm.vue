@@ -42,13 +42,13 @@
                 <v-row no-gutters>
                   <v-col cols="12" sm="8">
                     <v-text-field
-                      type="password"
-                      placeholder="パスワード"
                       ref="password"
                       v-model="form.password"
-                      @keyup.enter="deleteUser"
+                      type="password"
+                      placeholder="パスワード"
                       outlined
                       dense
+                      @keyup.enter="deleteUser"
                     ></v-text-field>
                   </v-col>
 
@@ -79,8 +79,8 @@
                 <v-btn
                   color="red"
                   class="white--text my-1"
-                  @click="deleteUser"
                   :disabled="form.processing"
+                  @click="deleteUser"
                 >
                   アカウント削除
                 </v-btn>

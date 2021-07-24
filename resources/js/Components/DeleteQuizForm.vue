@@ -33,8 +33,8 @@
           <v-btn
             color="red"
             class="white--text my-1"
-            @click="deleteQuiz"
             :disabled="quizDeleteDisabled"
+            @click="deleteQuiz"
           >
             クイズを削除する
           </v-btn>

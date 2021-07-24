@@ -12,12 +12,12 @@
             <th width="80px"><div class="mt-n6">タイトル</div></th>
             <td>
               <v-text-field
+                v-model="form.title"
                 outlined
                 type="text"
                 dense
                 required
                 autofocus
-                v-model="form.title"
               ></v-text-field>
             </td>
           </tr>
@@ -41,10 +41,10 @@
             <th width="80px"><div class="mt-n6">説明</div></th>
             <td>
               <v-textarea
+                v-model="form.description"
                 outlined
                 type="text"
                 dense
-                v-model="form.description"
               ></v-textarea>
             </td>
           </tr>
@@ -70,8 +70,8 @@
               <v-row>
                 <v-col md="6">
                   <v-select
-                    :items="genres"
                     v-model="form.genre"
+                    :items="genres"
                     outlined
                     dense
                     item-text="name"
@@ -105,7 +105,7 @@
           <tr>
             <th width="80px"><div class="mt-n6">画像</div></th>
             <td>
-              <v-file-input outlined dense v-model="form.image"></v-file-input>
+              <v-file-input v-model="form.image" outlined dense></v-file-input>
             </td>
           </tr>
           <!-- バリデーションエラー表示 -->
@@ -128,23 +128,23 @@
         <v-row class="my-2">
           <v-col cols="7" md="3">
             <v-select
+              v-model="questionNum"
               :items="questionCount(10)"
               filled
               dense
-              v-model="questionNum"
               label="問題数"
               type="number"
             ></v-select>
           </v-col>
         </v-row>
 
-        <draggable @end="onEnd" id="draggable" :animation="200">
+        <draggable id="draggable" :animation="200" @end="onEnd">
           <quiz-item-form
             v-for="num in questionNum"
+            :id="num"
             :key="key[num - 1]"
             v-model="form.question[num2eng(num)]"
             :num="num"
-            :id="num"
             @delete="onDelete"
           ></quiz-item-form>
         </draggable>
@@ -226,6 +226,29 @@ export default {
       key: [],
     }
   },
+  watch: {
+    questionNum: {
+      handler() {
+        for (let i = 1; i <= this.questionNum; i++) {
+          if (!Object.keys(this.form.question[num2eng(i)]).length) {
+            this.form.question[num2eng(i)] = {
+              question: null,
+              answerFormat: 1,
+              answerText: null,
+              answerRadio: 1,
+              answerCheck: [1],
+              selectItemsNum: 2,
+              selectItemText: { one: '', two: '', three: '', four: '' },
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    this.createKey()
+  },
   methods: {
     questionCount(i) {
       return [...Array(i)].map((_, i) => i + 1)
@@ -301,29 +324,6 @@ export default {
     back() {
       history.back()
     },
-  },
-  watch: {
-    questionNum: {
-      handler() {
-        for (let i = 1; i <= this.questionNum; i++) {
-          if (!Object.keys(this.form.question[num2eng(i)]).length) {
-            this.form.question[num2eng(i)] = {
-              question: null,
-              answerFormat: 1,
-              answerText: null,
-              answerRadio: 1,
-              answerCheck: [1],
-              selectItemsNum: 2,
-              selectItemText: { one: '', two: '', three: '', four: '' },
-            }
-          }
-        }
-      },
-      immediate: true,
-    },
-  },
-  mounted() {
-    this.createKey()
   },
 }
 </script>
