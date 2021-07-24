@@ -48,8 +48,9 @@ commands:
           key: weppack-v1-{{ checksum "node_modules/webpack_cache.txt" }}
   webpack_cache_txt_change:
     steps:
-      - name: webpack cache key change
-      - run: echo `date` > node_modules/webpack_cache.txt
+      - run:
+          name: webpack cache key change
+          command: echo `date` > node_modules/webpack_cache.txt
   save_webpack_cache_always:
     steps:
       - save_cache:
