@@ -26,13 +26,13 @@
             <v-col>
               <v-card-text>
                 <v-textarea
+                  v-model="emitData.question"
                   solo
                   dense
                   :counter="255"
                   :rules="[v => !!v && v.length <= 255]"
                   required
                   rows="3"
-                  v-model="emitData.question"
                   @change="onChange"
                 ></v-textarea>
               </v-card-text>
@@ -60,11 +60,11 @@
             <v-col sm="4">
               <v-card-text>
                 <v-select
+                  v-model="emitData.answerFormat"
                   solo
                   :items="answerFormatItems"
                   dense
                   required
-                  v-model="emitData.answerFormat"
                   @change="onChange"
                 ></v-select>
               </v-card-text>
@@ -93,11 +93,11 @@
               <v-card-text>
                 <div v-if="emitData.answerFormat == 1">
                   <v-textarea
+                    v-model="emitData.answerText"
                     solo
                     dense
                     required
                     rows="1"
-                    v-model="emitData.answerText"
                     @change="onChange"
                   ></v-textarea>
                   <!-- バリデーションエラー表示 -->
@@ -122,11 +122,11 @@
                   <v-row no-gutters>
                     <v-col cols="12" sm="4">
                       <v-select
+                        v-model="emitData.selectItemsNum"
                         :items="selectItemsCount(4)"
                         label="選択肢数"
                         outlined
                         dense
-                        v-model="emitData.selectItemsNum"
                         type="number"
                         @change="onChange"
                       ></v-select>
@@ -150,8 +150,8 @@
                     <v-col cols="12" class="mt-n5">
                       <div v-if="emitData.answerFormat == 2">
                         <v-radio-group
-                          required
                           v-model="emitData.answerRadio"
+                          required
                           @change="onChange"
                         >
                           <div v-for="n in emitData.selectItemsNum" :key="n">
@@ -165,11 +165,11 @@
                               </v-col>
                               <v-col sm="8">
                                 <v-textarea
+                                  v-model="emitData.selectItemText[num2eng(n)]"
                                   solo
                                   dense
                                   required
                                   rows="1"
-                                  v-model="emitData.selectItemText[num2eng(n)]"
                                 ></v-textarea>
                               </v-col>
                             </v-row>
@@ -230,12 +230,12 @@
                             </v-col>
                             <v-col sm="8">
                               <v-textarea
+                                v-model="emitData.selectItemText[num2eng(n)]"
                                 class=""
                                 solo
                                 dense
                                 required
                                 rows="1"
-                                v-model="emitData.selectItemText[num2eng(n)]"
                               ></v-textarea>
                             </v-col>
                           </v-row>
@@ -341,6 +341,24 @@ export default {
       return false
     },
   },
+  watch: {
+    'emitData.selectItemsNum': {
+      handler() {
+        // 選択肢テキストが存在しなければ復元
+        for (let i = 1; i <= this.emitData.selectItemsNum; i++) {
+          if (!this.emitData.selectItemText[num2eng(i)]) {
+            this.emitData.selectItemText[num2eng(i)] = ''
+          }
+        }
+
+        // 非表示のチェックボックスのチェックを外す
+        this.emitData.answerCheck = this.emitData.answerCheck.filter(i => {
+          return i <= this.emitData.selectItemsNum
+        })
+      },
+      immediate: true,
+    },
+  },
   methods: {
     onChange() {
       this.$emit('input', this.emitData)
@@ -363,24 +381,6 @@ export default {
       if (confirm('問題' + this.num + 'を削除しますが、よろしいですか。')) {
         this.$emit('delete', this.num)
       }
-    },
-  },
-  watch: {
-    'emitData.selectItemsNum': {
-      handler() {
-        // 選択肢テキストが存在しなければ復元
-        for (let i = 1; i <= this.emitData.selectItemsNum; i++) {
-          if (!this.emitData.selectItemText[num2eng(i)]) {
-            this.emitData.selectItemText[num2eng(i)] = ''
-          }
-        }
-
-        // 非表示のチェックボックスのチェックを外す
-        this.emitData.answerCheck = this.emitData.answerCheck.filter(i => {
-          return i <= this.emitData.selectItemsNum
-        })
-      },
-      immediate: true,
     },
   },
 }

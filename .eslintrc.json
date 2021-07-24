@@ -6,7 +6,7 @@
   },
   "extends": [
       "eslint:recommended",
-      "plugin:vue/strongly-recommended",
+      "plugin:vue/recommended",
       "plugin:prettier/recommended" // 記述位置が重要。一番最後に書く。
   ],
   "parserOptions": {

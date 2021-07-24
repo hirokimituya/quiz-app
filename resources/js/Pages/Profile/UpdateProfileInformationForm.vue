@@ -13,22 +13,22 @@
       <div class="mb-6">
         <!-- Profile Photo File Input -->
         <input
-          type="file"
           v-show="false"
           ref="photo"
+          type="file"
           @change="updatePhotoPreview"
         />
 
         <!-- Current Profile Photo -->
         <div class="text-subtitle-1 mb-1">アイコン</div>
 
-        <div class="mb-2" v-show="!photoPreview">
+        <div v-show="!photoPreview" class="mb-2">
           <v-avatar size="75">
             <img :src="user.profile_photo_url" :alt="user.name" />
           </v-avatar>
         </div>
 
-        <div class="mb-2" v-show="photoPreview">
+        <div v-show="photoPreview" class="mb-2">
           <v-avatar size="75">
             <img :src="photoPreview" alt="新しいアイコン" />
           </v-avatar>
@@ -39,9 +39,9 @@
         </v-btn>
 
         <v-btn
+          v-if="user.profile_photo_path"
           outlined
           @click.prevent="deletePhoto"
-          v-if="user.profile_photo_path"
         >
           アイコン削除
         </v-btn>
@@ -97,8 +97,8 @@
           <v-col cols="12" sm="9" md="7">
             <v-text-field
               id="email"
-              type="email"
               v-model="form.email"
+              type="email"
               autocomplete="email"
               label="メールアドレス"
               dense
@@ -125,7 +125,7 @@
     </template>
 
     <template #actions>
-      <span class="text-subtitle-2 mr-2" v-show="form.recentlySuccessful"
+      <span v-show="form.recentlySuccessful" class="text-subtitle-2 mr-2"
         >保存完了</span
       >
 

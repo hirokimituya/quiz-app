@@ -14,7 +14,7 @@
         クイズを回答する
       </v-btn>
 
-      <div class="text-right mt-n8" v-if="editDeleteButtonDisp">
+      <div v-if="editDeleteButtonDisp" class="text-right mt-n8">
         <!-- クイズ編集ボタン -->
         <v-btn
           color="green"
@@ -81,8 +81,8 @@
         <v-col>
           <v-form @submit.prevent="commentSend">
             <v-textarea
-              placeholder="コメント入力..."
               v-model="form.comment"
+              placeholder="コメント入力..."
               counter="255"
               rows="1"
               @focus.prevent="commentFoucus"

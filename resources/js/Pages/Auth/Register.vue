@@ -12,40 +12,40 @@
         <v-form>
           <v-text-field
             id="name"
+            v-model="form.name"
             label="ユーザ名"
             type="text"
             required
             autofocus
             autocomplete="name"
-            v-model="form.name"
           ></v-text-field>
 
           <v-text-field
             id="email"
+            v-model="form.email"
             label="メールアドレス"
             type="email"
             required
-            v-model="form.email"
           ></v-text-field>
 
           <v-text-field
+            v-model="form.password"
             label="パスワード"
             :append-icon="showPassword1 ? mdiEye : mdiEyeOff"
             :type="showPassword1 ? 'text' : 'password'"
-            @click:append="showPassword1 = !showPassword1"
             required
             autocomplete="new-password"
-            v-model="form.password"
+            @click:append="showPassword1 = !showPassword1"
           ></v-text-field>
 
           <v-text-field
+            v-model="form.password_confirmation"
             label="パスワード（確認用）"
             :append-icon="showPassword2 ? mdiEye : mdiEyeOff"
             :type="showPassword2 ? 'text' : 'password'"
-            @click:append="showPassword2 = !showPassword2"
             required
             autocomplete="new-password"
-            v-model="form.password_confirmation"
+            @click:append="showPassword2 = !showPassword2"
           ></v-text-field>
 
           <v-btn

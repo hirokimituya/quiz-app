@@ -33,10 +33,10 @@
       </v-col>
 
       <v-col
+        v-if="editAndDeleteButtonDisp"
         cols="1"
         align-self="center"
         class="text-right"
-        v-if="editAndDeleteButtonDisp"
       >
         <v-menu offset-y>
           <template #activator="{ on, attrs }">

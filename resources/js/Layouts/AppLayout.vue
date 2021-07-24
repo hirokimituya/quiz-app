@@ -9,22 +9,22 @@
 
       <!-- ブレークポイントmd以上なら検索フォームをヘッダーに表示 -->
       <portal
+        v-resize="onResize"
         class="mt-6 ml-7"
         to="searchPlace"
-        v-resize="onResize"
         :disabled="DispSearchPC"
       >
         <v-form>
           <v-row no-gutters>
             <v-col cols="10" md="11">
               <v-text-field
+                v-model="search"
                 class="inline rounded-0"
                 label="キーワードを入力"
                 single-line
                 dense
                 solo
                 type="search"
-                v-model="search"
               ></v-text-field>
             </v-col>
             <v-col cols="1">
@@ -114,8 +114,8 @@
         <!-- 上に戻るボタン -->
         <v-fab-transition>
           <v-btn
-            v-scroll="onScroll"
             v-show="scrollBtnFlg"
+            v-scroll="onScroll"
             fab
             large
             fixed

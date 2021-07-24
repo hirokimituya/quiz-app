@@ -15,10 +15,10 @@
           <v-col cols="12" sm="9" md="7">
             <v-text-field
               id="current_password"
-              type="password"
-              v-model="form.current_password"
-              autocomplete="current-password"
               ref="current_password"
+              v-model="form.current_password"
+              type="password"
+              autocomplete="current-password"
               label="現在のパスワード"
               outlined
               dense
@@ -48,10 +48,10 @@
           <v-col cols="12" sm="9" md="7">
             <v-text-field
               id="password"
-              type="password"
-              v-model="form.password"
-              autocomplete="new-password"
               ref="password"
+              v-model="form.password"
+              type="password"
+              autocomplete="new-password"
               label="新しいパスワード"
               outlined
               dense
@@ -81,8 +81,8 @@
           <v-col cols="12" sm="9" md="7">
             <v-text-field
               id="password_confirmation"
-              type="password"
               v-model="form.password_confirmation"
+              type="password"
               autocomplete="new-password"
               label="新しいパスワード（確認用）"
               outlined
@@ -109,7 +109,7 @@
     </template>
 
     <template #actions>
-      <span class="text-subtitle-2 mr-2" v-show="form.recentlySuccessful"
+      <span v-show="form.recentlySuccessful" class="text-subtitle-2 mr-2"
         >保存完了</span
       >
 

@@ -18,8 +18,8 @@
         <v-btn
           color="red"
           class="white--text my-1"
-          @click="deleteComment"
           :disabled="commentDeleteDisabled"
+          @click="deleteComment"
         >
           コメント削除
         </v-btn>
@@ -50,6 +50,14 @@ export default {
       commentDeleteDisabled: false,
     }
   },
+  watch: {
+    value: function(val) {
+      this.deleteDialog = val
+    },
+    deleteDialog: function(val) {
+      this.$emit('input', val)
+    },
+  },
   methods: {
     deleteComment() {
       this.commentDeleteDisabled = true
@@ -71,14 +79,6 @@ export default {
     },
     closeModal() {
       this.deleteDialog = false
-    },
-  },
-  watch: {
-    value: function(val) {
-      this.deleteDialog = val
-    },
-    deleteDialog: function(val) {
-      this.$emit('input', val)
     },
   },
 }

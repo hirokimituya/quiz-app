@@ -10,8 +10,8 @@
         </div>
 
         <v-textarea
-          placeholder="コメント入力..."
           v-model="form.comment"
+          placeholder="コメント入力..."
           counter="255"
           rows="1"
         ></v-textarea>
@@ -38,8 +38,8 @@
         <v-btn
           color="green"
           class="white--text my-1"
-          @click="editComment"
           :disabled="commentEditDisabled"
+          @click="editComment"
         >
           コメント編集
         </v-btn>
@@ -73,6 +73,14 @@ export default {
       commentEditDisabled: false,
     }
   },
+  watch: {
+    value: function(val) {
+      this.editDialog = val
+    },
+    editDialog: function(val) {
+      this.$emit('input', val)
+    },
+  },
   methods: {
     editComment() {
       this.commentEditDisabled = true
@@ -95,14 +103,6 @@ export default {
     },
     closeModal() {
       this.editDialog = false
-    },
-  },
-  watch: {
-    value: function(val) {
-      this.editDialog = val
-    },
-    editDialog: function(val) {
-      this.$emit('input', val)
     },
   },
 }

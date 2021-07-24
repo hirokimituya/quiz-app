@@ -22,8 +22,8 @@
           </v-col>
           <v-col cols="4" sm="2" class="mt-5 ml-n2 mt-sm-0">
             <v-select
-              :items="numItems"
               v-model="numItem"
+              :items="numItems"
               label="表示数"
               outlined
               dense
@@ -179,18 +179,6 @@ export default {
       numItem: this.perPage,
     }
   },
-  methods: {
-    mypage() {
-      this.$inertia.get(
-        route('dashboard', {
-          user: this.gradeUser.id,
-        }),
-      )
-    },
-    back() {
-      history.back()
-    },
-  },
   watch: {
     numItem() {
       let data = {}
@@ -206,6 +194,18 @@ export default {
       }
 
       this.$inertia.get(route(this.actionPath, this.actionPathParam), data)
+    },
+  },
+  methods: {
+    mypage() {
+      this.$inertia.get(
+        route('dashboard', {
+          user: this.gradeUser.id,
+        }),
+      )
+    },
+    back() {
+      history.back()
     },
   },
 }

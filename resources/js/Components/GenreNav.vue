@@ -77,14 +77,6 @@ export default {
       genreDialogFlg: false,
     }
   },
-  methods: {
-    genreDialog() {
-      this.genreDialogFlg = true
-    },
-    closeModal() {
-      this.genreDialogFlg = false
-    },
-  },
   watch: {
     selectedGenre(newVal, oldVale) {
       let selectedGenreTmp = newVal !== undefined ? newVal : oldVale
@@ -97,6 +89,14 @@ export default {
       }
 
       this.$inertia.get(route('home'), data)
+    },
+  },
+  methods: {
+    genreDialog() {
+      this.genreDialogFlg = true
+    },
+    closeModal() {
+      this.genreDialogFlg = false
     },
   },
 }

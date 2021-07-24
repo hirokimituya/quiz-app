@@ -79,6 +79,9 @@ export default {
       return Object.keys(this.form.question).length
     },
   },
+  mounted() {
+    this.$vuetify.goTo(0, { duration: 0 })
+  },
   methods: {
     onSubmit() {
       this.form.post(
@@ -93,9 +96,6 @@ export default {
     num2eng(num) {
       return num2eng(num)
     },
-  },
-  mounted() {
-    this.$vuetify.goTo(0, { duration: 0 })
   },
 }
 </script>
