@@ -11,6 +11,6 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter.
-          eslint_flags: ' --ext .js,.vue --ignore-path .gitignore .'
+          eslint_flags: '--ext .js,.vue --max-warnings 0 --ignore-path .gitignore .'
       - name: eslint
         run: npm run lint

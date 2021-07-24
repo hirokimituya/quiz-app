@@ -1,7 +1,7 @@
 <!--- 画像URLの変数定義 --->
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/126862269-0c0ad734-73ad-428d-8f19-68447b9ef014.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/126862255-d99ccd7a-a0a1-4de4-a736-5589bba42217.png
+[ER図]: https://user-images.githubusercontent.com/81066421/126870240-6c7d16a1-6e4d-4e45-a802-81bde915e508.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -206,7 +206,8 @@ ER図は以下画像の通りです。
 | 成績回答ID    | id            |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | 成績ID        | grade_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;grades(id) |
 | 質問番号      | question_number | SAMLLIINT |         |        |![チェック][チェック]|       |
-| 成績回答       | answer       |   VARCHAR(255)  |         |        |          |             |
+| 回答実績       | answer       |   VARCHAR(255)  |         |        |![チェック][チェック]|             |
+| 正解有無       | pass       |  BOOLEAN　　　　  |         |        |![チェック][チェック]|             |
 | 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
 

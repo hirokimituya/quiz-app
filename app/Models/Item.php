@@ -117,7 +117,7 @@ class Item extends Model
      * アイテムが選択式の場合、正解の文字列または、配列を返す。
      * @return array|string アイテムの正解の文字列または、配列を返す。
      */
-    public function getCorrectStr(): array|string
+    public function getCorrectStr(): mixed
     {
         switch ($this->attributes['format']) {
             case self::FORMAT_DESCRIPTION:

@@ -54,8 +54,8 @@
         </thead>
         <tbody>
           <tr
-            id="genre-list"
             v-for="grade in gradesList"
+            id="genre-list"
             :key="grade.grade_id"
             class="text-center"
             @click.stop="goGradeDetailPage(grade.grade_id)"
