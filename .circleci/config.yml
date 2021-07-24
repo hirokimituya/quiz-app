@@ -17,18 +17,6 @@ commands:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
-  restore_npm:
-    steps:
-      - restore_cache:
-          name: Restore npm install
-          key: npm-v1-{{ checksum "package-lock.json" }}
-  save_npm:
-    steps:
-      - save_cache:
-          name: Save npm install
-          key: npm-v1-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
   restore_composer_no_dev:
     steps:
       - restore_cache:
@@ -41,6 +29,30 @@ commands:
           key: composer-no-dev-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
+  restore_npm:
+    steps:
+      - restore_cache:
+          name: Restore npm install
+          key: npm-v1-{{ checksum "package-lock.json" }}
+  save_npm:
+    steps:
+      - save_cache:
+          name: Save npm install
+          key: npm-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+  restore_webpack_cache_always:
+    steps:
+      - restore_cache:
+          name: Resotere webpack cache
+          key: weppack-v1-{{ .Revision }}
+  save_webpack_cache_always:
+    steps:
+      - save_cache:
+          name: Save webpack cache
+          key: weppack-v1-{{ .Revision }}
+          paths:
+            - node_modules/.cache/webpack
 
 jobs:
   build:
@@ -59,8 +71,10 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
-      - run: npm run prod
       - save_npm
+      - restore_webpack_cache_always
+      - run: npm run dev
+      - save_webpack_cache_always
       - run:
           name: php test
           command: vendor/bin/phpunit
@@ -83,8 +97,10 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
-      - run: npm run prod
       - save_npm
+      - restore_webpack_cache_always
+      - run: npm run prod
+      - save_webpack_cache_always
       - run:
           name: archive artifacts
           command: zip -ryq quiz-maker.zip .
