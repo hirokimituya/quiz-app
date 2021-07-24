@@ -1,7 +1,7 @@
 <!--- 画像URLの変数定義 --->
-[画面遷移図]: https://user-images.githubusercontent.com/81066421/125150452-d45c2380-e17a-11eb-96a9-b95d46509a97.png
+[画面遷移図]: https://user-images.githubusercontent.com/81066421/126862269-0c0ad734-73ad-428d-8f19-68447b9ef014.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/125150649-687aba80-e17c-11eb-8910-ee84ff8cfa5b.png
+[ER図]: https://user-images.githubusercontent.com/81066421/126862255-d99ccd7a-a0a1-4de4-a736-5589bba42217.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -48,7 +48,7 @@
     - クイズ編集機能
     - クイズ削除機能
     - クイズ回答機能
-    - クイズ実績表示機能
+    - クイズ回答実績表示機能
 - いいね機能
 - コメント機能
     - コメント投稿機能
@@ -88,7 +88,8 @@ URLの一覧は以下表の通りです。
 | /quiz/{クイズID}/comments       | quiz.comment                   |   POST   |![鍵][鍵]| クイズにコメントを追加する。                                       |
 | /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   PATCH   |![鍵][鍵]| クイズのコメントを編集する。                                       |
 | /quiz/{クイズID}/comments/{コメントID}| quiz.comment.edit         |   DELETE  |![鍵][鍵]| クイズのコメントを削除する。                                       |
-| /grade/{ユーザID}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
+| /grade/{ユーザID?}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
+| /grade/{ユーザID}/{グレードID}     | grade.detail                   |    GET   |         | 成績詳細ページを表示する。                                     |
 | /user/show/grade                | show.grade                       |  PATCH | ![鍵][鍵]| 成績ページを他ユーザに表示するかどうかの設定をする。            |
 | /register                       | register                        |    GET   |      | 会員登録ページを表示する。                                         |
 | /register                       | register                        |   POST   |      | 会員登録処理を実行する。                                           |
@@ -192,6 +193,20 @@ ER図は以下画像の通りです。
 | クイズID     | quiz_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;quizzes(id) |
 | ユーザID     | user_id       | BIGINT UNSIGNED |         |        |          |  ![外部][外部]&nbsp;users(id)  |
 | 正答数       | correct_count |   VARCHAR(100)  |         |        |![チェック][チェック]|             |
+| 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
+| 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
+
+<br>
+
+> ### answersテーブル
+- クイズの実行履歴詳細を管理します。
+
+| カラム論理名 | カラム物理名  |        型       | PRIMARY | UNIQUE | NOT NULL |   FOREIGN   |
+|--------------|---------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
+| 成績回答ID    | id            |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
+| 成績ID        | grade_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;grades(id) |
+| クイズアイテムID  | item_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]|  ![外部][外部]&nbsp;items(id)  |
+| 成績回答       | answer       |   VARCHAR(255)  |         |        |          |             |
 | 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
 
