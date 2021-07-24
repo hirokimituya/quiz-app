@@ -199,13 +199,13 @@ ER図は以下画像の通りです。
 <br>
 
 > ### answersテーブル
-- クイズの実行履歴詳細を管理します。
+- クイズの実行履歴詳細情報を管理します。
 
 | カラム論理名 | カラム物理名  |        型       | PRIMARY | UNIQUE | NOT NULL |   FOREIGN   |
 |--------------|---------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
 | 成績回答ID    | id            |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | 成績ID        | grade_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;grades(id) |
-| クイズアイテムID  | item_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]|  ![外部][外部]&nbsp;items(id)  |
+| 質問番号      | question_number | SAMLLIINT |         |        |![チェック][チェック]|       |
 | 成績回答       | answer       |   VARCHAR(255)  |         |        |          |             |
 | 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
