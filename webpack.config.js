@@ -16,4 +16,10 @@ module.exports = {
       '@': path.resolve('resources/js'),
     },
   },
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
 }
