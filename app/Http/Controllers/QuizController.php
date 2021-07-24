@@ -316,15 +316,18 @@ class QuizController extends Controller
 
                     if (empty($answer['answerText'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($answer['answerText'] == $correct->answer) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
                 case Item::FORMAT_RADIO:
@@ -335,15 +338,18 @@ class QuizController extends Controller
 
                     if (empty($answer['answerRadio'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($answer['answerRadio'] == $correct_num) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
                 case Item::FORMAT_CHECK:
@@ -357,20 +363,23 @@ class QuizController extends Controller
                     }
 
                     $answers[$key]['correct'] = $correct_ary;
-                    
+
                     $answer_table['answer'] = isset($answer['answerCheck']) ? implode(',', $answer['answerCheck']) : '';
 
                     if (empty($answer['answerCheck'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($this->array_equal_set($answer['answerCheck'], $correct_num_ary)) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
             }
@@ -457,7 +466,7 @@ class QuizController extends Controller
     {
         $items = Item::where('quiz_id', $quiz->id)->get();
 
-        $correct_rates = $this->getItemCorrectRate($quiz);
+        $correct_rates = self::getItemCorrectRate($quiz);
 
         $items_data = [];
         foreach ($items as $item) {
@@ -501,7 +510,7 @@ class QuizController extends Controller
         return $items_data;
     }
 
-    private function getItemCorrectRate(Quiz $quiz)
+    public static function getItemCorrectRate(Quiz $quiz)
     {
         $grades = Grade::where('quiz_id', $quiz->id)->with('quiz')->get();
 

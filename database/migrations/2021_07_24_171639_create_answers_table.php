@@ -18,6 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('grade_id')->constrained()->onDelete('cascade');
             $table->smallInteger('question_number');
             $table->string('answer', 255);
+            $table->boolean('pass');
             $table->timestamps();
         });
     }

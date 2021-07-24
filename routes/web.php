@@ -23,6 +23,8 @@ Route::get('/dashboard/{user?}', [HomeController::class, 'dashboard'])->name('da
 
 Route::get('/grade/{user?}', [HomeController::class, 'grade'])->name('grade')->where('user', '[0-9]+');
 
+Route::get('/grade/{user}/{grade}', [HomeController::class, 'gradeDetail'])->name('grade.detail')->where(['user' => '[0-9]+', 'grade' => '[0-9]+']);
+
 Route::get('/quiz/{quiz}', [QuizController::class, 'detail'])->where('quiz', '[0-9]*')->name('quiz.detail');
 
 Route::get('/quiz/{quiz}/answer', [QuizController::class, 'answerForm'])->where('quiz', '[0-9]*')->name('quiz.answer');

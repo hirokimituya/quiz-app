@@ -67,4 +67,67 @@ class Item extends Model
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * アイテムが選択式の場合、項目数を返す
+     * @return int アイテムの項目数
+     */
+    public function getChoicesNum(): int
+    {
+        if ($this->attributes['format'] == self::FORMAT_DESCRIPTION) {
+            return 0;
+        }
+        else if ($this->attributes['choice2'] === null) {
+            return 1;
+        }
+        else if ($this->attributes['choice3'] === null) {
+            return 2;
+        }
+        else if ($this->attributes['choice4'] === null) {
+            return 3;
+        }
+        else {
+            return 4;
+        }
+    }
+
+    /**
+     * アイテムの項目を配列で返す。
+     * @return array アイテムの項目の配列
+     */
+    public function getChoices(): array
+    {
+        $result_ary = [];
+        if ($this->attributes['choice1'] !== null) {
+            $result_ary['one'] = $this->attributes['choice1'];
+        }
+        if ($this->attributes['choice2'] !== null) {
+            $result_ary['two'] = $this->attributes['choice2'];
+        }
+        if ($this->attributes['choice3'] !== null) {
+            $result_ary['three'] = $this->attributes['choice3'];
+        }
+        if ($this->attributes['choice4'] !== null) {
+            $result_ary['four'] = $this->attributes['choice4'];
+        }
+        return $result_ary;
+    }
+
+    /**
+     * アイテムが選択式の場合、正解の文字列または、配列を返す。
+     * @return array|string アイテムの正解の文字列または、配列を返す。
+     */
+    public function getCorrectStr(): array|string
+    {
+        switch ($this->attributes['format']) {
+            case self::FORMAT_DESCRIPTION:
+                return $this->attributes['answer'];
+            case self::FORMAT_RADIO:
+                $correct_num = self::STR_NUM[$this->attributes['answer']];
+                return $this->attributes['choice' . $correct_num];
+            case self::FORMAT_CHECK:
+                $correct_num_ary = explode(',', $this->attributes['answer']);
+                return array_map(fn($n) => $this->attributes['choice' . self::STR_NUM[$n]], $correct_num_ary);
+        }
+    }
 }

@@ -25,9 +25,9 @@
             type="button"
             color="secondary"
             class="mt-8 mb-12"
-            @click.prevent="onQuizDetailPage"
+            @click.prevent="onMovePage"
           >
-            クイズ詳細ページに戻る
+            {{ backBtnString }}
           </v-btn>
         </v-col>
       </v-row>
@@ -61,6 +61,19 @@ export default {
       type: Number,
       required: true,
     },
+    referrerPage: {
+      type: String,
+      default: 'AnswerConfirm',
+    },
+  },
+  data() {
+    return {
+      refferrerAnswerPage: this.referrerPage == 'AnswerConfirm',
+      backBtnString:
+        this.referrerPage == 'AnswerConfirm'
+          ? 'クイズ詳細ページに戻る'
+          : 'クイズ実行履歴ページに戻る',
+    }
   },
   computed: {
     questionNum() {
@@ -68,12 +81,16 @@ export default {
     },
   },
   methods: {
-    onQuizDetailPage() {
-      this.$inertia.get(
-        route('quiz.detail', {
-          quiz: this.quiz.id,
-        }),
-      )
+    onMovePage() {
+      if (this.refferrerAnswerPage) {
+        this.$inertia.get(
+          route('quiz.detail', {
+            quiz: this.quiz.id,
+          }),
+        )
+      } else {
+        history.back()
+      }
     },
     num2eng(num) {
       return num2eng(num)
