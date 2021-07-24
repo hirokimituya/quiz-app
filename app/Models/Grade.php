@@ -63,4 +63,13 @@ class Grade extends Model
     {
         return $this->belongsTo(Quiz::class, 'quiz_id', 'id', 'quizzes');
     }
+
+    /**
+     * リレーションシップ - answersテーブル
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }
