@@ -52,14 +52,14 @@ jobs:
       - restore_composer_dev
       - run: composer install -n --prefer-dist
       - save_composer_dev
-#      - restore_npm
+      - restore_npm
       - run:
           name: npm ci
           command: |
             if [ ! -d node_modules ]; then
               npm ci
             fi
-#      - save_npm
+      - save_npm
       - run: npm run dev
       - run:
           name: php test
