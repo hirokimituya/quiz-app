@@ -45,12 +45,16 @@ commands:
     steps:
       - restore_cache:
           name: Resotere webpack cache
-          key: weppack-v1-{{ .Revision }}
+          key: weppack-v1-{{ checksum "node_modules/webpack_cache.txt" }}
+  webpack_cache_txt_change:
+    steps:
+      - name: webpack cache key change
+      - run: echo `date` > node_modules/webpack_cache.txt
   save_webpack_cache_always:
     steps:
       - save_cache:
           name: Save webpack cache
-          key: weppack-v1-{{ .Revision }}
+          key: weppack-v1-{{ checksum "node_modules/webpack_cache.txt" }}
           paths:
             - node_modules/.cache/webpack
 
@@ -71,10 +75,11 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
-      - save_npm
       - restore_webpack_cache_always
       - run: npm run dev
+      - webpack_cache_txt_change
       - save_webpack_cache_always
+      - save_npm
       - run:
           name: php test
           command: vendor/bin/phpunit
@@ -97,10 +102,11 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
-      - save_npm
       - restore_webpack_cache_always
       - run: npm run prod
+      - webpack_cache_txt_change
       - save_webpack_cache_always
+      - save_npm
       - run:
           name: archive artifacts
           command: zip -ryq quiz-maker.zip .
