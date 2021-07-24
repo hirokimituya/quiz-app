@@ -59,8 +59,8 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
+      - run: npm run prod
       - save_npm
-      - run: npm run dev
       - run:
           name: php test
           command: vendor/bin/phpunit
@@ -83,8 +83,8 @@ jobs:
             if [ ! -d node_modules ]; then
               npm ci
             fi
-      - save_npm
       - run: npm run prod
+      - save_npm
       - run:
           name: archive artifacts
           command: zip -ryq quiz-maker.zip .
