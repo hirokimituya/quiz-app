@@ -17,6 +17,18 @@ commands:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
+  restore_composer_no_dev:
+    steps:
+      - restore_cache:
+          name: Restore composer production
+          key: composer-no-dev-v1-{{ checksum "composer.lock" }}
+  save_composer_no_dev:
+    steps:
+      - save_cache:
+          name: Save composer production
+          key: composer-no-dev-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
   restore_npm:
     steps:
       - restore_cache:
@@ -41,18 +53,6 @@ commands:
           key: weppack-v1
           paths:
             - node_modules/.cache/webpack
-  restore_composer_no_dev:
-    steps:
-      - restore_cache:
-          name: Restore composer production
-          key: composer-no-dev-v1-{{ checksum "composer.lock" }}
-  save_composer_no_dev:
-    steps:
-      - save_cache:
-          name: Save composer production
-          key: composer-no-dev-v1-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
 
 jobs:
   build:
