@@ -7,6 +7,7 @@ use App\Models\Quiz;
 use Inertia\Inertia;
 use App\Models\Genre;
 use App\Models\Grade;
+use App\Models\Answer;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -297,43 +298,58 @@ class QuizController extends Controller
         $corrects = $quiz->items()->get();
 
         $correct_count_ary = [];
+
+        $answers_table = [];
         
         // 回答が正解かどうかを判定して$answersに結果を追加していく。
         foreach ($answers as $key => $answer) {
             $correct = $corrects->firstWhere('question_number', Item::STR_NUM[$key]);
 
+            $answer_table = [];
+            $answer_table['question_number'] = Item::STR_NUM[$key];
+
             switch ($correct->format) {
                 case Item::FORMAT_DESCRIPTION:
                     $answers[$key]['correct'] = $correct->answer;
 
+                    $answer_table['answer'] = $answer['answerText'] ?? '';
+
                     if (empty($answer['answerText'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($answer['answerText'] == $correct->answer) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
                 case Item::FORMAT_RADIO:
                     $correct_num = Item::STR_NUM[$correct->answer];
                     $answers[$key]['correct'] = $correct['choice' . $correct_num];
 
+                    $answer_table['answer'] = $answer['answerRadio'] ?? '';
+
                     if (empty($answer['answerRadio'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($answer['answerRadio'] == $correct_num) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
                 case Item::FORMAT_CHECK:
@@ -348,20 +364,27 @@ class QuizController extends Controller
 
                     $answers[$key]['correct'] = $correct_ary;
 
+                    $answer_table['answer'] = isset($answer['answerCheck']) ? implode(',', $answer['answerCheck']) : '';
+
                     if (empty($answer['answerCheck'])) {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                         break;
                     }
 
                     if($this->array_equal_set($answer['answerCheck'], $correct_num_ary)) {
                         $answers[$key]['pass'] = true;
+                        $answer_table['pass'] = true;
                         $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
+                        $answer_table['pass'] = false;
                     }
                     break;
             }
+
+            $answers_table[] = new Answer($answer_table);
         }
 
         // gradesテーブルに回答を登録
@@ -371,14 +394,13 @@ class QuizController extends Controller
         else {
             $correct_count = 0;
         }
-        
 
-        $grade = new Grade([
+        $grade = $quiz->grades()->create([
             'user_id' => optional($request->user())->id,
             'correct_count' => $correct_count,
         ]);
 
-        $quiz->grades()->save($grade);
+        $grade->answers()->saveMany($answers_table);
 
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
@@ -444,7 +466,7 @@ class QuizController extends Controller
     {
         $items = Item::where('quiz_id', $quiz->id)->get();
 
-        $correct_rates = $this->getItemCorrectRate($quiz);
+        $correct_rates = self::getItemCorrectRate($quiz);
 
         $items_data = [];
         foreach ($items as $item) {
@@ -488,7 +510,7 @@ class QuizController extends Controller
         return $items_data;
     }
 
-    private function getItemCorrectRate(Quiz $quiz)
+    public static function getItemCorrectRate(Quiz $quiz)
     {
         $grades = Grade::where('quiz_id', $quiz->id)->with('quiz')->get();
 

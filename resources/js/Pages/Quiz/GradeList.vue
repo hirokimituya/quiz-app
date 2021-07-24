@@ -55,28 +55,25 @@
         <tbody>
           <tr
             v-for="grade in gradesList"
+            id="genre-list"
             :key="grade.grade_id"
             class="text-center"
+            @click.stop="goGradeDetailPage(grade.grade_id)"
           >
             <td>
-              <inertia-link
-                :href="route('quiz.detail', { quiz: grade.quiz_id })"
-              >
+              <a @click.stop.prevent="goQuizDetailPage(grade.quiz_id)">
                 {{ grade.quiz_title }}
-              </inertia-link>
+              </a>
             </td>
             <td>
-              <inertia-link
-                :href="route('home')"
-                :data="{ genre: grade.genre_id }"
-              >
+              <a @click.stop.prevent="goHomeGenrePage(grade.genre_id)">
                 {{ grade.genre_name }}
-              </inertia-link>
+              </a>
             </td>
             <td>
-              <inertia-link :href="route('dashboard', { user: grade.user_id })">
+              <a @click.stop.prevent="goUserPage(grade.user_id)">
                 {{ grade.user_name }}
-              </inertia-link>
+              </a>
             </td>
             <td>
               {{ grade.items_count }}
@@ -207,6 +204,23 @@ export default {
     back() {
       history.back()
     },
+    goGradeDetailPage(grade_id) {
+      this.$inertia.get(
+        route('grade.detail', {
+          user: this.gradeUser.id,
+          grade: grade_id,
+        }),
+      )
+    },
+    goQuizDetailPage(quiz_id) {
+      this.$inertia.get(route('quiz.detail', { quiz: quiz_id }))
+    },
+    goHomeGenrePage(genre_id) {
+      this.$inertia.get(route('home'), { genre: genre_id })
+    },
+    goUserPage(user_id) {
+      this.$inertia.get(route('dashboard', { user: user_id }))
+    },
   },
 }
 </script>
@@ -219,5 +233,8 @@ td a {
 td a:hover {
   text-decoration: underline;
   color: blue;
+}
+tr#genre-list {
+  cursor: pointer;
 }
 </style>
