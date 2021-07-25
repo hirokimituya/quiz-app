@@ -150,6 +150,8 @@ export default {
           .then(() => {
             this.likesCount++
           })
+          // 「Uncaught (in promise) Error: Request aborted」の抑制のため、追加
+          .catch(() => {})
 
         this.likedByUser = true
       } else {
@@ -162,6 +164,8 @@ export default {
           .then(() => {
             this.likesCount--
           })
+          // 「Uncaught (in promise) Error: Request aborted」の抑制のため、追加
+          .catch(() => {})
 
         this.likedByUser = false
       }
