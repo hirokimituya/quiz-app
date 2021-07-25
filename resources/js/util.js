@@ -45,7 +45,7 @@ export function putDesimalPointTwo(num) {
   if (getDecimalPointLength(num) == 0) {
     return num + '.00'
   } else if (getDecimalPointLength(num) == 1) {
-    return num * '0'
+    return num + '0'
   }
   return num
 }

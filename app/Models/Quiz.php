@@ -177,7 +177,7 @@ class Quiz extends Model
 
         $correct_rate_ary = [];
         foreach ($grades as $grade) {
-            $correct_count = $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0;
+            $correct_count = $grade->correctCount();
             $correct_rate_ary[] = $correct_count / $item_count;
         }
         
