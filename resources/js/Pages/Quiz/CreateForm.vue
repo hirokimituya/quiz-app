@@ -1,11 +1,9 @@
 <template>
   <app-layout>
-    <v-card class="pa-3 px-md-16 my-5">
-      <v-card-title
-        class="text-h5 text-md-h4 d-block text-center secondary--text"
-        >クイズ作成</v-card-title
-      >
-
+    <div class="text-center mt-7 text-h4">
+      クイズ作成
+    </div>
+    <v-card class="pa-3 px-md-16 my-5 pt-5">
       <v-form @submit.prevent="onSubmit">
         <table class="mx-auto mt-3" width="100%">
           <tr>

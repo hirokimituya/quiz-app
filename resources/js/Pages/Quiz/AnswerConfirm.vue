@@ -1,5 +1,8 @@
 <template>
   <app-layout>
+    <div class="text-center mt-7 text-h4">
+      クイズ回答確認
+    </div>
     <v-card class="pa-3 px-md-16 my-5">
       <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 
