@@ -199,8 +199,6 @@ class HomeController extends Controller
             }
         }
 
-        logger($answers);
-
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
             'answers' => $answers,
