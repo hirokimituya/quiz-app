@@ -1,7 +1,8 @@
 <!--- 画像URLの変数定義 --->
-[画面遷移図]: https://user-images.githubusercontent.com/81066421/126862269-0c0ad734-73ad-428d-8f19-68447b9ef014.png
+[インフラ構成図]: https://user-images.githubusercontent.com/81066421/126891282-3fd6898b-d37b-4e54-9cdd-c28555031f1e.png
+[画面遷移図]: https://user-images.githubusercontent.com/81066421/126887789-2d13a4eb-339a-4b8a-97ac-60841dc493ec.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/126870240-6c7d16a1-6e4d-4e45-a802-81bde915e508.png
+[ER図]: https://user-images.githubusercontent.com/81066421/126892302-3740c395-b9ed-46ec-bfae-be0cdbe8ff97.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -16,23 +17,33 @@
 <br><br>
 
 ## 作成した目的
-クイズ番組などが好きなのですが、クイズを自作して他の人に回答してもらったり、他の人が作った興味あるクイズを回答したりできたら素敵だなと思いこのアプリを開発しました。<br>
+私はクイズ番組が好きなのですが、クイズを作成して共有できるアプリはあまり見たことがなかったため、自分で開発しようと思いました。<br>
 シンプルなデザインで使いやすさにこだわって作りました。
 <br><br>
 
 ## 使用技術
 以下を使用してWEBアプリケーションを作成しました。
-- **[HTML/CSS](https://developer.mozilla.org/ja/docs/Web/HTML)**
-- **[PHP](https://laravel.com/)** 8.0.7
-- **[Laravel](https://laravel.com/)** 8.45.1
-- **[Laravel Sail](https://laravel.com/docs/8.x/sail/)** 1.0.1
-- **[docker-compose](https://docs.docker.jp/compose/toc.html)** 1.29.2
-- **[Laravel Jetstream](https://jetstream.laravel.com/2.x/)** 2.3
-- **[Vue.js](https://jp.vuejs.org/)** 2.6.1
-- **[Vuetify](https://vuetifyjs.com/ja/)** 2.4.11
-- **[Inertia.js](https://inertiajs.com/)** 0.8.7
-- **[axios](https://axios-http.com/)** 0.21.1
-- **[MariaDB](https://mariadb.com/kb/ja/mariadb/)** 10.5.10
+- フロントエンド
+    - **[Vue.js](https://jp.vuejs.org/)** 2.6.1
+    - **[Vuetify](https://vuetifyjs.com/ja/)** 2.4.11
+    - **[Inertia.js](https://inertiajs.com/)** 0.8.7
+    - **[axios](https://axios-http.com/)** 0.21.1
+    - **[ESLint](https://eslint.org/)** 7.31.0
+    - **[HTML/CSS](https://developer.mozilla.org/ja/docs/Web/HTML)**
+
+- バックエンド
+    - **[PHP](https://www.php.net/)** 8.0.8
+    - **[Laravel](https://laravel.com/)** 8.45.1
+    - **[Laravel Jetstream](https://jetstream.laravel.com/2.x/)** 2.3
+    - **[Laravel Sail](https://laravel.com/docs/8.x/sail/)** 1.0.1
+    - **[PHPUnit](https://phpunit.readthedocs.io/ja/latest/)** 9.5.5
+
+- インフラ
+    - **[nginx](https://www.nginx.co.jp/)** 1.20.0
+    - **[CircleCI](https://circleci.com/ja/)**
+    - **[Docker](https://www.docker.com/)** 20.10.7 / **[docker-compose](https://docs.docker.jp/compose/toc.html)** 1.29.2
+    - **[MySQL](https://www.mysql.com/jp/)** 8.0.23 / **[phpMyAdmin](https://www.phpmyadmin.net/)** 5.1.1
+    - **[AWS](https://aws.amazon.com/jp/)** (EC2, RDS, S3, ALB, CodeDeploy, SES, ElastiCache, VPC, Route53, EIP, CertificateManager, SNS, Chatbot, IAM)
 <br><br>
 
 ## 機能一覧
@@ -57,16 +68,40 @@
 - 検索機能
 - ソート機能
 - ページネーション機能
-
 <br><br>
 
+## インフラ構成図
+インフラ構成図は以下画像の通りです。
+
+![インフラ構成図][インフラ構成図]
+<br><br>
+以下インフラ構成図の補足をいたします。<br>
+- 開発環境は、`Docker / docker-compose`開発環境を操作するための`Laravel Sail`を使用しています。
+- デプロイまでの流れを以下に示します。
+1. featureブランチにコミットしプルリクエストを発行すると以下の流れでテストが実行されます。
+    1. `CircleCI`でテストジョブが走り、`PHPUnit`のテストが実施されます。
+    1. GitHub Actionsで`ESLint`が実行されます。
+    1. 上記のi, iiが成功したらmasterブランチにマージ可能となります。
+1. masterブランチにコミットすると以下の流れでテスト・ビルド・デプロイが実行されます。
+    1. `CircleCI`のテストジョブが走り、`PHPUnit`のテストが実施されます。
+    1. 上記のiが成功したら、`CircleCI`のビルドジョブが走り、`PHP`, `JavaScript`のビルドを実施後、`S3`にビルド結果をアップロードします。
+    1. 上記のiiが成功したら、`CircleCI`から`CodeDeploy`にデプロイ開始指示を出します。
+    1. `CodeDeploy`が`S3`に保存されているビルド結果を`EC2`へ展開してデプロイします。
+    1. `AWS SNS`トピックと`AWS Chatbot`を使用してデプロイの開始と終了をSlackへ通知します。
+
+<br>
+
 ## 画面遷移図
-画面遷移図は以下画像の通りです。
+画面遷移図は以下画像の通りです。<br>
+> 鍵がついた黄色のエリアにあるページはログインユーザのみ遷移できるページになります。
+
 ![画面遷移図][画面遷移図]
 <br><br>
 
 ## URL一覧
 URLの一覧は以下表の通りです。
+> 認証欄に鍵がついているURLはログインユーザのみアクセスできるページになります。
+
 | URL                             | ルート名                        | メソッド | 認証 | 処理                                                               |
 |---------------------------------|---------------------------------|:--------:|:----:|--------------------------------------------------------------------|
 | /                               | home                            |    GET   |      | トップページを表示する。                                           |
@@ -119,7 +154,7 @@ ER図は以下画像の通りです。
 <br>
 
 > ### usersテーブル
-- クイズを作成、実行などをするユーザを管理します。
+- クイズの作成、実行などをするユーザを管理します。
 
 |     カラム論理名     |        カラム物理名       |          型         | PRIMARY | UNIQUE | NOT NULL | FOREIGN |
 |:--------------------|:-------------------------|:-------------------:|:-------:|:------:|:--------:|:-------:|
@@ -192,14 +227,13 @@ ER図は以下画像の通りです。
 | 成績ID       | id            |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | クイズID     | quiz_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;quizzes(id) |
 | ユーザID     | user_id       | BIGINT UNSIGNED |         |        |          |  ![外部][外部]&nbsp;users(id)  |
-| 正答数       | correct_count |   VARCHAR(100)  |         |        |![チェック][チェック]|             |
 | 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
 
 <br>
 
 > ### answersテーブル
-- クイズの実行履歴詳細情報を管理します。
+- クイズの実行履歴の回答内容などを管理します。
 
 | カラム論理名 | カラム物理名  |        型       | PRIMARY | UNIQUE | NOT NULL |   FOREIGN   |
 |--------------|---------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
