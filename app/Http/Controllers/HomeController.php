@@ -132,7 +132,7 @@ class HomeController extends Controller
                 'user_id' => $grade['quiz']['user']['id'],
                 'user_name' => $grade['quiz']['user']['name'],
                 'items_count' => count($grade['quiz']['items']),
-                'correct_count' => $grade['correct_count'] != 0 ? count(explode(',', $grade['correct_count'])) : 0,
+                'correct_count' => Grade::find($grade['id'])->correctCount(),
                 'created_at' => Carbon::parse($grade['created_at'])->addHour(9)->format('Y/m/d H:i:s'),
             ];
         }
@@ -158,7 +158,7 @@ class HomeController extends Controller
         $quiz = $grade->quiz()->first();
 
         $answers = [];
-        $correct_count_ary = explode(',', $grade->correct_count);
+        $correct_count = $grade->correctCount();
 
         $answers_table = $grade->answers()->get();
 
@@ -204,7 +204,7 @@ class HomeController extends Controller
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
             'answers' => $answers,
-            'correctCount' => count($correct_count_ary),
+            'correctCount' => $correct_count,
             'referrerPage' => 'GradeDetail',
         ]);
     }

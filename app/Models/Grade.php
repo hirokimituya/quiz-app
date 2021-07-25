@@ -16,7 +16,6 @@ class Grade extends Model
      */
     protected $fillable = [
         'user_id',
-        'correct_count',
     ];
 
     /**
@@ -71,5 +70,37 @@ class Grade extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * 成績の正解数を返す
+     * @return int
+     */
+    public function correctCount() :int 
+    {
+        $ret = 0;
+        $answers = $this->answers()->get();
+        foreach ($answers as $answer) {
+            if ($answer->pass) {
+                $ret++;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * 正解している項目を要素に持つ配列を返す
+     * @return array
+     */
+    public function correctAry() :array 
+    {
+        $ret = [];
+        $answers = $this->answers()->get();
+        foreach ($answers as $answer) {
+            if ($answer->pass) {
+                $ret[] = $answer->question_number;
+            }
+        }
+        return $ret;
     }
 }

@@ -259,7 +259,7 @@ class QuizController extends Controller
             $grades = Grade::quizUserGet($quiz, Auth::user())->get();
             $grades = $grades->sortBy('created_at')->values();
             $user_grades_ary = $grades->map(function($grade) {
-                return $grade->correct_count != 0 ? count(explode(',', $grade->correct_count)) : 0;
+                return $grade->correctCount();
             });
         }
 
@@ -297,8 +297,6 @@ class QuizController extends Controller
 
         $corrects = $quiz->items()->get();
 
-        $correct_count_ary = [];
-
         $answers_table = [];
         
         // 回答が正解かどうかを判定して$answersに結果を追加していく。
@@ -323,7 +321,6 @@ class QuizController extends Controller
                     if($answer['answerText'] == $correct->answer) {
                         $answers[$key]['pass'] = true;
                         $answer_table['pass'] = true;
-                        $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
@@ -345,7 +342,6 @@ class QuizController extends Controller
                     if($answer['answerRadio'] == $correct_num) {
                         $answers[$key]['pass'] = true;
                         $answer_table['pass'] = true;
-                        $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
@@ -375,7 +371,6 @@ class QuizController extends Controller
                     if($this->array_equal_set($answer['answerCheck'], $correct_num_ary)) {
                         $answers[$key]['pass'] = true;
                         $answer_table['pass'] = true;
-                        $correct_count_ary[] = Item::STR_NUM[$key];
                     }
                     else {
                         $answers[$key]['pass']  = false;
@@ -387,17 +382,8 @@ class QuizController extends Controller
             $answers_table[] = new Answer($answer_table);
         }
 
-        // gradesテーブルに回答を登録
-        if (!empty($correct_count_ary)) {
-            $correct_count = implode(',', $correct_count_ary);
-        }
-        else {
-            $correct_count = 0;
-        }
-
         $grade = $quiz->grades()->create([
             'user_id' => optional($request->user())->id,
-            'correct_count' => $correct_count,
         ]);
 
         $grade->answers()->saveMany($answers_table);
@@ -405,7 +391,7 @@ class QuizController extends Controller
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
             'answers' => $answers,
-            'correctCount' => count($correct_count_ary),
+            'correctCount' => $grade->correctCount(),
         ]);
     }
 
@@ -527,13 +513,12 @@ class QuizController extends Controller
         }
 
         foreach ($grades as $grade) {
-            if ($grade->correct_count == 0) {
+            $correct_ary = $grade->correctAry();
+            if (empty($correct_ary)) {
                 continue;
             }
-            $correct_ary = explode(',', $grade->correct_count);
 
             foreach ($correct_ary as $correct_num) {
-                $correct_num = intval($correct_num);
                 if (isset($correct_rates[$correct_num])) {
                     $correct_rates[$correct_num]++;
                 }
