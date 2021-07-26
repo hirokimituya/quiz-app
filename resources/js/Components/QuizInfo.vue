@@ -139,15 +139,23 @@ export default {
       this.likeDisabled = true
 
       if (this.$page.props.user === null) {
-        this.$inertia.get(
-          route('login'),
-          {},
-          {
-            headers: {
-              'X-Login-Referer': true,
+        if (
+          ['Quiz/AnswerConfirm', 'Quiz/AnswerResult'].includes(
+            this.$page.component,
+          )
+        ) {
+          this.$inertia.get(route('login'))
+        } else {
+          this.$inertia.get(
+            route('login'),
+            {},
+            {
+              headers: {
+                'X-Login-Referer': true,
+              },
             },
-          },
-        )
+          )
+        }
       } else if (!this.likedByUser) {
         await axios
           .put(
