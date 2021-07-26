@@ -233,7 +233,15 @@ export default {
     },
     commentFoucus() {
       if (this.$page.props.user === null) {
-        this.$inertia.get(route('login'))
+        this.$inertia.get(
+          route('login'),
+          {},
+          {
+            headers: {
+              'X-Login-Referer': true,
+            },
+          },
+        )
       }
 
       this.commentBtnFlg = true
