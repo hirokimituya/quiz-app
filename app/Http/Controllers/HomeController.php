@@ -25,17 +25,12 @@ class HomeController extends Controller
         $genres->prepend(['id' => 0, 'name' => 'すべて', 'quiz_count' => Quiz::count()]);
 
         if (empty(Genre::find($genre_id))) {
-            if (empty($search_query)) {
-                $quizes = Quiz::sort($sort_item)->paginate()->toArray();
-            }
-            else {
-                $quizes = Quiz::searchWith('%' . $search_query . '%')->sort($sort_item)->paginate()->toArray();
-            }
+            $quizes = Quiz::searchWith('%' . $search_query . '%')->sort($sort_item)->paginate()->toArray();
             
             $genre_list_id = 0;
         }
         else {
-            $quizes = Quiz::where('genre_id', $request->genre)->sort($sort_item)->paginate()->toArray();
+            $quizes = Quiz::searchWith('%' . $search_query . '%')->where('genre_id', $request->genre)->sort($sort_item)->paginate()->toArray();
             $genre_list_id = $genres->search(function($genre) use ($genre_id) {
                 return $genre['id'] == $genre_id;
             });
