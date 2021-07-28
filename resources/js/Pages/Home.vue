@@ -1,12 +1,13 @@
 <template>
   <app-layout>
     <v-row no-gutters class="mt-5 mb-n5">
-      <v-col cols="6" md="3" class="mt-3">
-        <div>ジャンル：{{ genreName }}</div>
+      <v-col cols="12" md="4" class="mb-4 mb-md-0 mt-md-3">
+        <span class="mr-5">ジャンル：{{ genreName }}</span>
+        <span>クイズ数：{{ quizCount }}</span>
       </v-col>
 
       <!-- ソートのセレクトボックス -->
-      <v-col cols="6" md="4" offset-md="2">
+      <v-col cols="12" md="3" offset-md="2">
         <sort-item
           :action-path="actionPath"
           :sort-items="sortItems"

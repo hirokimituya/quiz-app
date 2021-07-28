@@ -83,9 +83,11 @@ export default {
       let data = {}
       data.genre = this.genres[selectedGenreTmp].id
 
-      let sort = getUrlParam('sort')
-      if (sort !== '') {
-        data.sort = sort
+      for (let param of ['q', 'sort']) {
+        let item = getUrlParam(param)
+        if (item !== '') {
+          data[param] = item
+        }
       }
 
       this.$inertia.get(route('home'), data)

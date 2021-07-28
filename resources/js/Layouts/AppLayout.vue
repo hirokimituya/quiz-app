@@ -24,6 +24,7 @@
                 single-line
                 dense
                 solo
+                clearable
                 type="search"
               ></v-text-field>
             </v-col>
@@ -153,6 +154,21 @@ export default {
       user: this.$page.props.user,
     }
   },
+  watch: {
+    search(newVal) {
+      if (!newVal) {
+        let data = {}
+        for (let param of ['genre', 'sort']) {
+          let item = getUrlParam(param)
+          if (item !== '') {
+            data[param] = item
+          }
+        }
+
+        this.$inertia.get(route('home'), data)
+      }
+    },
+  },
   mounted() {
     this.search = getUrlParam('q')
   },
@@ -170,9 +186,11 @@ export default {
       let data = {}
       data.q = this.search
 
-      let sort = getUrlParam('sort')
-      if (sort !== '') {
-        data.sort = sort
+      for (let param of ['genre', 'sort']) {
+        let item = getUrlParam(param)
+        if (item !== '') {
+          data[param] = item
+        }
       }
 
       this.$inertia.get(route('home'), data)
