@@ -1,5 +1,14 @@
 <template>
   <v-app>
+    <inertia-head>
+      <title>{{ title + ' - QuizMaker' }}</title>
+      <meta
+        name="description"
+        :content="
+          'クイズを作成するして、回答できるWebアプリになります。' + description
+        "
+      />
+    </inertia-head>
     <v-app-bar app color="primary" elevate-on-scroll>
       <v-toolbar-title class="white--text text-h5 text-sm-h4">
         <button @click.prevent="onHome()">
@@ -144,6 +153,16 @@ import { mdiMagnify, mdiChevronUp } from '@mdi/js'
 import { getUrlParam } from '@/util'
 
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       mdiMagnify,

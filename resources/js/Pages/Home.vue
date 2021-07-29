@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="Home">
     <v-row no-gutters class="mt-5 mb-n5">
       <v-col cols="12" md="4" class="mb-4 mb-md-0 mt-md-3">
         <span class="mr-5">ジャンル：{{ genreName }}</span>
