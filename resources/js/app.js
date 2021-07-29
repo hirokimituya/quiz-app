@@ -10,18 +10,17 @@ import vuetify from '@/vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import { InertiaProgress } from '@inertiajs/progress'
 import PortalVue from 'portal-vue'
+import { Head, Link } from '@inertiajs/inertia-vue'
 
 Vue.mixin({ methods: { route } })
 Vue.use(InertiaPlugin)
 Vue.use(PortalVue)
+Vue.component('InertiaHead', Head)
+Vue.component('InertiaLink', Link)
 
 // ブラウザバックを検知してコンポーネントで「this.$browserBackFlg」で使用できるようにする。
 Vue.prototype.$browserBackFlg = false
-history.replaceState(
-  null,
-  document.getElementsByTagName('title')[0].innerHTML,
-  null,
-)
+history.replaceState(null, '', null)
 window.addEventListener('popstate', function() {
   Vue.prototype.$browserBackFlg = true
 

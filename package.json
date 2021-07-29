@@ -12,9 +12,9 @@
         "lint-fix": "./node_modules/.bin/eslint --fix --ext .js,.vue --ignore-path .gitignore ."
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.8.4",
-        "@inertiajs/inertia-vue": "^0.5.12",
-        "@inertiajs/progress": "^0.2.4",
+        "@inertiajs/inertia": "^0.10.0",
+        "@inertiajs/inertia-vue": "^0.7.1",
+        "@inertiajs/progress": "^0.2.6",
         "@mdi/js": "^5.9.55",
         "@vue/compiler-sfc": "^3.0.5",
         "axios": "^0.21",

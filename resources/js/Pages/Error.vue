@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="エラー">
     <div class="text-center">
       <H1 class="mt-10">{{ title }}</H1>
       <div class="mt-7">{{ description }}</div>

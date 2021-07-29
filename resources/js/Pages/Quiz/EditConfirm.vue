@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="クイズ編集確認">
     <div class="text-center mt-7 text-h4">
       クイズ編集確認
     </div>
