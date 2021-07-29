@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="プロフィール">
     <div v-if="$page.props.jetstream.canUpdateProfileInformation">
       <update-profile-information-form :user="$page.props.user" class="my-8" />
     </div>

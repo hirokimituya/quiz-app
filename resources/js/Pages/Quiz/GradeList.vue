@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="クイズ実行履歴">
     <div class="text-center mt-7 text-h4">
       クイズ実行履歴
     </div>

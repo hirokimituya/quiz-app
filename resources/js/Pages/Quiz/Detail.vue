@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="クイズ詳細">
     <v-card class="pa-3 px-md-16 my-5">
       <quiz-info :quiz="quiz" :detail="true"></quiz-info>
 

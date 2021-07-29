@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout title="マイページ">
     <v-row>
       <v-col class="mt-md-5">
         <v-card style="position: sticky; top: 100px;">
