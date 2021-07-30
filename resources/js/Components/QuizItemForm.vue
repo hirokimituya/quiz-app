@@ -3,16 +3,33 @@
     <v-row no-gutters>
       <v-col cols="12" md="2">
         <v-row no-gutters justify="space-between">
-          <v-col cols="5" md="12">
+          <v-col cols="3" md="12">
             <h3 class="text-h5 mb-3">問題{{ num }}</h3>
           </v-col>
-          <v-col class="text-right text-md-left" cols="5" md="12">
+          <v-col
+            class="mt-1 ml-n10 ml-md-0 text-right text-md-left"
+            cols="5"
+            md="12"
+          >
             <span v-if="!!correctRate"> 正解率：{{ correctRate }}% </span>
           </v-col>
-          <v-col class="mt-md-1 text-right text-md-left" cols="2" md="12">
+          <v-col
+            class="ml-n4 ml-md-0 mt-md-2 text-right text-md-left"
+            cols="2"
+            md="12"
+          >
             <v-btn color="red" class="white--text" @click="itemDelete">
               削除
             </v-btn>
+          </v-col>
+          <v-col
+            class="ml-n2 mt-md-8 ml-md-8 text-right text-md-left"
+            cols="1"
+            md="12"
+          >
+            <span class="my-handle"
+              ><v-icon x-large>{{ mdiArrowAll }}</v-icon>
+            </span>
           </v-col>
         </v-row>
       </v-col>
@@ -294,6 +311,7 @@
 <script>
 import { num2eng } from '@/util'
 import { putDesimalPointTwo } from '@/util'
+import { mdiArrowAll } from '@mdi/js'
 
 export default {
   props: {
@@ -308,6 +326,7 @@ export default {
   },
   data() {
     return {
+      mdiArrowAll,
       emitData: {
         question: this.value.question || null,
         answerFormat: this.value.answerFormat || 1,
@@ -385,3 +404,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.my-handle {
+  cursor: grabbing;
+  border: 1px;
+}
+</style>
