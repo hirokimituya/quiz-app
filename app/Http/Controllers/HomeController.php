@@ -11,6 +11,7 @@ use App\Models\Genre;
 use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -151,48 +152,49 @@ class HomeController extends Controller
         }
 
         $quiz = $grade->quiz()->first();
-
-        $answers = [];
         $correct_count = $grade->correctCount();
 
-        $answers_table = $grade->answers()->get();
+        // クイズ実行履歴の詳細回答をキャッシュするようにする。
+        $answers = Cache::remember('quiz_grade_id_' . $grade->id, now()->addHours(2), function () use ($grade, $quiz) {
+            $answers = [];
+            $answers_table = $grade->answers()->get();
+            $correct_rates = QuizController::getItemCorrectRate($quiz);
+            $items = $quiz->items()->get();
+            foreach ($items as $item) {
+                $question_num = $item->question_number;
+                $item_no = Item::NUM_STR[$question_num];
+                $answer_table = $answers_table->firstWhere('question_number', $question_num);
 
-        $correct_rates = QuizController::getItemCorrectRate($quiz);
+                $answers[$item_no]['question'] = $item->question;
+                $answers[$item_no]['answerFormat'] = $item->format;
+                $answers[$item_no]['correct'] = $item->getCorrectStr();
+                $answers[$item_no]['pass'] = $answer_table->pass;
+                $answers[$item_no]['correctRate'] = $correct_rates[$question_num];
 
-        $items = $quiz->items()->get();
-        foreach ($items as $item) {
-            $question_num = $item->question_number;
-            $item_no = Item::NUM_STR[$question_num];
-            $answer_table = $answers_table->firstWhere('question_number', $question_num);
+                switch ($item->format) {
+                    case Item::FORMAT_DESCRIPTION:
+                        $answers[$item_no]['answerText'] = $answer_table->answer;
 
-            $answers[$item_no]['question'] = $item->question;
-            $answers[$item_no]['answerFormat'] = $item->format;
-            $answers[$item_no]['correct'] = $item->getCorrectStr();
-            $answers[$item_no]['pass'] = $answer_table->pass;
-            $answers[$item_no]['correctRate'] = $correct_rates[$question_num];
-            
-            switch ($item->format) {
-                case Item::FORMAT_DESCRIPTION:
-                    $answers[$item_no]['answerText'] = $answer_table->answer;
-                    
-                    break;
-                case Item::FORMAT_RADIO:
-                    $answers[$item_no]['answerRadio'] = (int)$answer_table->answer;
-                    $answers[$item_no]['selectItemsNum'] = $item->getChoicesNum();
-                    $answers[$item_no]['selectItemText'] = $item->getChoices();
+                        break;
+                    case Item::FORMAT_RADIO:
+                        $answers[$item_no]['answerRadio'] = (int)$answer_table->answer;
+                        $answers[$item_no]['selectItemsNum'] = $item->getChoicesNum();
+                        $answers[$item_no]['selectItemText'] = $item->getChoices();
 
-                    break;
-                case Item::FORMAT_CHECK:
-                    $answer_check_ary = explode(',', $answer_table->answer);
-                    $answer_check_ary = array_map(fn($n) => (int)$n, $answer_check_ary);
+                        break;
+                    case Item::FORMAT_CHECK:
+                        $answer_check_ary = explode(',', $answer_table->answer);
+                        $answer_check_ary = array_map(fn($n) => (int)$n, $answer_check_ary);
 
-                    $answers[$item_no]['answerCheck'] = $answer_check_ary;
-                    $answers[$item_no]['selectItemsNum'] = $item->getChoicesNum();
-                    $answers[$item_no]['selectItemText'] = $item->getChoices();
+                        $answers[$item_no]['answerCheck'] = $answer_check_ary;
+                        $answers[$item_no]['selectItemsNum'] = $item->getChoicesNum();
+                        $answers[$item_no]['selectItemText'] = $item->getChoices();
 
-                    break;
+                        break;
+                }
             }
-        }
+            return $answers;
+        });
 
         return Inertia::render('Quiz/AnswerResult', [
             'quiz' => $quiz,
