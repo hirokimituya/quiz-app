@@ -1,5 +1,5 @@
 <!--- 画像URLの変数定義 --->
-[インフラ構成図]: https://user-images.githubusercontent.com/81066421/126891282-3fd6898b-d37b-4e54-9cdd-c28555031f1e.png
+[インフラ構成図]: https://user-images.githubusercontent.com/81066421/127653180-42854273-0623-4aa8-8bb0-219093a9b240.png
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/126887789-2d13a4eb-339a-4b8a-97ac-60841dc493ec.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
 [ER図]: https://user-images.githubusercontent.com/81066421/126892302-3740c395-b9ed-46ec-bfae-be0cdbe8ff97.png
@@ -44,7 +44,7 @@
     - **[CircleCI](https://circleci.com/ja/)**
     - **[Docker](https://www.docker.com/)** 20.10.7 / **[docker-compose](https://docs.docker.jp/compose/toc.html)** 1.29.2
     - **[MySQL](https://www.mysql.com/jp/)** 8.0.23 / **[phpMyAdmin](https://www.phpmyadmin.net/)** 5.1.1
-    - **[AWS](https://aws.amazon.com/jp/)** (EC2, RDS, S3, ALB, CodeDeploy, SES, ElastiCache, VPC, Route53, EIP, CertificateManager, SNS, Chatbot, IAM)
+    - **[AWS](https://aws.amazon.com/jp/)** (EC2, RDS, S3, ALB, CodeDeploy, ElastiCache, VPC, Route53, EIP, CertificateManager, SNS, Chatbot, IAM)
 <br><br>
 
 ## 機能一覧
