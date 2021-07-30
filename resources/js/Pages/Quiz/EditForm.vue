@@ -162,7 +162,13 @@
           </v-col>
         </v-row>
 
-        <draggable id="draggable" :animation="200" @end="onEnd">
+        <draggable
+          id="draggable"
+          :animation="200"
+          direction="vertical"
+          handle=".my-handle"
+          @end="onEnd"
+        >
           <quiz-item-form
             v-for="num in questionNum"
             :id="num"
@@ -380,3 +386,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.sortable-chosen {
+  opacity: 1;
+}
+.sortable-ghost {
+  opacity: 0;
+}
+</style>
