@@ -98,7 +98,7 @@ class Grade extends Model
         $answers = $this->answers()->get();
         foreach ($answers as $answer) {
             if ($answer->pass) {
-                $ret[] = $answer->question_number;
+                $ret[] = $answer->item()->first()->question_number;
             }
         }
         return $ret;

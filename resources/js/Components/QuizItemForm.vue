@@ -328,6 +328,7 @@ export default {
     return {
       mdiArrowAll,
       emitData: {
+        id: this.value.id || null,
         question: this.value.question || null,
         answerFormat: this.value.answerFormat || 1,
         answerText: this.value.answerText || null,

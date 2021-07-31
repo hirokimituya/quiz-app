@@ -192,16 +192,18 @@ class QuizController extends Controller
             }
             $quiz->save();
 
-            // クイズに関連するItemモデルの削除
-            Item::where('quiz_id', $quiz->id)->delete();
-
-            $items= [];
+            $last_question_number = 0;
             foreach ($request->question as $key => $question) {
                 $data = [
                     'question_number' => Item::STR_NUM[$key],
                     'format' => intval($question['answerFormat']),
                     'question' => $question['question'],
                 ];
+
+                // 「choice*」カラムを一旦リセットする。
+                for ($i = 1; $i <= 4; $i++) {
+                    $data['choice' . $i] = null;
+                }
 
                 switch($data['format']) {
                     case Item::FORMAT_DESCRIPTION:
@@ -230,11 +232,24 @@ class QuizController extends Controller
                         break;
                 }
 
-                $items[] = new Item($data);
+                if (isset($question['id'])) {
+                    // アイテムの更新
+                    Item::where('id', $question['id'])->update($data);
+                }
+                else {
+                    // アイテムの作成
+                    $item_data = new Item($data);
+                    $quiz->items()->save($item_data);
+                }
+
+                $last_question_number = $data['question_number'];
             }
 
-            $quiz->items()->saveMany($items);
-
+            // 作成や更新されなかったアイテムの削除
+            Item::where('quiz_id', $quiz->id)
+                ->where('question_number', '>', $last_question_number)
+                ->delete();
+            
             DB::commit();
         }
         catch (\Exception $exception) {
@@ -304,7 +319,7 @@ class QuizController extends Controller
             $correct = $corrects->firstWhere('question_number', Item::STR_NUM[$key]);
 
             $answer_table = [];
-            $answer_table['question_number'] = Item::STR_NUM[$key];
+            $answer_table['item_id'] = $correct->id;
 
             switch ($correct->format) {
                 case Item::FORMAT_DESCRIPTION:
@@ -458,6 +473,7 @@ class QuizController extends Controller
         foreach ($items as $item) {
             $key = Item::NUM_STR[$item->question_number];
             $items_data[$key] = [
+                'id' => $item->id,
                 'question' => $item->question,
                 'answerFormat' => $item->format,
             ];
