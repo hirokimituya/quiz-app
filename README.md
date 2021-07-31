@@ -2,7 +2,7 @@
 [インフラ構成図]: https://user-images.githubusercontent.com/81066421/127653180-42854273-0623-4aa8-8bb0-219093a9b240.png
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/126887789-2d13a4eb-339a-4b8a-97ac-60841dc493ec.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/126892302-3740c395-b9ed-46ec-bfae-be0cdbe8ff97.png
+[ER図]: https://user-images.githubusercontent.com/81066421/127725585-f2ce6040-d3e5-4fea-b5e9-9e8f4b8348f4.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -240,9 +240,9 @@ ER図は以下画像の通りです。
 |--------------|---------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
 | 成績回答ID    | id            |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | 成績ID        | grade_id       | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;grades(id) |
-| 質問番号      | question_number | SAMLLIINT |         |        |![チェック][チェック]|       |
+| クイズアイテムID| item_id      | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;items(id) |
 | 回答実績       | answer       |   VARCHAR(255)  |         |        |![チェック][チェック]|             |
-| 正解有無       | pass       |  BOOLEAN　　　　  |         |        |![チェック][チェック]|             |
+| 正解有無       | pass       |  BOOLEAN         |         |        |![チェック][チェック]|             |
 | 作成日       | created_at    |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at    |    TIMESTAMP    |         |        |          |             |
 
