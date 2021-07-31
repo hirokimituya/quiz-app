@@ -267,8 +267,6 @@ class QuizController extends Controller
     {
         $comments = Comment::where('quiz_id', $quiz->id)->with('author')->orderBy('id', 'desc')->get();
 
-        $items_count = $quiz->items()->count();
-
         $user_grades_ary = [];
         if (Auth::check()) {
             $grades = Grade::quizUserGet($quiz, Auth::user())->get();
@@ -282,7 +280,6 @@ class QuizController extends Controller
             'quiz' => $quiz,
             'comments' => $comments,
             'userGradesAry' => $user_grades_ary,
-            'itemsCount' => $items_count,
         ]);
     }
 

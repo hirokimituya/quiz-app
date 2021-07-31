@@ -35,6 +35,7 @@ class Quiz extends Model
         'likesCount',
         'likedByUser',
         'avgCorrectRate',
+        'itemsCount'
     ];
 
     /** JSONに含めない属性 */
@@ -182,6 +183,15 @@ class Quiz extends Model
         }
         
         return array_sum($correct_rate_ary) / count($correct_rate_ary) * 100;
+    }
+
+    /**
+     * アクセサ - items_count
+     * @return boolean
+     */
+    public function getItemsCountAttribute()
+    {
+        return $this->items()->count();
     }
 
     /**

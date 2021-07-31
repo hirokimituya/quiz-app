@@ -66,6 +66,10 @@
               <td class="pa-1">{{ quiz.genre.name }}</td>
             </tr>
             <tr>
+              <th class="text-left">設問数</th>
+              <td class="pa-1">{{ quiz.itemsCount }}問</td>
+            </tr>
+            <tr>
               <th class="text-left">作成日</th>
               <td class="pa-1">{{ quiz.formattedCreatedAt }}</td>
             </tr>
