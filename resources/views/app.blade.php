@@ -7,6 +7,11 @@
 
         <!--<title>{{ config('app.name', 'Laravel') }}</title>-->
 
+        <!-- favicon -->
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="/android-chrome-192x192.png">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
