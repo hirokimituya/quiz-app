@@ -61,7 +61,7 @@
                 クイズ正答数
               </v-col>
               <v-col md="4" class="ml-md-n6">
-                （出題数 {{ itemsCount }}問）
+                （設問数 {{ quiz.itemsCount }}問）
               </v-col>
             </v-row>
           </div>
@@ -167,10 +167,6 @@ export default {
     },
     userGradesAry: {
       type: Array,
-      required: true,
-    },
-    itemsCount: {
-      type: Number,
       required: true,
     },
   },
