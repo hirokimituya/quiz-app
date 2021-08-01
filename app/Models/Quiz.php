@@ -187,7 +187,7 @@ class Quiz extends Model
 
     /**
      * アクセサ - items_count
-     * @return boolean
+     * @return int
      */
     public function getItemsCountAttribute()
     {
@@ -286,5 +286,101 @@ class Quiz extends Model
     {
         return $query->where('title', 'like', $search_query)
                         ->orWhere('description', 'like', $search_query);
+    }
+
+    /**
+     * クイズの持っているアイテムを整形して返す
+     *
+     * @param  boolean $ans_need 正解を入れるかどうか
+     * @return Item
+     */
+    public function getItems($ans_need = false)
+    {
+        $items = Item::where('quiz_id', $this->id)->get();
+
+        $correct_rates = $this->getItemCorrectRate();
+
+        $items_data = [];
+        foreach ($items as $item) {
+            $key = Item::NUM_STR[$item->question_number];
+            $items_data[$key] = [
+                'id' => $item->id,
+                'question' => $item->question,
+                'answerFormat' => $item->format,
+            ];
+
+            if ($ans_need && $item->format == Item::FORMAT_DESCRIPTION) {
+                $items_data[$key]['answerText'] = $item->answer;
+            }
+
+            if ($item->format == Item::FORMAT_RADIO || $item->format == Item::FORMAT_CHECK) {
+                $num = 0;
+                $text_ary = [];
+                for ($i = 1; $i <= 4; $i++) {
+                    if (!empty($item['choice' . $i])) {
+                        $num++;
+                        $text_ary[Item::NUM_STR[$i]] = $item['choice' . $i];
+                    }
+                }
+                $items_data[$key]['selectItemsNum'] = $num;
+                $items_data[$key]['selectItemText'] = $text_ary;
+
+                if ($ans_need) {
+                    if ($item->format == Item::FORMAT_RADIO) {
+                        $answer = Item::STR_NUM[$item->answer];
+                        $items_data[$key]['answerRadio'] = $answer;
+                    }
+                    else {
+                        $ans_str = explode(',', $item->answer);
+                        $answers = collect($ans_str)->map(fn($str) => Item::STR_NUM[$str]);
+                        $items_data[$key]['answerCheck'] = $answers;
+                    }
+                }
+            }
+            $items_data[$key]['correctRate'] = $correct_rates[$item->question_number];
+        }
+
+        return $items_data;
+    }
+
+    /**
+     * クイズが持っているアイテムの正答率を返す
+     *
+     * @return array
+     */
+    public function getItemCorrectRate()
+    {
+        $grades = Grade::where('quiz_id', $this->id)->with('quiz')->get();
+
+        $item_count = $this->items()->count();
+
+        $correct_rates = [];
+
+        for ($i = 1; $i <= $item_count; $i++) {
+            $correct_rates[$i] = 0;
+        }
+            
+        if ($grades->count() == 0) {
+            return $correct_rates;
+        }
+
+        foreach ($grades as $grade) {
+            $correct_ary = $grade->correctAry();
+            if (empty($correct_ary)) {
+                continue;
+            }
+
+            foreach ($correct_ary as $correct_num) {
+                if (isset($correct_rates[$correct_num])) {
+                    $correct_rates[$correct_num]++;
+                }
+            }
+        }
+
+        foreach ($correct_rates as $key => $correct_rate) {
+            $correct_rates[$key] = $correct_rate / $grades->count() * 100;
+        }
+
+        return $correct_rates;
     }
 }

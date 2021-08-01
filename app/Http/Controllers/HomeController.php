@@ -159,7 +159,7 @@ class HomeController extends Controller
             $answers = [];
             $answers_table = $grade->answers()->get();
 
-            $correct_rates = QuizController::getItemCorrectRate($quiz);
+            $correct_rates = $quiz->getItemCorrectRate();
             $items = $quiz->items()->get();
             foreach ($items as $item) {
                 $question_num = $item->question_number;
