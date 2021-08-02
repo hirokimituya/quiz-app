@@ -1,4 +1,5 @@
 <!--- 画像URLの変数定義 --->
+[参考画像]: https://user-images.githubusercontent.com/81066421/127855688-03f6cf37-885d-4a40-8387-2501c462210f.gif
 [インフラ構成図]: https://user-images.githubusercontent.com/81066421/127653180-42854273-0623-4aa8-8bb0-219093a9b240.png
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/126887789-2d13a4eb-339a-4b8a-97ac-60841dc493ec.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
@@ -15,6 +16,8 @@
 常時SSL化に対応しており、安全にアプリを実行できるようになっております。<br>
 また、高速なページ遷移を可能にするため、Vue.jsやInertia.jsを使用したSPAでアプリケーションを作成しています。<br>
 （レスポンシブ対応しているため、PC・タブレット・スマートフォンからでもご確認いただけます。）
+<br><br>
+![参考画像][参考画像]
 <br><br>
 
 ## 作成した目的
