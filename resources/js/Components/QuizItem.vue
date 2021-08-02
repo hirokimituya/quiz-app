@@ -139,7 +139,6 @@ export default {
   },
   computed: {
     correctRate() {
-      console.log(this.value.correctRate)
       if (this.value.correctRate != undefined) {
         return putDesimalPointTwo(this.value.correctRate)
       }
