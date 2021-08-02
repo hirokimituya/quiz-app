@@ -160,7 +160,7 @@ class QuizController extends Controller
             $request_data['image'] = $img_path;
         }
         else if (!$request->imageDeleteFlg && $quiz->filename !== null) {
-            $request_data['image'] = 'images/' . $quiz->filename;
+            $request_data['image'] = Storage::disk('s3')->url('images/' . $quiz->filename);
         }
 
         return Inertia::render('Quiz/EditConfirm', [
