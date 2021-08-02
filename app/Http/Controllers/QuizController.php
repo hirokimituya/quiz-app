@@ -34,6 +34,8 @@ class QuizController extends Controller
 
         $request_data = $request->all();
 
+        $request_data = self::answerTextTrim($request_data);
+
         if ($request->image) {
             $img_path = $request->file('image')->store('images/tmp', 's3');
             $img_path = Storage::disk('s3')->url($img_path);
@@ -150,13 +152,15 @@ class QuizController extends Controller
 
         $request_data = $request->all();
 
+        $request_data = self::answerTextTrim($request_data);
+
         if ($request->image) {
             $img_path = $request->file('image')->store('images/tmp', 's3');
             $img_path = Storage::disk('s3')->url($img_path);
             $request_data['image'] = $img_path;
         }
         else if (!$request->imageDeleteFlg && $quiz->filename !== null) {
-            $request_data['image'] = 'images/' . $quiz->filename;
+            $request_data['image'] = Storage::disk('s3')->url('images/' . $quiz->filename);
         }
 
         return Inertia::render('Quiz/EditConfirm', [
@@ -296,6 +300,8 @@ class QuizController extends Controller
     public function answerConfirm(Quiz $quiz, QuizAnswerRequest $request) 
     {
         $request_data = $request->all();
+
+        $request_data = self::answerTextTrim($request_data);
 
         return Inertia::render('Quiz/AnswerConfirm', [
             'quiz' => $quiz,
@@ -458,5 +464,26 @@ class QuizController extends Controller
         $quiz->likes()->detach($request->user()->id);
 
         return response('');
+    }
+
+    /**
+     * 確認画面へのリクエスデータ内の記述式の回答の両端の全角・半角スペースを取り除く。
+     * @param $request_data リクエストデータ
+     * @return 回答の両端の全角・半角スペースを取り除いたリクエストデータ
+     */
+    private static function answerTextTrim(array $request_data)
+    {
+        $ret_request_data = $request_data;
+        $questions = collect($request_data['question']);
+
+        $questions->transform(function($question) {
+            if (isset($question['answerText'])) {
+                $question['answerText'] = preg_replace('/\A[\x00\s]++|[\x00\s]++\z/u', '', $question['answerText']);
+            }
+            return $question;
+        });
+
+        $ret_request_data['question'] = $questions->toArray();
+        return $ret_request_data;
     }
 }
