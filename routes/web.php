@@ -33,6 +33,8 @@ Route::post('/quiz/{quiz}/answer/confirm', [QuizController::class, 'answerConfir
 
 Route::post('/quiz/{quiz}/answer/result', [QuizController::class, 'answerResult'])->where('quiz', '[0-9]*')->name('quiz.answer.result');
 
+Route::get('/ranking/correct', [HomeController::class, 'rankingCorrect'])->name('ranking.correct');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
 

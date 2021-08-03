@@ -215,4 +215,41 @@ class HomeController extends Controller
 
         return redirect()->route('profile.show');
     }
+
+    public function rankingCorrect(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $disp_num = $request->disp_num ? intval($request->disp_num) : 30;
+
+        $users = User::orderByDesc('total_correct_count')->paginate($disp_num)->toArray();
+
+        $users_list = [];
+        $ranking = $disp_num * ($page - 1);
+        $prev_total_count_correct = -1;
+        $carry_over = 0;
+        foreach ($users['data'] as $user) {
+            if ($user['total_correct_count'] != $prev_total_count_correct) {
+                $ranking = $ranking + 1 + $carry_over;
+                $carry_over = 0;
+                $prev_total_count_correct = $user['total_correct_count'];
+            }
+            else {
+                $carry_over++;
+            }
+            
+            $users_list[] = [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'ranking' => $ranking,
+                'total_correct_count' => $user['total_correct_count'],
+            ];
+        }
+
+        return Inertia::render('Quiz/RankingCorrect', [
+            'usersList' => $users_list,
+            'userCount' => $users['total'],
+            'currentPage' => $users['current_page'],
+            'perPage' => $users['per_page'],
+        ]);
+    }
 }
