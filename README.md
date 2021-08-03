@@ -130,6 +130,7 @@ URLの一覧は以下表の通りです。
 | /grade/{ユーザID?}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
 | /grade/{ユーザID}/{グレードID}     | grade.detail                   |    GET   |         | 成績詳細ページを表示する。                                     |
 | /user/show/grade                | show.grade                       |  PATCH | ![鍵][鍵]| 成績ページを他ユーザに表示するかどうかの設定をする。            |
+| /ranking/correct                | ranking.correct                 |  GET |          | 正解数ランキングページを表示する。            |
 | /register                       | register                        |    GET   |      | 会員登録ページを表示する。                                         |
 | /register                       | register                        |   POST   |      | 会員登録処理を実行する。                                           |
 | /login                          | login                           |    GET   |      | ログイン画面を表示する。                                           |
