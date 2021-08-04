@@ -35,11 +35,14 @@
             id="user-list"
             :key="user.grade_id"
             class="text-center"
-            @click.stop="goGradePage(user.id)"
+            @click.stop="goGradePage(user)"
           >
             <td>{{ user.ranking }}位</td>
-            <td>
+            <td align="left">
               <a @click.stop.prevent="goUserPage(user.id)">
+                <v-avatar class="mr-3" size="35">
+                  <img :src="user.profile_photo_url" :alt="user.name" />
+                </v-avatar>
                 {{ user.name }}
               </a>
             </td>
@@ -121,10 +124,29 @@ export default {
     },
   },
   methods: {
-    goGradePage(user_id) {
+    gradePageShowFlg(user) {
+      if (user.show_grade) {
+        return true
+      } else {
+        if (this.$page.props.user !== null) {
+          return this.$page.props.user.id == user.id
+        }
+      }
+
+      return false
+    },
+    goGradePage(user) {
+      if (!this.gradePageShowFlg(user)) {
+        alert(
+          user.name +
+            `さんはクイズ実行履歴ページを非表示に設定してるため、表示できません。`,
+        )
+        return
+      }
+
       this.$inertia.get(
         route('grade', {
-          user: user_id,
+          user: user.id,
         }),
       )
     },
