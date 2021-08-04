@@ -1,5 +1,5 @@
 <template>
-  <v-card min-width="200" max-width="251">
+  <v-card width="251">
     <v-list>
       <v-subheader>ジャンル別</v-subheader>
       <v-divider></v-divider>

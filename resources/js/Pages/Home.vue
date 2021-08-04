@@ -38,25 +38,50 @@
 
       <!-- ブレークポイントmd以上で表示 -->
       <v-col order="2">
-        <portal
-          v-resize="onResize"
-          to="genreListPlace"
-          :disabled="DispGenreListPC"
-          style="position: sticky; top: 100px;"
-        >
-          <genre-nav :genres="genres" :genre-list-id="genreListId"></genre-nav>
-        </portal>
+        <v-row>
+          <v-col>
+            <portal
+              v-resize="onResize"
+              to="genreListPlace"
+              :disabled="DispGenreListPC"
+            >
+              <genre-nav
+                :genres="genres"
+                :genre-list-id="genreListId"
+              ></genre-nav>
+            </portal>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <portal
+              v-resize="onResize"
+              to="userRankingListPlace"
+              :disabled="DispGenreListPC"
+            >
+              <ranking-nav :users="usersRanking"></ranking-nav>
+            </portal>
+          </v-col>
+        </v-row>
       </v-col>
 
       <!-- ブレークポイントmd未満で表示 -->
       <v-col order="1" class="d-block d-md-none">
         <v-menu transition="slide-x-transition" offset-y>
           <template #activator="{ on, attrs }">
-            <v-btn color="primary " v-bind="attrs" v-on="on">
+            <v-btn color="primary d-inline-block mr-3" v-bind="attrs" v-on="on">
               ジャンル別
             </v-btn>
           </template>
           <portal-target name="genreListPlace"></portal-target>
+        </v-menu>
+        <v-menu transition="slide-x-transition" offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn color="secondary d-inline-block" v-bind="attrs" v-on="on">
+              ランキング表示
+            </v-btn>
+          </template>
+          <portal-target name="userRankingListPlace"></portal-target>
         </v-menu>
       </v-col>
     </v-row>
@@ -77,6 +102,7 @@
 import AppLayout from '@/Layouts/AppLayout'
 import QuizInfo from '@/Components/QuizInfo'
 import GenreNav from '@/Components/GenreNav'
+import RankingNav from '@/Components/RankingNav'
 import SortItem from '@/Components/SortItem'
 import Pagination from '@/Components/Pagination'
 
@@ -87,6 +113,7 @@ export default {
     AppLayout,
     QuizInfo,
     GenreNav,
+    RankingNav,
     SortItem,
     Pagination,
   },
@@ -117,6 +144,10 @@ export default {
     },
     sortItem: {
       type: String,
+      required: true,
+    },
+    usersRanking: {
+      type: Array,
       required: true,
     },
   },

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Quiz;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Genre;
 use App\Models\Grade;
@@ -397,7 +398,12 @@ class QuizController extends Controller
                     break;
             }
 
-            $answers_table[] = new Answer($answer_table);
+            $answer_instance = new Answer($answer_table);
+            if ($answer_instance->isNeverBeforeCorrect()) {
+                optional($request->user())->increment('total_correct_count');
+            }
+
+            $answers_table[] = $answer_instance;
         }
 
         $grade = $quiz->grades()->create([

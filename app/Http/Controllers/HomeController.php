@@ -25,6 +25,9 @@ class HomeController extends Controller
         $genres = $genres->sortByDesc('quiz_count');
         $genres->prepend(['id' => 0, 'name' => 'すべて', 'quiz_count' => Quiz::count()]);
 
+        $users = User::orderByDesc('total_correct_count')->paginate(5)->toArray();
+        $users_ranking_list = self::getUsersRankingCorrect($users);
+
         if (empty(Genre::find($genre_id))) {
             $quizes = Quiz::searchWith('%' . $search_query . '%')->sort($sort_item)->paginate()->toArray();
             
@@ -45,6 +48,7 @@ class HomeController extends Controller
             'genres' => $genres,
             'genreListId' => $genre_list_id,
             'sortItem' => $sort_item,
+            'usersRanking' => $users_ranking_list,
         ]);
     }
 
@@ -214,5 +218,58 @@ class HomeController extends Controller
         $user->save();
 
         return redirect()->route('profile.show');
+    }
+
+    public function rankingCorrect(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $disp_num = $request->disp_num ? intval($request->disp_num) : 30;
+
+        $users = User::orderByDesc('total_correct_count')->paginate($disp_num)->toArray();
+
+        $users_list = self::getUsersRankingCorrect($users, $disp_num, $page);
+
+        return Inertia::render('Quiz/RankingCorrect', [
+            'usersList' => $users_list,
+            'userCount' => $users['total'],
+            'currentPage' => $users['current_page'],
+            'perPage' => $users['per_page'],
+        ]);
+    }
+
+    /**
+     * 配列をランキング表示用に整形する。
+     * @param $users ユーザ情報の配列
+     * @param $disp_num ランキングの表示数
+     * @param $page ページ数
+     * @return ランキング表示用に整形した配列
+     */
+    public static function getUsersRankingCorrect(array $users, int $disp_num = 0, int $page = 0)
+    {
+        $users_list = [];
+        $ranking = $disp_num * ($page - 1);
+        $prev_total_count_correct = -1;
+        $carry_over = 0;
+        foreach ($users['data'] as $user) {
+            if ($user['total_correct_count'] != $prev_total_count_correct) {
+                $ranking = $ranking + 1 + $carry_over;
+                $carry_over = 0;
+                $prev_total_count_correct = $user['total_correct_count'];
+            }
+            else {
+                $carry_over++;
+            }
+            
+            $users_list[] = [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'ranking' => $ranking,
+                'total_correct_count' => $user['total_correct_count'],
+                'show_grade' => $user['show_grade'],
+                'profile_photo_url' => $user['profile_photo_url'],
+            ];
+        }
+
+        return $users_list;
     }
 }

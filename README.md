@@ -1,7 +1,7 @@
 <!--- 画像URLの変数定義 --->
 [参考画像]: https://user-images.githubusercontent.com/81066421/127855688-03f6cf37-885d-4a40-8387-2501c462210f.gif
 [インフラ構成図]: https://user-images.githubusercontent.com/81066421/127653180-42854273-0623-4aa8-8bb0-219093a9b240.png
-[画面遷移図]: https://user-images.githubusercontent.com/81066421/126887789-2d13a4eb-339a-4b8a-97ac-60841dc493ec.png
+[画面遷移図]: https://user-images.githubusercontent.com/81066421/128183928-d941b8f8-bce5-4f5c-b27e-a38d8c4c6e2a.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
 [ER図]: https://user-images.githubusercontent.com/81066421/127725585-f2ce6040-d3e5-4fea-b5e9-9e8f4b8348f4.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
@@ -69,6 +69,7 @@
     - コメント投稿機能
     - コメント編集機能
     - コメント削除機能
+- ランキング機能
 - 検索機能
 - ソート機能
 - ページネーション機能
@@ -130,6 +131,7 @@ URLの一覧は以下表の通りです。
 | /grade/{ユーザID?}                | grade                           |    GET   |         | 成績ページを表示する。                                         |
 | /grade/{ユーザID}/{グレードID}     | grade.detail                   |    GET   |         | 成績詳細ページを表示する。                                     |
 | /user/show/grade                | show.grade                       |  PATCH | ![鍵][鍵]| 成績ページを他ユーザに表示するかどうかの設定をする。            |
+| /ranking/correct                | ranking.correct                 |  GET |          | 正解数ランキングページを表示する。            |
 | /register                       | register                        |    GET   |      | 会員登録ページを表示する。                                         |
 | /register                       | register                        |   POST   |      | 会員登録処理を実行する。                                           |
 | /login                          | login                           |    GET   |      | ログイン画面を表示する。                                           |

@@ -109,7 +109,7 @@
             class="mt-8 mb-12"
             @click.prevent="back"
           >
-            "{{ gradeUser.name }}"さんのマイページに戻る
+            戻る
           </v-btn>
         </v-col>
       </v-row>
