@@ -82,4 +82,13 @@ class User extends Authenticatable
     public function grades() {
         return $this->hasMany(Grade::class);
     }
+
+    /**
+     * リレーションシップ - correct_recordsテーブル
+     * @ return \Illuminate\Database\Eloguent\Relations\HasMany
+     */
+    public function correct_records() 
+    {
+        return $this->hasMany(CorrectRecord::class);
+    }
 }
