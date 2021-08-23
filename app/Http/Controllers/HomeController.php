@@ -25,7 +25,7 @@ class HomeController extends Controller
         $genres = $genres->sortByDesc('quiz_count');
         $genres->prepend(['id' => 0, 'name' => 'すべて', 'quiz_count' => Quiz::count()]);
 
-        $users = User::orderByDesc('total_correct_count')->paginate(5)->toArray();
+        $users = ['data' => User::orderByDesc('total_correct_count')->limit(5)->get()->toArray()];
         $users_ranking_list = self::getUsersRankingCorrect($users);
 
         if (empty(Genre::find($genre_id))) {
