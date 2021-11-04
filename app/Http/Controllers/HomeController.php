@@ -255,7 +255,7 @@ class HomeController extends Controller
         $correctCount = Arr::sort($correctCount);
         arsort($correctCount);
 
-        return $correctCount;
+        return self::getUsersRankingArrange($correctCount);
     }
 
     public function rankingmonthly(Request $request)
@@ -274,7 +274,7 @@ class HomeController extends Controller
         $correctCount = Arr::sort($correctCount);
         arsort($correctCount);
 
-        return $correctCount;
+        return self::getUsersRankingArrange($correctCount);
     }
 
     /**
@@ -305,6 +305,42 @@ class HomeController extends Controller
                 'name' => $user['name'],
                 'ranking' => $ranking,
                 'total_correct_count' => $user['total_correct_count'],
+                'show_grade' => $user['show_grade'],
+                'profile_photo_url' => $user['profile_photo_url'],
+            ];
+        }
+
+        return $users_list;
+    }
+    
+    /**
+     * 週間・月間ランキングの配列を表示用に整形する。
+     * @param $correctCounts キーがユーザIDで値が正解数の配列
+     * @return ランキング表示用に整形した配列
+     */
+    public static function getUsersRankingArrange(array $correctCounts)
+    {
+        $users_list = [];
+        $ranking = 0;
+        $prev_total_count_correct = -1;
+        $carry_over = 0;
+        foreach ($correctCounts as $user_id => $correctCount) {
+            $user = User::find($user_id);
+
+            if ($correctCount != $prev_total_count_correct) {
+                $ranking = $ranking + 1 + $carry_over;
+                $carry_over = 0;
+                $prev_total_count_correct = $correctCount;
+            }
+            else {
+                $carry_over++;
+            }
+            
+            $users_list[] = [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'ranking' => $ranking,
+                'total_correct_count' => $correctCount,
                 'show_grade' => $user['show_grade'],
                 'profile_photo_url' => $user['profile_photo_url'],
             ];

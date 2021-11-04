@@ -75,7 +75,11 @@
           </template>
           <portal-target name="genreListPlace"></portal-target>
         </v-menu>
-        <v-menu transition="slide-x-transition" offset-y>
+        <v-menu
+          :close-on-content-click="false"
+          transition="slide-x-transition"
+          offset-y
+        >
           <template #activator="{ on, attrs }">
             <v-btn color="secondary d-inline-block" v-bind="attrs" v-on="on">
               ランキング表示
