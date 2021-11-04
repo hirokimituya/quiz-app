@@ -9,7 +9,9 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Genre;
 use App\Models\Grade;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\CorrectRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -235,6 +237,44 @@ class HomeController extends Controller
             'currentPage' => $users['current_page'],
             'perPage' => $users['per_page'],
         ]);
+    }
+
+    public function rankingWeekly(Request $request)
+    {
+        $correctCount = [];
+
+        CorrectRecord::weekly()->chunk(100, function($correctRecords) use (&$correctCount) {
+            foreach($correctRecords as $correctRecord) {
+                if (!isset($correctCount[$correctRecord->user_id])) {
+                    $correctCount[$correctRecord->user_id] = 0;
+                }
+                $correctCount[$correctRecord->user_id]++;
+            }
+        });
+
+        $correctCount = Arr::sort($correctCount);
+        arsort($correctCount);
+
+        return $correctCount;
+    }
+
+    public function rankingmonthly(Request $request)
+    {
+        $correctCount = [];
+
+        CorrectRecord::monthly()->chunk(100, function($correctRecords) use (&$correctCount) {
+            foreach($correctRecords as $correctRecord) {
+                if (!isset($correctCount[$correctRecord->user_id])) {
+                    $correctCount[$correctRecord->user_id] = 0;
+                }
+                $correctCount[$correctRecord->user_id]++;
+            }
+        });
+
+        $correctCount = Arr::sort($correctCount);
+        arsort($correctCount);
+
+        return $correctCount;
     }
 
     /**
