@@ -35,6 +35,10 @@ Route::post('/quiz/{quiz}/answer/result', [QuizController::class, 'answerResult'
 
 Route::get('/ranking/correct', [HomeController::class, 'rankingCorrect'])->name('ranking.correct');
 
+Route::get('/ranking/weekly', [HomeController::class, 'rankingWeekly'])->name('ranking.weekly');
+
+Route::get('/ranking/monthly', [HomeController::class, 'rankingmonthly'])->name('ranking.monthly');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/quiz/create', [QuizController::class, 'showCreateForm'])->name('quiz.create');
 

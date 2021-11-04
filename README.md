@@ -3,7 +3,7 @@
 [インフラ構成図]: https://user-images.githubusercontent.com/81066421/127653180-42854273-0623-4aa8-8bb0-219093a9b240.png
 [画面遷移図]: https://user-images.githubusercontent.com/81066421/128183928-d941b8f8-bce5-4f5c-b27e-a38d8c4c6e2a.png
 [鍵]: https://user-images.githubusercontent.com/81066421/120003596-dd50c580-c010-11eb-9442-5542a6466dbb.png
-[ER図]: https://user-images.githubusercontent.com/81066421/127725585-f2ce6040-d3e5-4fea-b5e9-9e8f4b8348f4.png
+[ER図]: https://user-images.githubusercontent.com/81066421/130442393-63674c02-1628-411c-8919-efdc3e4b5fcc.png
 [チェック]: https://user-images.githubusercontent.com/81066421/120052611-131d9a80-c061-11eb-9e86-f323d6cb2b41.png
 [外部]: https://user-images.githubusercontent.com/81066421/120052614-13b63100-c061-11eb-8b16-a679f6241f26.png
 [キー]: https://user-images.githubusercontent.com/81066421/120052616-144ec780-c061-11eb-9efc-0ab2224081ab.png
@@ -274,6 +274,16 @@ ER図は以下画像の通りです。
 |--------------|--------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
 | いいねID     | id           |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | クイズID     | quiz_id      | BIGINT UNSIGNED |         |        |![チェック][チェック]| ![外部][外部]&nbsp;quizzes(id) |
+| ユーザID     | user_id      | BIGINT UNSIGNED |         |        |![チェック][チェック]|  ![外部][外部]&nbsp;users(id)  |
+| 作成日       | created_at   |    TIMESTAMP    |         |        |          |             |
+| 更新日       | updated_at   |    TIMESTAMP    |         |        |          |             |
+
+> ### correct_recordsテーブル
+- ユーザランキングのための正解数を管理します。
+
+| カラム論理名 | カラム物理名 |        型       | PRIMARY | UNIQUE | NOT NULL |   FOREIGN   |
+|--------------|--------------|:---------------:|:-------:|:------:|:--------:|:-----------:|
+| 正解記録ID   | id           |      SERIAL     |![キー][キー]|![チェック][チェック]|![チェック][チェック]|             |
 | ユーザID     | user_id      | BIGINT UNSIGNED |         |        |![チェック][チェック]|  ![外部][外部]&nbsp;users(id)  |
 | 作成日       | created_at   |    TIMESTAMP    |         |        |          |             |
 | 更新日       | updated_at   |    TIMESTAMP    |         |        |          |             |

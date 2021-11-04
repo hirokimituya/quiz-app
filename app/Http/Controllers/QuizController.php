@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuizAnswerRequest;
 use App\Http\Requests\QuizCreateRequest;
+use App\Models\CorrectRecord;
 
 class QuizController extends Controller
 {
@@ -401,6 +402,8 @@ class QuizController extends Controller
             $answer_instance = new Answer($answer_table);
             if ($answer_instance->isNeverBeforeCorrect()) {
                 optional($request->user())->increment('total_correct_count');
+
+                optional($request->user())->correct_records()->save(new CorrectRecord());
             }
 
             $answers_table[] = $answer_instance;
