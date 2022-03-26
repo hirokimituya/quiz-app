@@ -10,7 +10,7 @@
 
 
 <!--- 本文はこちらから --->
-# [QuizMaker](https://www.quiz-maker-simple.com)
+# [QuizMaker](https://www.quiz-maker-simple.com)（現在停止）
 クイズを作成・実行できるWEBアプリケーションです。<br>
 自由にクイズを作成して他ユーザに回答してもらったり、他ユーザが作成したクイズを回答できます。<br>
 常時SSL化に対応しており、安全にアプリを実行できるようになっております。<br>
